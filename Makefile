@@ -19,8 +19,8 @@ OUTPUT = $(INPUT:.c=)
 all: $(INPUT)
 	$(CC) $(INPUT) $(FLAGS) $(HEADERS) $(LIBDIR) -o $(OUTPUT) -lgeolib
 	
-lib: obj/tuple.o
-	ar rcs lib/libgeolib.a obj/tuple.o
+lib: obj/geometry/tuple.o
+	ar rcs lib/libgeolib.a obj/geometry/tuple.o
 	
 obj/geometry/tuple.o:
 	gcc -c src/geometry/tuple.c -I./inc/ -o obj/geometry/tuple.o

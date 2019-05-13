@@ -17,8 +17,8 @@ int TST_TupleType()
         return 1;
 }
 
-int main() {
-        
+int main() 
+{
         TST_TupleType();
 
         return 0;
