@@ -20,7 +20,7 @@ HEADERS = -I./inc/
 #output file
 OUTPUT = $(INPUT:.c=)
 
-all: $(INPUT)
+all: $(INPUT) lib
 	$(CC) $(INPUT) $(FLAGS) $(HEADERS) $(LIBDIR) -o $(OUTPUT) $(CLIBS) $(MYLIBS)
 	
 lib: $(OBJS)
