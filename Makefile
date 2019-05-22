@@ -9,6 +9,10 @@ LIBDIR = -L./lib
 
 # libraries
 MYLIBS = -lgeolib
+CLIBS = -lm
+
+# object files
+OBJS = obj/tuple.o obj/gmaths.o
 
 # headers
 HEADERS = -I./inc/
@@ -17,13 +21,17 @@ HEADERS = -I./inc/
 OUTPUT = $(INPUT:.c=)
 
 all: $(INPUT)
-	$(CC) $(INPUT) $(FLAGS) $(HEADERS) $(LIBDIR) -o $(OUTPUT) -lgeolib
+	$(CC) $(INPUT) $(FLAGS) $(HEADERS) $(LIBDIR) -o $(OUTPUT) $(CLIBS) $(MYLIBS)
 	
-lib: obj/geometry/tuple.o
-	ar rcs lib/libgeolib.a obj/geometry/tuple.o
+lib: $(OBJS)
+	# ar rcs lib/libgeolib.a obj/tuple.o obj/gmaths.o
+	ar rcs lib/libgeolib.a $(OBJS)
 	
-obj/geometry/tuple.o:
-	gcc -c src/geometry/tuple.c -I./inc/ -o obj/geometry/tuple.o
+obj/tuple.o:
+	gcc -c src/geometry/tuple.c -I./inc/ -o obj/tuple.o
+	
+obj/gmaths.o:
+	gcc -c src/geometry/gmaths.c -I./inc/ -o obj/gmaths.o $(CLIBS)
 	
 .PHONY: clean cleanlib cleanall cleanbin
 

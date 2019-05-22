@@ -33,4 +33,10 @@ const int GEO_TupleCheckType(tuple_t t)
 
         return -1;
 }
-        
+ 
+// print the tuple to the standard output
+void GEO_PrintTuple(tuple_t t)
+{
+        fprintf(stdout, "(%.2f, %.2f, %.2f, %.2f)\n",    
+                t.x, t.y, t.z, t.w);
+}

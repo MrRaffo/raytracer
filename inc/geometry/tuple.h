@@ -26,4 +26,7 @@ const vector_t GEO_Vector(float x, float y, float z);
 // return 1 if tuple is a point, 0 if a vector, -1 if not valid
 const int GEO_TupleCheckType(tuple_t t);
 
+// print the tuple to the standard output
+void GEO_PrintTuple(tuple_t t);
+       
 #endif // __tuple_h__
