@@ -3,9 +3,9 @@
 
 int main()
 {
-        tuple_t tuple = GEO_Tuple(1.0f, 2.0f, 3.0f, 1.0f);
-        tuple_t point = GEO_Point(1.0f, 2.0f, 3.0f);
-        printf("Tuple is: %f, %f, %f, %f\n", tuple.x, tuple.y, tuple.z, tuple.w);
+        struct tuple t = tuple_new(1.0f, 2.0f, 3.0f, 1.0f);
+        struct tuple point = tuple_point(1.0f, 2.0f, 3.0f);
+        printf("Tuple is: %f, %f, %f, %f\n", t.x, t.y, t.z, t.w);
 
         return 0;
 }

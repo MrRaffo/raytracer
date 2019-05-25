@@ -1,0 +1,9 @@
+No typedef'ing structs, tuple is 'struct tuple', not 'tuple_t' or 'tuple_type'
+
+Functions should be prefixed clearly, all functions to do with tuples have a
+'tuple_' suffix, ie 'tuple_add', haven't decided if the function name itself
+should follow camel case or underlines: 'tuple_toString' or 'tuple_to_string',
+but if it comes to it i'll probably follow the linux kernal rules (no camel)
+
+static functions should be prefixed with '_', and I suppose the type prefix
+can be dropped

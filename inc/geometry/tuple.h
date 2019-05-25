@@ -1,51 +1,70 @@
 #ifndef __tuple_h__
 #define __tuple_h__
 
-#define GEO_VECTOR 0
-#define GEO_POINT 1
+#define TUPLE_VECTOR 0
+#define TUPLE_POINT 1
+#define TUPLE_NON_TYPE -1
 
-typedef struct tuple_s{
+struct tuple{
         float x;
         float y;
         float z;
         float w;
-} tuple_t;
+};
 
-typedef tuple_t vector_t;
-typedef tuple_t point_t;
+/* TUPLE CREATION */
 
 // create a new tuple, initialised with given values
-const tuple_t GEO_Tuple(const float x, const float y, const float z, const float w);
+const struct tuple tuple_new(const float x, const float y, const float z, const float w);
 
 // create a 'point' (a tuple where w == 1.0f)
-const point_t GEO_Point(const float x, const float y, const float z);
+const struct tuple tuple_point(const float x, const float y, const float z);
 
 // create a 'vector' (a tuple where w == 0.0f)
-const vector_t GEO_Vector(const float x, const float y, const float z);
+const struct tuple tuple_vector(const float x, const float y, const float z);
+
+// returns a zero tuple ({0, 0, 0, 0})
+const struct tuple tuple_zero(void);
 
 // check if two tuples are equal to each other, return 1 if so, 0 if not
-const int GEO_TupleEqual(const tuple_t tuple1, const tuple_t tuple2);
+const int tuple_equal(const struct tuple t1, const struct tuple t2);
 
 // return 1 if tuple is a point, 0 if a vector, -1 if not valid
-const int GEO_TupleCheckType(const tuple_t t);
+const int tuple_type(const struct tuple t);
 
 // print the tuple to the standard output
-void GEO_PrintTuple(const tuple_t t);
+void tuple_print(const struct tuple t);
+
  
 /* TUPLE OPERATIONS */
+
 // add two tuples together and return a new tuple
-const tuple_t GEO_TupleAdd(const tuple_t t1, const tuple_t t2);
+const struct tuple tuple_add(const struct tuple t1, const struct tuple t2);
 
 // subtract tuple t2 from tuple t1 and return the result
-const tuple_t GEO_TupleSubtract(const tuple_t t1, const tuple_t t2);
+const struct tuple tuple_subtract(const struct tuple t1, const struct tuple t2);
 
 // get the negation of a tuple (tuple * -1) or, {0, 0, 0, 0,} - tuple
-const tuple_t GEO_TupleNegate(const tuple_t t);
+const struct tuple tuple_negate(const struct tuple t);
 
 // multiply a vector by a scalar:
-const tuple_t GEO_TupleMultiply(const tuple_t t, const float f);
+const struct tuple tuple_scale(const struct tuple t, const float f);
 
 // divide a vector by a scalar:
-const tuple_t GEO_TupleDivide(const tuple_t t, const float f);
+// not commutative
+const struct tuple tuple_divide(const struct tuple t, const float f);
+
+// get the magnitude, or length, of a vector
+const float vector_magnitude(const struct tuple t);
+
+// return the normal (magnitude == 1.0f) of a given vector
+const struct tuple vector_normal(const struct tuple v);
+
+// return the dot product of two vectors (represents the angle between them)
+const float vector_dot(const struct tuple v1, const struct tuple v2);
+
+// return a new vector, the cross product of the two vectors passed
+// Not commutative - returns a vector perpendicular to the 2 passed
+const struct tuple vector_cross(const struct tuple v1, const struct tuple v2);
       
 #endif // __tuple_h__
