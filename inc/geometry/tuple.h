@@ -36,5 +36,16 @@ void GEO_PrintTuple(const tuple_t t);
 // add two tuples together and return a new tuple
 const tuple_t GEO_TupleAdd(const tuple_t t1, const tuple_t t2);
 
+// subtract tuple t2 from tuple t1 and return the result
+const tuple_t GEO_TupleSubtract(const tuple_t t1, const tuple_t t2);
+
+// get the negation of a tuple (tuple * -1) or, {0, 0, 0, 0,} - tuple
+const tuple_t GEO_TupleNegate(const tuple_t t);
+
+// multiply a vector by a scalar:
+const tuple_t GEO_TupleMultiply(const tuple_t t, const float f);
+
+// divide a vector by a scalar:
+const tuple_t GEO_TupleDivide(const tuple_t t, const float f);
       
 #endif // __tuple_h__

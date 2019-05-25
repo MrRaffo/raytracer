@@ -1,1 +1,13 @@
 Sort out the Makefile...
+Reconsider how functions are named, GEO_TupleCheckEqual is ugly:
+
+        Tup_Equal       Tuple_Equal     tuple_equal     t_equal
+        Tup_Add         Tuple_Add       tuple_add       t_Add
+        Tup_Magnitude   Tuple_Type      tuple_negate    t_Point
+        Tup_Vector      Tuple_Vector    tuple_vector    tup_vector
+
+        GEO_MatrixIdentity etc will get really ugly...
+
+        Mat_Identity    Matrix_Add      matrix_add      m_equal
+        Mat_Rotate      Matrix_Scalar   matrix_scale    m_rotate
+        Mat_Zero        Matrix_Multiply matrix_rotate
