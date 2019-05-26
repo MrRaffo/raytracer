@@ -1,50 +1,42 @@
-# compiler
+# search in these folders for any .c files
+vpath %.c src/ src/geometry
+
+# Compiler
 CC = gcc
+CCFLAGS = -g -Wall
 
-# compiler flags
-CFLAGS = -g -Wall
+# Folders
+# library files
+SOURCES = tuple.c gmaths.c
+OBJECTS = $(patsubst %.c, obj/%.o, $(SOURCES))
 
-# my library
-LIBDIR = -L./lib
-
-# libraries
-MYLIBS = -lgeolib
+INCLUDE = -I./inc/
 CLIBS = -lm
 
-# object files
-OBJS = obj/tuple.o obj/gmaths.o
+TESTSOURCES = $(wildcard src/test/*.c)
+TESTS := $(addprefix bin/, $(notdir $(TESTSOURCES:.c=)))
 
-# headers
-HEADERS = -I./inc/
 
-#output file
-OUTPUT = $(INPUT:.c=)
+# rules
 
-all: $(INPUT) lib
-	$(CC) $(INPUT) $(FLAGS) $(HEADERS) $(LIBDIR) -o $(OUTPUT) $(CLIBS) $(MYLIBS)
-	
-lib: $(OBJS)
-	# ar rcs lib/libgeolib.a obj/tuple.o obj/gmaths.o
-	ar rcs lib/libgeolib.a $(OBJS)
-	
-obj/tuple.o:
-	gcc -c src/geometry/tuple.c -I./inc/ -o obj/tuple.o
-	
-obj/gmaths.o:
-	gcc -c src/geometry/gmaths.c -I./inc/ -o obj/gmaths.o $(CLIBS)
-	
-.PHONY: clean cleanlib cleanall cleanbin
+# create the obj folder if needed
+$(OBJECTS): | obj
 
-clean: cleanbin cleanobj
+obj:
+	@mkdir -p $@
 	
-cleanobj:
-	rm -rf obj/*
+obj/%.o: %.c
+	@echo $<
+	@$(CC) $(CCFLAGS) $(INCLUDE) -c $< -o $@ $(CLIBS)
 	
-cleanlib:
-	rm -rf lib/*
+library: $(OBJECTS)
+	ar rcs lib/libgeolib.a $(OBJECTS)
+
+test: library $(TESTS)
+
+%: %.c
+	$(CC) $(CCFLAGS) $(INCLUDE) -L./lib $< -o $@ -lgeolib -lm
 	
-cleanbin:
-	rm -rf bin/*
-	
-cleanall: cleanbin cleanlib cleanobj
-	rm -rf bin/* obj/* lib/*
+testsuite:
+	@echo $(TESTSOURCES)
+	@echo $(TESTS)
