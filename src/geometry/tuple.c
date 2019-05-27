@@ -3,6 +3,7 @@
 
 #include <geometry/tuple.h>
 #include <geometry/gmaths.h>
+#include <util/log.h>
 
 // create a new tuple, initialised with given values
 const struct tuple tuple_new(const float x, const float y, const float z, const float w) {
@@ -55,7 +56,7 @@ const int tuple_type(const struct tuple t)
 // print the tuple to the standard output
 void tuple_print(const struct tuple t)
 {
-        fprintf(stdout, "(%.2f, %.2f, %.2f, %.2f)\n",    
+        log_msg("(%.2f, %.2f, %.2f, %.2f)",    
                 t.x, t.y, t.z, t.w);
 }
 // get the magnitude, or length, of a vector

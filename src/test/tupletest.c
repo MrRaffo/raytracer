@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <geometry/tuple.h>
 #include <geometry/gmaths.h>
+#include <util/log.h>
 
 #include <assert.h>
 
@@ -14,7 +15,21 @@ int TST_TupleType()
         assert(tuple_type(point) == TUPLE_POINT);
         assert(tuple_type(invalid) < 0);
 
-        fprintf(stdout, "[Tuple Type] All tests complete - pass!\n");
+        log_msg("[Tuple Type] All tests complete - pass!");
+
+        return 1;
+}
+
+int TST_TuplePrint()
+{
+        struct tuple vec = tuple_vector(1.0f, 2.0f, 3.0f);
+        struct tuple point = tuple_point(3.0f, 4.0f, 5.0f);
+        struct tuple invalid = tuple_new(2.0f, 2.0f, 2.0f, 2.0f);
+
+        log_msg("Demonstrating tuple print");
+        tuple_print(vec);
+        tuple_print(point);
+        tuple_print(invalid);
 
         return 1;
 }
@@ -33,7 +48,7 @@ int TST_TupleEqual()
         assert(tuple_equal(t3, t4) == 0);
         assert(tuple_equal(t2, t5) == 0);
 
-        fprintf(stdout, "[Tuple Equal] All tests complete - pass!\n");
+        log_msg("[Tuple Equal] All tests complete - pass!");
 
         return 1;
 }
@@ -47,7 +62,7 @@ int TST_TupleAdd()
         assert(tuple_equal(tuple_add(t1, t2), t3));
         assert(!tuple_equal(tuple_add(t1, t3), t2));
 
-        fprintf(stdout, "[Tuple Add] All tests complete - pass!\n");
+        log_msg("[Tuple Add] All tests complete - pass!");
 
         return 1;
 }
@@ -64,7 +79,7 @@ int TST_TupleSubtract()
         assert(tuple_type(tuple_subtract(p1, p2)) == TUPLE_VECTOR);
         assert(tuple_equal(tuple_subtract(p2, p1), tuple_new(-1.0f, 0.0f, -2.0f, 0.0f)));
 
-        fprintf(stdout, "[Tuple Subtract] All tests complete - pass!\n");
+        log_msg("[Tuple Subtract] All tests complete - pass!");
 
         return 1;
 }
@@ -77,7 +92,7 @@ int TST_TupleNegate()
         assert(tuple_equal(tuple_negate(t1), t2));
         assert(tuple_equal(tuple_negate(t2), t1));
 
-        fprintf(stdout, "[Tuple Negate] All tests complete - pass!\n");
+        log_msg("[Tuple Negate] All tests complete - pass!");
 
         return 1;
 }
@@ -92,7 +107,7 @@ int TST_TupleMultiply()
         assert(tuple_equal(tuple_scale(t1, 2.0f), t2));
         assert(tuple_equal(tuple_scale(t3, 3.0f), t4));
 
-        fprintf(stdout, "[Tuple Multiply] All tests complete - pass!\n");
+        log_msg("[Tuple Multiply] All tests complete - pass!");
 
         return 1;
 }
@@ -107,7 +122,7 @@ int TST_TupleDivide()
         assert(tuple_equal(tuple_divide(t2, 2.0f), t1));
         assert(tuple_equal(tuple_divide(t4, 3.0f), t3));
 
-        fprintf(stdout, "[Tuple Divide] All tests complete - pass!\n");
+        log_msg("[Tuple Divide] All tests complete - pass!");
 
         return 1;
 }
@@ -128,7 +143,7 @@ int TST_VectorMagnitude()
         assert(float_equal(vector_magnitude(v4), 5.3851648f));
         assert(float_equal(vector_magnitude(v5), 3.7416573f));
 
-        fprintf(stdout, "[Vector Magnitude] - All tests complete - pass!\n");
+        log_msg("[Vector Magnitude] - All tests complete - pass!");
 
         return 1;
 }
@@ -151,7 +166,7 @@ int TST_VectorNormal()
         assert(float_equal(vector_magnitude(vector_normal(v6)), 1.0f) == 1);
         vector_magnitude(vector_normal(v7));    // just don't break...
         
-        fprintf(stdout, "[Vector Normal] All tests complete - pass!\n");
+        log_msg("[Vector Normal] All tests complete - pass!");
 
         return 1;
 }
@@ -167,7 +182,7 @@ int TST_VectorDot()
         assert(float_equal(vector_dot(v2, v3), 9.0f) == 1);
         assert(float_equal(vector_dot(v3, v3), 27.0f) == 1);
 
-        fprintf(stdout, "[Vector Dot] All test complete - pass!\n");
+        log_msg("[Vector Dot] All test complete - pass!");
 
         return 1;
 }
@@ -183,7 +198,7 @@ int TST_VectorCross()
         assert(tuple_equal(vector_cross(c, a), b) == 1);
         assert(tuple_equal(vector_cross(b, c), a) == 1);
 
-        fprintf(stdout, "[Vector Cross] All test complete - pass!\n");
+        log_msg("[Vector Cross] All test complete - pass!");
 
         return 1;
 }
@@ -191,6 +206,7 @@ int TST_VectorCross()
 int main() 
 {
         TST_TupleType();
+        TST_TuplePrint();
         TST_TupleEqual();
         TST_TupleAdd();
         TST_TupleSubtract();

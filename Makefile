@@ -12,7 +12,7 @@
 # make cleanbin
 
 # search in these folders for any .c files
-vpath %.c src/ src/geometry src/graphics src/test src/exercises src/programs
+vpath %.c src/ src/geometry src/graphics src/test src/exercises src/programs src/util
 
 # Compiler
 CC = gcc
@@ -20,7 +20,7 @@ CCFLAGS = -g -Wall
 
 # Folders
 # library files
-SOURCES = tuple.c gmaths.c color.c
+SOURCES = tuple.c gmaths.c color.c mem.c log.c
 OBJECTS = $(patsubst %.c, obj/%.o, $(SOURCES))
 LIBRARY = lib/libraytracer.a
 

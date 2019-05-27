@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <geometry/gmaths.h>
+#include <util/log.h>
 #include <assert.h>
 
 
@@ -13,7 +14,7 @@ int TST_Equal()
         assert(float_equal(val1, val3) == 0);
         assert(float_equal(val2, val3) == 1);
 
-        fprintf(stdout, "[Equality (float)] All tests complete - pass!\n");
+        log_msg("[Equality (float)] All tests complete - pass!");
 
         return 1;
 }

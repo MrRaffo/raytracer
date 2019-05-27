@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <graphics/color.h>
 #include <geometry/gmaths.h>    // for float_equal
+#include <util/log.h>
 
 #include <assert.h>
 
@@ -17,7 +18,7 @@ int TST_ColorNewInt()
         assert(float_equal(col2.g, 0.5333333f));
         assert(float_equal(col2.b, 0.0f));
 
-        fprintf(stdout, "[Color NewInt] All tests complete - pass!\n");
+        log_msg("[Color NewInt] All tests complete - pass!");
 
         return 1;
 }
@@ -31,7 +32,7 @@ int TST_ColorEqual()
         assert(color_equal(c1, c2) == 1);
         assert(color_equal(c1, c3) == 0);
 
-        fprintf(stdout, "[Color Equal] All tests complete - pass\n");
+        log_msg("[Color Equal] All tests complete - pass");
 
         return 1;
 }
@@ -46,7 +47,7 @@ int TST_ColorAdd()
         assert(color_equal(color_add(c1, c2), c3));
         assert(color_equal(color_add(c1, c3), c4));
 
-        fprintf(stdout, "[Color Add] All tests complete - pass!\n");
+        log_msg("[Color Add] All tests complete - pass!");
 
         return 1;
 }
@@ -61,7 +62,7 @@ int TST_ColorSubtract()
         assert(color_equal(color_subtract(c1, c2), c3));
         assert(color_equal(color_subtract(c1, c3), c4));
 
-        fprintf(stdout, "[Color Subtract] All tests complete - pass!\n");
+        log_msg("[Color Subtract] All tests complete - pass!");
 
         return 1;
 }
@@ -75,7 +76,7 @@ int TST_ColorScale()
         assert(color_equal(color_scale(c1, 2.0f), c2));
         assert(color_equal(color_scale(c1, 2.5f), c3));
 
-        fprintf(stdout, "[Color Scale] All tests complete - pass!\n");
+        log_msg("[Color Scale] All tests complete - pass!");
 
         return 1;
 }
@@ -90,7 +91,7 @@ int TST_ColorMultiply()
         assert(color_equal(color_multiply(c1, c2), c3));
         assert(color_equal(color_multiply(c1, c3), c4));
 
-        fprintf(stdout, "[Color Multiply] All tests complete - pass!\n");
+        log_msg("[Color Multiply] All tests complete - pass!");
 
         return 1;
 }
