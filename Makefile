@@ -12,7 +12,7 @@
 # make cleanbin
 
 # search in these folders for any .c files
-vpath %.c src/ src/geometry
+vpath %.c src/ src/geometry src/graphics src/test src/exercises src/programs
 
 # Compiler
 CC = gcc
@@ -20,22 +20,25 @@ CCFLAGS = -g -Wall
 
 # Folders
 # library files
-SOURCES = tuple.c gmaths.c
+SOURCES = tuple.c gmaths.c color.c
 OBJECTS = $(patsubst %.c, obj/%.o, $(SOURCES))
-LIBRARY = lib/libgeolib.a
+LIBRARY = lib/libraytracer.a
 
 INCLUDE = -I./inc/
-MYLIBS = -lgeolib
+MYLIBS = -lraytracer
 CLIBS = -lm
 
-TEST_SOURCES = $(wildcard src/test/*.c)
+TEST_SOURCES = $(notdir $(wildcard src/test/*.c))
 TESTS := $(addprefix bin/, $(notdir $(TEST_SOURCES:.c=)))
 
-EXERCISE_SOURCES = $(wildcard src/exercises/*.c)
+EXERCISE_SOURCES = $(notdir $(wildcard src/exercises/*.c))
 EXERCISES := $(addprefix bin/, $(notdir $(EXERCISE_SOURCES:.c=)))
 
-PROG_SOURCES = $(wildcard src/programs/*.c)
+PROG_SOURCES = $(notdir $(wildcard src/programs/*.c))
 PROGRAMS := $(addprefix bin/, $(notdir $(PROG_SOURCES:.c=)))
+
+# for user specified inputs
+OUTPUT = $(addprefix bin/, $(notdir $(INPUT:.c=)))
 
 # rules
 
@@ -58,8 +61,11 @@ exercises: library $(EXERCISES)
 
 programs: library $(PROGRAMS)
 
-bin/%: $(EXERCISE_SOURCES) $(TEST_SOURCES)
+bin/%: %.c
 	$(CC) $(CCFLAGS) $(INCLUDE) -L./lib $< -o $@ $(MYLIBS) $(CLIBS)
+	
+input: $(INPUT) library
+	$(CC) $(CCFLAGS) $(INCLUDE) -L./lib $< -o $(OUTPUT) $(MYLIBS) $(CLIBS)
 
 # cleanup
 
@@ -80,6 +86,10 @@ cleanall: cleanbin cleanlib cleanobj
 	
 testsuite:
 	@echo Objects: $(OBJECTS)
-	@echo Library: $(LIBS)
-	@echo Testsources: $(TESTSOURCES)
+	@echo Library: $(LIBRARY)
+	@echo Testsources: $(TEST_SOURCES)
 	@echo Test progs: $(TESTS)
+	@echo Ex sources: $(EXERCISE_SOURCES)
+	@echo Ex progs: $(EXERCISES)
+	@echo Program Sources: $(PROG_SOURCES)
+	@echo Programs: $(PROGRAMS)
