@@ -22,9 +22,88 @@ int TST_ColorNewInt()
         return 1;
 }
 
+int TST_ColorEqual()
+{
+        struct color c1 = color_new(0.34f, 0.12f, 0.99f);
+        struct color c2 = color_new(0.34f, 0.12f, 0.99000002f);
+        struct color c3 = color_new(0.43f, 0.21f, 0.11f);
+
+        assert(color_equal(c1, c2) == 1);
+        assert(color_equal(c1, c3) == 0);
+
+        fprintf(stdout, "[Color Equal] All tests complete - pass\n");
+
+        return 1;
+}
+
+int TST_ColorAdd()
+{
+        struct color c1 = color_new(0.8f, 0.1f, 0.005f);
+        struct color c2 = color_new(0.25f, 0.333f, 0.5f);
+        struct color c3 = color_new(1.05f, 0.433f, 0.505f);
+        struct color c4 = color_new(1.85f, 0.533f, 0.51f);
+
+        assert(color_equal(color_add(c1, c2), c3));
+        assert(color_equal(color_add(c1, c3), c4));
+
+        fprintf(stdout, "[Color Add] All tests complete - pass!\n");
+
+        return 1;
+}
+
+int TST_ColorSubtract()
+{
+        struct color c1 = color_new(0.8f, 0.1f, 0.5f);
+        struct color c2 = color_new(0.25f, 0.333f, 0.005f);
+        struct color c3 = color_new(0.55f, -0.233f, 0.495f);
+        struct color c4 = color_new(0.25f, 0.333f, 0.005f);
+
+        assert(color_equal(color_subtract(c1, c2), c3));
+        assert(color_equal(color_subtract(c1, c3), c4));
+
+        fprintf(stdout, "[Color Subtract] All tests complete - pass!\n");
+
+        return 1;
+}
+
+int TST_ColorScale()
+{
+        struct color c1 = color_new(0.2f, 0.4f, 0.8f);
+        struct color c2 = color_new(0.4f, 0.8f, 1.6f);
+        struct color c3 = color_new(0.5f, 1.0f, 2.0f);
+
+        assert(color_equal(color_scale(c1, 2.0f), c2));
+        assert(color_equal(color_scale(c1, 2.5f), c3));
+
+        fprintf(stdout, "[Color Scale] All tests complete - pass!\n");
+
+        return 1;
+}
+
+int TST_ColorMultiply()
+{
+        struct color c1 = color_new(0.2f, 0.3f, 0.4f);
+        struct color c2 = color_new(0.4f, 0.6f, 0.8f);
+        struct color c3 = color_new(0.08f, 0.18f, 0.32f);
+        struct color c4 = color_new(0.016f, 0.054f, 0.128f);
+
+        assert(color_equal(color_multiply(c1, c2), c3));
+        assert(color_equal(color_multiply(c1, c3), c4));
+
+        fprintf(stdout, "[Color Multiply] All tests complete - pass!\n");
+
+        return 1;
+}
+
+
 int main()
 {
         TST_ColorNewInt();
+        TST_ColorEqual();
+        TST_ColorAdd();
+        TST_ColorSubtract();
+        TST_ColorScale();
+        TST_ColorMultiply();
 
         return 0;
 }

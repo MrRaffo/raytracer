@@ -28,4 +28,31 @@ const struct color color_new(const float r, const float g, const float b);
  */
 const struct color color_newi(const int r, const int g, const int b);
 
+/*
+ * Return 1 if two colors RGB components are equal, 0 otherwise
+ */
+const int color_equal(const struct color c1, const struct color c2);
+
+/*
+ * Add the RGB components of two colors together and return the result
+ */
+const struct color color_add(const struct color c1, const struct color c2);
+
+/*
+ * Subtract the RGB components of c2 from those of c1 and return the new
+ * colour obtained, not communitive
+ */
+const struct color color_subtract(const struct color c1, const struct color c2);
+
+/*
+ * Multiply each RGB component of a colour by a scalar float
+ */
+const struct color color_scale(const struct color c1, const float f);
+
+/*
+ * Multiply the RGB components of each colour together and return the new
+ * colour obtained, also known as the Hadamard Product or Schur Product
+ */
+const struct color color_multiply(const struct color c1, const struct color c2);
+
 #endif //__color_h__

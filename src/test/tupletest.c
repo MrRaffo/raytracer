@@ -33,7 +33,7 @@ int TST_TupleEqual()
         assert(tuple_equal(t3, t4) == 0);
         assert(tuple_equal(t2, t5) == 0);
 
-        fprintf(stdout, "[Tuple Equality] All tests complete - pass!\n");
+        fprintf(stdout, "[Tuple Equal] All tests complete - pass!\n");
 
         return 1;
 }

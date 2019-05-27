@@ -21,8 +21,8 @@ struct projectile {
 
 int main()
 {
-        struct environment env = { tuple_vector(0.0f, -0.1f, 0.0f), tuple_vector(0.003f, 0.0f, 0.0f) };
-        struct projectile proj = { tuple_point(0.0f, 1.0f, 0.0f), tuple_vector(2.4f, 0.0f, 0.0f) };
+        struct environment env = { tuple_vector(0.0f, -0.1f, 0.0f), tuple_vector(-0.003f, 0.0f, 0.0f) };
+        struct projectile proj = { tuple_point(0.0f, 1.0f, 0.0f), tuple_vector(2.4f, 1.5f, 0.0f) };
 
         while (proj.position.y > 0.0f) {
                 proj.position = tuple_add(proj.position, proj.velocity);
