@@ -21,6 +21,12 @@ struct mem_block {
 void *mem_alloc(size_t size);
 
 /*
+ * Returns the size of the memory alloc request, note this is NOT necessarily
+ * the size of the memory buffer created by malloc
+ */
+size_t mem_get_size(void *ptr);
+
+/*
  * Deallocate a block of memory and stitch the list back up
  */
 void mem_free(void *ptr);
