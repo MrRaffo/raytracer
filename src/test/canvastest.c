@@ -46,11 +46,30 @@ void TST_CanvasRead()
         fprintf(stdout, "[Canvas Read] All tests complete - pass!\n");
 }
 
+void TST_CanvasExportToPPM()
+{
+        struct canvas c = canvas_new(200, 100);
+        struct color col = color_new(0.7843f, 0.0627f, 0.1804f);
+
+        for (int x = 0; x < c.w; x++) {
+                for (int y = 0; y < c.h; y++) {
+                        canvas_write_pixel(c, x, y, col);
+                }
+        }
+
+        canvas_export_ppm(c, "img/exporttest.ppm");
+
+        fprintf(stdout, "img/exporttest.ppm created\n");
+        
+        return;
+}
+
 int main()
 {
         TST_CanvasNew();
         TST_CanvasWrite();
         TST_CanvasRead();
+        TST_CanvasExportToPPM();
 
         mem_free_all();
 

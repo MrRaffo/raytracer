@@ -118,14 +118,9 @@ char *_create_ppm_header(const struct canvas c)
         char *header = (char *)mem_alloc(len);
         char *ptr = header;
 
-        strncpy(ptr, SIG, 3);
-        ptr += 3;
-        sprintf(ptr, "%d", c.w);
-        ptr += wc;
-        *ptr++ = ' ';
-        ptr += sprintf(ptr, "%d", c.h);
-        *ptr++ = '\n';
-        strncpy(ptr, END, 4);
+        ptr += sprintf(ptr, SIG);
+        ptr += sprintf(ptr, "%d %d\n", c.w, c.h);
+        ptr += sprintf(ptr, END);
 
         return header; 
 }
@@ -139,20 +134,55 @@ char *_create_ppm_header(const struct canvas c)
  */
 char *_create_ppm_data(struct canvas c)
 {
-       int num_pix = mem_get_size(c.pixels) / sizeof(struct color);
+        int num_pix = c.w * c.h;
 
-        return NULL;    // TODO - finish this
+        // reserve space assuming each R, G and B will be 3 chars long
+        // and for a space between them
+        char *data = (char *)mem_alloc(num_pix * 3 * 4);
+        char *ptr = data;
+
+        // ppm files like a line break every 70 chars (legacy stuff), I'll
+        // put one every 5 pixels (60 chars worst case scenario, 20 best)
+        #define LINE_BREAK 5
+        for (int i = 0; i < c.w * c.h; i++) {
+                struct color col = c.pixels[i];
+                char end = (i % LINE_BREAK == (LINE_BREAK-1)) ? '\n' : ' ';
+                ptr += sprintf(ptr, "%s%c", color_to_ppm_string(col), end);
+        }
+
+        return data;   
 }
 
 /*
  * Export the current canvas to a ppm file with the given name
  * Returns 1 on success, 0 otherwise
  */
-const int canvas_export_ppm(const struct canvas canvas, const char *filename)
+const int canvas_export_ppm(const struct canvas c, const char *filename)
 {
-        // TODO
+       
+        char *header = _create_ppm_header(c);
+        char *data = _create_ppm_data(c); 
+        
+        // might be wise to create a file.o module to handle all this
+        FILE *file = fopen(filename, "w");
+        if (file == NULL) {
+                log_err("Unable to open file"); // errno?
+                return 0;
+        }
 
-        return 0;
+        /*
+        fwrite(header, strlen(header), 1, file);
+        fwrite(data, strlen(data), 1, file);
+        */
+
+        fprintf(file, "%s%s", header, data);
+
+        fclose(file);
+
+        mem_free(header);
+        mem_free(data);
+
+        return 1;
 }
 
 

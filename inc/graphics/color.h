@@ -39,6 +39,12 @@ const int color_equal(const struct color c1, const struct color c2);
 void color_print(struct color c);
 
 /*
+ * Produce a string of the colour data, this will format the string to the format
+ * used by ppm files ie, (1.0f, 0.0f, 0.5f) becomes "255 0 128"
+ */
+char *color_to_ppm_string(struct color c);
+
+/*
  * Add the RGB components of two colors together and return the result
  */
 struct color color_add(const struct color c1, const struct color c2);

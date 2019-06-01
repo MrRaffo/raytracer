@@ -2,6 +2,7 @@
 
 #include <graphics/color.h>
 #include <geometry/gmaths.h>    // for float_equal
+#include <util/mem.h>
 
 /* Creation functions */
 
@@ -47,6 +48,31 @@ void color_print(struct color c)
         fprintf(stdout, "(%.2f, %.2f, %.2f)", c.r, c.g, c.b);
 }
 
+// tranform color to 0-255 int, restricting within that range
+const int _clamp_component(const float c)
+{
+        if (c < 0.0f) return 0;
+        if (c >= 1.0f) return 255;
+
+        return (int)(c * 255.0f + 0.5f);
+}
+
+/*
+ * Produce a string of the colour data, this will format the string to the format
+ * used by ppm files ie, (1.0f, 0.0f, 0.5f) becomes "255 0 128"
+ */
+char *color_to_ppm_string(struct color c)
+{
+        int r = _clamp_component(c.r);
+        int g = _clamp_component(c.g);
+        int b = _clamp_component(c.b);
+
+        // 12 = 3 for each component, 2 spaces between them and one for '\0'
+        char *cstr = (char *)mem_alloc(12);
+        sprintf(cstr, "%d %d %d", r, g, b);
+
+        return cstr;
+}
 
 /*
  * Add the RGB components of two colors together and return the result
