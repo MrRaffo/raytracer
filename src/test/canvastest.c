@@ -3,6 +3,7 @@
 #include <graphics/canvas.h>
 #include <graphics/color.h>
 #include <util/mem.h>
+#include <util/file.h>
 #include <assert.h>
 
 void TST_CanvasNew()
@@ -57,11 +58,29 @@ void TST_CanvasExportToPPM()
                 }
         }
 
-        canvas_export_ppm(c, "img/exporttest.ppm");
+        export_to_ppm(c, "img/exporttest.ppm");
 
         fprintf(stdout, "img/exporttest.ppm created\n");
         
         return;
+}
+
+void TST_CanvasExportToBMP()
+{
+        struct canvas c = canvas_new(200, 100);
+        struct color col = color_new(0.7843f, 0.0627f, 0.1804f);
+
+        for (int x = 0; x < c.w; x++) {
+                for (int y = 0; y < c.h; y++) {
+                        canvas_write_pixel(c, x, y, col);
+                }
+        }
+
+        export_to_ppm(c, "img/exporttest.bmp");
+
+        fprintf(stdout, "img/exporttest.bmp created\n");
+        
+        return;       
 }
 
 int main()
@@ -70,6 +89,7 @@ int main()
         TST_CanvasWrite();
         TST_CanvasRead();
         TST_CanvasExportToPPM();
+        TST_CanvasExportToBMP();
 
         mem_free_all();
 

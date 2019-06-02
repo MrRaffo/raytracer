@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 
 #include <graphics/color.h>
 #include <geometry/gmaths.h>    // for float_equal
@@ -49,7 +50,7 @@ void color_print(struct color c)
 }
 
 // tranform color to 0-255 int, restricting within that range
-const int _clamp_component(const float c)
+static const int _clamp_component(const float c)
 {
         if (c < 0.0f) return 0;
         if (c >= 1.0f) return 255;
@@ -72,6 +73,17 @@ char *color_to_ppm_string(struct color c)
         sprintf(cstr, "%d %d %d", r, g, b);
 
         return cstr;
+}
+
+// return 32-bit uint representing the colour in bitmap ARGB format
+uint32_t color_to_RGBA(struct color c)
+{
+        uint32_t val = 0x0;
+        val = 0xff << 24 | 
+                (_clamp_component(c.r) & 0xff) << 16 | 
+                (_clamp_component(c.g) & 0xff) << 8  |
+                _clamp_component(c.b) & 0xff;
+        return val;
 }
 
 /*

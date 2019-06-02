@@ -35,10 +35,4 @@ struct color canvas_read_pixel(struct canvas canvas, int x, int y);
  */
 const int canvas_write_pixel(struct canvas canvas, int x, int y, struct color col);
 
-/*
- * Export the current canvas to a ppm file with the given name
- * Returns 1 on success, 0 otherwise
- */
-const int canvas_export_ppm(const struct canvas canvas, const char *filename);
-
 #endif // __canvas_h__

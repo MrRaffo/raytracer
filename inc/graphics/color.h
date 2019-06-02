@@ -1,6 +1,8 @@
 #ifndef __color_h__
 #define __color_h__
 
+#include <stdint.h>
+
 /*
  * Representations of colors using tuples
  * r, g and b components represented as numbers between
@@ -37,6 +39,11 @@ const int color_equal(const struct color c1, const struct color c2);
  * Print a color to the output
  */
 void color_print(struct color c);
+
+/*
+ * return 32-bit uint representing the colour in bitmap ARGB format
+ */
+uint32_t color_to_RGBA(struct color c);
 
 /*
  * Produce a string of the colour data, this will format the string to the format
