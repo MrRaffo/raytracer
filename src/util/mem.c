@@ -21,6 +21,7 @@ void *_checked_malloc(size_t size)
         return ptr;
 }
 
+
 /*
  * Creates a new mem_block entry to mem_block list and allocates the
  * desired amount of memory
