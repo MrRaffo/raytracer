@@ -48,7 +48,7 @@ char *matrix_to_string(const struct matrix m)
         }
 
         *pos = '\0';    // make sure it's terminated
-        *(pos+strlength-1) = '\0';      // I mean it...
+        *(buf+strlength-1) = '\0';      // I mean it...
 
         return buf;
 }
