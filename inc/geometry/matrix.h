@@ -52,4 +52,7 @@ struct matrix matrix_multiply(const struct matrix m, const struct matrix n);
  * tuple, rejects any matrix with row != 4 */
 const struct tuple matrix_tuple_multiply(const struct matrix m, const struct tuple t);
 
+/* Return the transpose of the given matrix */
+struct matrix matrix_transpose(const struct matrix m);
+
 #endif // __matrix_h__

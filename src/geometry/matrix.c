@@ -161,21 +161,7 @@ struct matrix matrix_multiply(const struct matrix m, const struct matrix n)
         }
 
         struct matrix result = matrix_new(m.row, n.col);
-/*
-        float value = 0.0f;
-        for (int mr = 0; mr < m.row; mr++) {
-                for (int nc = 0; nc < n.col; nc++) {
-                        for (int i = 0; i < n.row; i++) {
-                                value += matrix_get(m, mr, i) * matrix_get(n, i, nc);
-                                printf("adding: %f * %f\t", matrix_get(m, mr, i), matrix_get(n, i, nc));
-                                printf("total: %f\n", value);
-                        }
-                        printf("\n\n");
-                        matrix_set(result, mr, nc, value);
-                        value = 0.0f;
-                }
-        }
-*/
+
         for (int r = 0; r < m.row; r++) {
                 for (int c = 0; c < n.col; c++) {
                         float value = 0.0f;
@@ -208,3 +194,23 @@ const struct tuple matrix_tuple_multiply(const struct matrix m, const struct tup
 
         return tuple_new(values[0], values[1], values[2], values[3]);
 }
+
+
+/* Return the transpose of the given matrix */
+struct matrix matrix_transpose(const struct matrix m)
+{
+        if (m.row != m.col) {
+                log_err("Cannot transpose non square matrix (%d, %d)\n", m.row, m.col);
+                return NULL_MATRIX;
+        }
+
+        struct matrix transpose = matrix_new(m.row, m.row);
+
+        for (int i = 0; i < m.row * m.col; i++) {
+                *(transpose.matrix + (i % m.row) * m.row + (i / m.row)) = *(m.matrix+i);
+        }
+
+        return transpose;
+}
+
+

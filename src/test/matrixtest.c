@@ -127,6 +127,32 @@ int TST_MatrixIdentity()
         return 1;
 }
 
+int TST_MatrixTranspose()
+{
+        struct matrix m = matrix_new(4, 4);
+        struct matrix n = matrix_new(4, 4);
+
+        float data[] = {0.0f, 9.0f, 3.0f, 0.0f,
+                        9.0f, 8.0f, 0.0f, 8.0f,
+                        1.0f, 8.0f, 5.0f, 3.0f,
+                        0.0f, 0.0f, 5.0f, 8.0f};
+
+        float datb[] = {0.0f, 9.0f, 1.0f, 0.0f,
+                        9.0f, 8.0f, 8.0f, 0.0f,
+                        3.0f, 0.0f, 5.0f, 5.0f,
+                        0.0f, 8.0f, 3.0f, 8.0f};
+
+        m.matrix = data;
+        n.matrix = datb;
+
+        assert(matrix_equal(matrix_transpose(m), n) == 1);
+        assert(matrix_equal(matrix_transpose(matrix_identity(4)), matrix_identity(4)) == 1);
+
+        fprintf(stdout, "[Matrix Transpose] Complete, all tests pass!\n");
+
+        return 1;
+}
+
 int main()
 {
         TST_MatrixNew();
@@ -136,6 +162,7 @@ int main()
         TST_MatrixMultiply();
         TST_MatrixTupleMultiply();
         TST_MatrixIdentity();
+        TST_MatrixTranspose();
 
         mem_free_all();
 
