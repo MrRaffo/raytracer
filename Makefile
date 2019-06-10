@@ -41,6 +41,7 @@ PROGRAMS := $(addprefix bin/, $(notdir $(PROG_SOURCES:.c=)))
 OUTPUT = $(addprefix bin/, $(notdir $(INPUT:.c=)))
 
 # rules
+$(shell mkdir -p bin)
 
 # create the obj folder if needed
 $(OBJECTS): | obj
