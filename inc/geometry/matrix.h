@@ -55,4 +55,14 @@ const struct tuple matrix_tuple_multiply(const struct matrix m, const struct tup
 /* Return the transpose of the given matrix */
 struct matrix matrix_transpose(const struct matrix m);
 
+/* returns the determinant, matrix must be 2x2, returns 0 on fail */
+float matrix_determinant(const struct matrix m);
+
+/* returns the minor of a 3x3 matrix at given point */
+float matrix_minor(struct matrix m, int row, int col);
+
+/* return the given matrix with the specified column and row removed
+ * returns the null matrix on failure */
+struct matrix submatrix(const struct matrix m, const int r, const int c);
+
 #endif // __matrix_h__

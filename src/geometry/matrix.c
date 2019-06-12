@@ -8,6 +8,12 @@
 
 const struct matrix NULL_MATRIX = {0, 0, NULL};
 
+/* returns 0 if row != col, 1 otherwise */
+static int _is_square(const struct matrix m)
+{
+        return (m.row == m.col) ? 1 : 0;       
+}
+
 /* Return a matrix, all elements initiated to 0.0f */
 struct matrix matrix_new(const int r, const int c)
 {
@@ -215,4 +221,49 @@ struct matrix matrix_transpose(const struct matrix m)
         return transpose;
 }
 
+/* returns the determinant, matrix must be 2x2 */
+float matrix_determinant(const struct matrix m)
+{
+        if (m.row != 2 || m.col != 2) {
+                log_err("Unable to calculate determinant, matrix is (%d, %d)\n", m.row, m.col);
+                return 0.0f;
+        }
 
+        return (m.matrix[0]*m.matrix[3]) - (m.matrix[1]*m.matrix[2]);
+}
+
+/* returns the minor of a 3x3 matrix at a given point */
+float matrix_minor(struct matrix m, int row, int col)
+{
+        if (m.row != 3 && m.col != 3) {
+                log_err("Unable to calculate minor, matrix (%d, %d)\n", m.row, m.col);
+                return 0.0f;
+        }
+
+        return matrix_determinant(submatrix(m, row, col));
+}
+
+/* return the given matrix with the specified column and row removed */
+struct matrix submatrix(const struct matrix m, const int r, const int c)
+{
+        if (!_is_square(m) && m.row <= 1) {
+                log_err("Unable to get submatrix, matrix is (%d, %d)\n", m.row, m.col);
+                return NULL_MATRIX;
+        }
+
+        int new_size = m.row - 1;
+
+        // buffer for new matrix data
+        float *data = (float *)mem_alloc(new_size*new_size*sizeof(float));
+        int i, j;
+        for (i = 0, j = 0; i < new_size * new_size; i++, j++) {
+                while (j / m.row == r || j % m.row == c) {
+                        j++;
+                }
+
+                data[i] = m.matrix[j];
+        }
+
+        struct matrix sub = {new_size, new_size, data};
+        return sub;
+}

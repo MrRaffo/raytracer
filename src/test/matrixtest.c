@@ -79,7 +79,6 @@ int TST_MatrixMultiply()
         matrix_set(c, 1, 0, 49.0f);
         matrix_set(c, 1, 1, 64.0f);
 
-        struct matrix d = matrix_multiply(m, n);
         assert(matrix_equal(matrix_multiply(m, n), c) == 1);
         assert(matrix_equal(matrix_multiply(m, c), n) == 0);
 
@@ -155,6 +154,76 @@ int TST_MatrixTranspose()
         return 1;
 }
 
+int TST_MatrixDeterminant()
+{
+        // fail test
+        assert(matrix_determinant(matrix_new(3, 3)) == 0.0f);
+        struct matrix m = matrix_new(2, 2);
+        assert(matrix_determinant(m) == 0.0f); // no error
+
+        float data[] = {1.0f, 5.0f, -3.0f, 2.0f};
+        m.matrix = data;
+        assert(float_equal(matrix_determinant(m), 17.0f) == 1);
+
+        fprintf(stdout, "[Matrix Determinant] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_Submatrix()
+{
+        struct matrix m3 = matrix_new(3, 3);
+        float m3data[] = {1.0f, 5.0f, 0.0f,
+                        -3.0f, 2.0f, 7.0f,
+                        0.0f, 6.0f, -3.0f};
+        struct matrix sm3 = matrix_new(2, 2);
+        float sm3data[] = {-3.0f, 2.0f,
+                         0.0f, 6.0f};
+
+        struct matrix m4 = matrix_new(4, 4);
+        float m4data[] = {-6.0f, 1.0f, 1.0f, 6.0f,
+                          -8.0f, 5.0f, 8.0f, 6.0f,
+                          -1.0f, 0.0f, 8.0f, 2.0f,
+                          -7.0f, 1.0f, -1.0f, 1.0f};
+        struct matrix sm4 = matrix_new(3, 3);
+        float sm4data[] = {-6.0f, 1.0f, 6.0f,
+                         -8.0f, 8.0f, 6.0f,
+                         -7.0f, -1.0f, 1.0f};
+
+        m3.matrix = m3data;
+        sm3.matrix = sm3data;
+        m4.matrix = m4data;
+        sm4.matrix = sm4data;
+
+        assert(matrix_equal(submatrix(m3, 0, 2), sm3) == 1);
+        assert(matrix_equal(submatrix(m4, 2, 1), sm4) == 1);
+
+        fprintf(stdout, "[Submatrix] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixMinor()
+{
+        struct matrix m = matrix_new(3, 3);
+        float mdata[] = {1.0f, 5.0f, 0.0f,
+                          -3.0f, 2.0f, 7.0f,
+                          0.0f, 6.0f, -3.0f};
+        m.matrix = mdata;
+
+        struct matrix n = matrix_new(3, 3);
+        float ndata[] = {-6.0f, 1.0f, 6.0f,
+                         -8.0f, 8.0f, 6.0f,
+                         -7.0f, -1.0f, 1.0f};
+        n.matrix = ndata;
+
+        assert(float_equal(matrix_minor(m, 1, 2), 6.0f) == 1);
+        assert(float_equal(matrix_minor(m, 0, 0), -48.0f) == 1);
+        assert(float_equal(matrix_minor(n, 2, 1), 12.0f) == 1);
+        assert(float_equal(matrix_minor(n, 2, 2), -40.0f) == 1);
+
+        fprintf(stdout, "[Matrix Minor] Complete, all tests pass!\n");
+        return 1;
+}
+
 int main()
 {
         TST_MatrixNew();
@@ -165,6 +234,9 @@ int main()
         TST_MatrixTupleMultiply();
         TST_MatrixIdentity();
         TST_MatrixTranspose();
+        TST_MatrixDeterminant();
+        TST_Submatrix();
+        TST_MatrixMinor();
 
         mem_free_all();
 
