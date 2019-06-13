@@ -65,4 +65,7 @@ float matrix_minor(struct matrix m, int row, int col);
  * returns the null matrix on failure */
 struct matrix submatrix(const struct matrix m, const int r, const int c);
 
+/* return the cofactor of a given 3x3 matrix at the given element, 0.0f on fail */
+float matrix_cofactor(const struct matrix m, const int r, const int c);
+
 #endif // __matrix_h__

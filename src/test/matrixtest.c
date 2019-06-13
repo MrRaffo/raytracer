@@ -224,6 +224,22 @@ int TST_MatrixMinor()
         return 1;
 }
 
+int TST_MatrixCofactor()
+{
+        struct matrix m = matrix_new(3, 3);
+        float mdata[] = {3.0f, 5.0f, 0.0f,
+                         2.0f, -1.0f, -7.0f,
+                         6.0f, -1.0f, 5.0f};
+        m.matrix = mdata;
+
+        assert(float_equal(matrix_minor(m, 0, 0), -12.0f) == 1);
+        assert(float_equal(matrix_cofactor(m, 0, 0), -12.0f) == 1);
+        assert(float_equal(matrix_cofactor(m, 1, 0), -25.0f) == 1);
+
+        fprintf(stdout, "[Matrix Cofactor] Complete, all tests pass\n");
+        return 1;
+}
+
 int main()
 {
         TST_MatrixNew();
@@ -237,6 +253,7 @@ int main()
         TST_MatrixDeterminant();
         TST_Submatrix();
         TST_MatrixMinor();
+        TST_MatrixCofactor();
 
         mem_free_all();
 

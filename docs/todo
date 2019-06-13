@@ -1,9 +1,3 @@
 Consider using atexit to make sure mem_free is always called when program ends
 Add ability to profile using 'gprof'
 
-Reconsider return 'struct matrix' from matrix operations as can lead to some
-unusual/unexpected behaviour, such as attempting to multiply two incompatible
-matrices. Should
-struct matrix matrix_multiply(struct matrix m, struct matrix n);
-be replaced with a function that takes storage for the result?:
-int matrix_matrix_multiply(struct matrix op1, struct matrix op2, struct matrix *result);

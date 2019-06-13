@@ -14,6 +14,16 @@ static int _is_square(const struct matrix m)
         return (m.row == m.col) ? 1 : 0;       
 }
 
+/* returns 0 if attempting to access bad element coords */
+static int _valid_element(const struct matrix m, const int r, const int c)
+{
+        if (r < 0 || r >= m.row || c < 0 || c >= m.col) {
+                return 0;
+        }
+
+        return 1;
+}
+
 /* Return a matrix, all elements initiated to 0.0f */
 struct matrix matrix_new(const int r, const int c)
 {
@@ -235,19 +245,23 @@ float matrix_determinant(const struct matrix m)
 /* returns the minor of a 3x3 matrix at a given point */
 float matrix_minor(struct matrix m, int row, int col)
 {
-        if (m.row != 3 && m.col != 3) {
+        if (!_is_square(m) || !_valid_element(m, row, col)) {
                 log_err("Unable to calculate minor, matrix (%d, %d)\n", m.row, m.col);
                 return 0.0f;
         }
 
-        return matrix_determinant(submatrix(m, row, col));
+        while(m.row > 2) {
+                m = submatrix(m, row, col);
+        }
+
+        return matrix_determinant(m);
 }
 
 /* return the given matrix with the specified column and row removed */
 struct matrix submatrix(const struct matrix m, const int r, const int c)
 {
-        if (!_is_square(m) && m.row <= 1) {
-                log_err("Unable to get submatrix, matrix is (%d, %d)\n", m.row, m.col);
+        if ((!_is_square(m) && m.row <= 1) || !_valid_element(m, r, c)) {
+                log_err("Invalid request: m=%dx%d, (%d, %d)\n", m.row, m.col, r, c);
                 return NULL_MATRIX;
         }
 
@@ -266,4 +280,16 @@ struct matrix submatrix(const struct matrix m, const int r, const int c)
 
         struct matrix sub = {new_size, new_size, data};
         return sub;
+}
+
+/* return the cofactor of a given 3x3 matrix at the given element, 0.0f on fail */
+float matrix_cofactor(const struct matrix m, const int r, const int c)
+{
+        if(!_is_square(m) || !_valid_element(m, r, c)) {
+                log_err("Invalid request: m=%dx%d, (%d, %d)\n", m.row, m.col, r, c);
+                return 0.0f;
+        }
+
+        float factor = ((r + c) & 1) ? -1.0f : 1.0f;
+        return factor * matrix_minor(m, r, c);
 }
