@@ -154,18 +154,18 @@ int TST_MatrixTranspose()
         return 1;
 }
 
-int TST_MatrixDeterminant()
+int TST_Matrix2Determinant()
 {
         // fail test
-        assert(matrix_determinant(matrix_new(3, 3)) == 0.0f);
+        assert(matrix_2determinant(matrix_new(3, 3)) == 0.0f);
         struct matrix m = matrix_new(2, 2);
-        assert(matrix_determinant(m) == 0.0f); // no error
+        assert(matrix_2determinant(m) == 0.0f); // no error
 
         float data[] = {1.0f, 5.0f, -3.0f, 2.0f};
         m.matrix = data;
-        assert(float_equal(matrix_determinant(m), 17.0f) == 1);
+        assert(float_equal(matrix_2determinant(m), 17.0f) == 1);
 
-        fprintf(stdout, "[Matrix Determinant] Complete, all tests pass!\n");
+        fprintf(stdout, "[Matrix 2 Determinant] Complete, all tests pass!\n");
         return 1;
 }
 
@@ -240,6 +240,37 @@ int TST_MatrixCofactor()
         return 1;
 }
 
+int TST_MatrixDeterminant()
+{
+        struct matrix m3 = matrix_new(3, 3);
+        float m3data[] = {1.0f, 2.0f, 6.0f,
+                          -5.0f, 8.0f, -4.0f,
+                          2.0f, 6.0f, 4.0f};
+        m3.matrix = m3data;
+
+
+        struct matrix m4 = matrix_new(4, 4);
+        float m4data[] = {-2.0f, -8.0f, 3.0f, 5.0f,
+                          -3.0f, 1.0f, 7.0f, 3.0f,
+                          1.0f, 2.0f, -9.0f, 6.0f,
+                          -6.0f, 7.0f, 7.0f, -9.0f};
+        m4.matrix = m4data;
+
+        assert(float_equal(matrix_cofactor(m3, 0, 0), 56.0f) == 1);
+        assert(float_equal(matrix_cofactor(m3, 0, 1), 12.0f) == 1);
+        assert(float_equal(matrix_cofactor(m3, 0, 2), -46.0f) == 1);
+        assert(float_equal(matrix_determinant(m3), -196.0f) == 1);
+
+        assert(float_equal(matrix_cofactor(m4, 0, 0), 690.0f) == 1);
+        assert(float_equal(matrix_cofactor(m4, 0, 1), 447.0f) == 1);
+        assert(float_equal(matrix_cofactor(m4, 0, 2), 210.0f) == 1);
+        assert(float_equal(matrix_cofactor(m4, 0, 3), 51.0f) == 1);
+        assert(float_equal(matrix_determinant(m4), -4071.0f) == 1);
+
+        fprintf(stdout, "[Matrix Determinant] Complete, all tests pass!\n");
+        return 1;
+}
+
 int main()
 {
         TST_MatrixNew();
@@ -250,10 +281,11 @@ int main()
         TST_MatrixTupleMultiply();
         TST_MatrixIdentity();
         TST_MatrixTranspose();
-        TST_MatrixDeterminant();
+        TST_Matrix2Determinant();
         TST_Submatrix();
         TST_MatrixMinor();
         TST_MatrixCofactor();
+        TST_MatrixDeterminant();
 
         mem_free_all();
 

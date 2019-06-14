@@ -232,7 +232,7 @@ struct matrix matrix_transpose(const struct matrix m)
 }
 
 /* returns the determinant, matrix must be 2x2 */
-float matrix_determinant(const struct matrix m)
+float matrix_2determinant(const struct matrix m)
 {
         if (m.row != 2 || m.col != 2) {
                 log_err("Unable to calculate determinant, matrix is (%d, %d)\n", m.row, m.col);
@@ -240,6 +240,20 @@ float matrix_determinant(const struct matrix m)
         }
 
         return (m.matrix[0]*m.matrix[3]) - (m.matrix[1]*m.matrix[2]);
+}
+
+/* returns the determinant, matrix must be 3x3, returns 0 on fail */
+float matrix_3determinant(const struct matrix m)
+{
+        if (m.row != 3 || m.col != 3) {
+                log_err("Unable to calculate determinant, matrix is (%d, %d)\n", m.row, m.col);
+                return 0.0f;
+        }
+
+        float *p = m.matrix;  // for brevity below
+
+        return p[0]*p[4]*p[8] + p[1]*p[5]*p[6] + p[2]*p[3]*p[7] -
+               p[2]*p[4]*p[6] - p[1]*p[3]*p[8] - p[0]*p[5]*p[7];
 }
 
 /* returns the minor of a 3x3 matrix at a given point */
@@ -250,18 +264,19 @@ float matrix_minor(struct matrix m, int row, int col)
                 return 0.0f;
         }
 
-        while(m.row > 2) {
-                m = submatrix(m, row, col);
+        if (m.row == 4) {
+                return matrix_3determinant(submatrix(m, row, col));
         }
 
-        return matrix_determinant(m);
+        // assume 3x3
+        return matrix_2determinant(submatrix(m, row, col));
 }
 
 /* return the given matrix with the specified column and row removed */
 struct matrix submatrix(const struct matrix m, const int r, const int c)
 {
         if ((!_is_square(m) && m.row <= 1) || !_valid_element(m, r, c)) {
-                log_err("Invalid request: m=%dx%d, (%d, %d)\n", m.row, m.col, r, c);
+                log_err("Invalid request: m = %dx%d, (%d, %d)\n", m.row, m.col, r, c);
                 return NULL_MATRIX;
         }
 
@@ -286,10 +301,29 @@ struct matrix submatrix(const struct matrix m, const int r, const int c)
 float matrix_cofactor(const struct matrix m, const int r, const int c)
 {
         if(!_is_square(m) || !_valid_element(m, r, c)) {
-                log_err("Invalid request: m=%dx%d, (%d, %d)\n", m.row, m.col, r, c);
+                log_err("Invalid request: m = %dx%d, (%d, %d)\n", m.row, m.col, r, c);
                 return 0.0f;
         }
 
         float factor = ((r + c) & 1) ? -1.0f : 1.0f;
         return factor * matrix_minor(m, r, c);
+}
+
+/* return the determinant of a matrix, 0.0f if unable for some reason */
+float matrix_determinant(const struct matrix m)
+{
+        if (!_is_square(m)) {
+                log_err("Invalid request: m = %d x %d\n", m.row, m.col);
+                return 0.0f;
+        }
+
+        if (m.row == 2) return matrix_2determinant(m);
+
+        float determinant = 0.0f;
+        for (int i = 0; i < m.row; i++) {
+                // TODO - does reducing submatrix work like i think it does?
+                determinant += m.matrix[i] * matrix_cofactor(m, 0, i);
+        }
+        
+        return determinant;
 }

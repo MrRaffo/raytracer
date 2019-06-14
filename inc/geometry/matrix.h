@@ -56,7 +56,10 @@ const struct tuple matrix_tuple_multiply(const struct matrix m, const struct tup
 struct matrix matrix_transpose(const struct matrix m);
 
 /* returns the determinant, matrix must be 2x2, returns 0 on fail */
-float matrix_determinant(const struct matrix m);
+float matrix_2determinant(const struct matrix m);
+
+/* returns the determinant, matrix must be 3x3, returns 0 on fail */
+float matrix_3determinant(const struct matrix m);
 
 /* returns the minor of a 3x3 matrix at given point */
 float matrix_minor(struct matrix m, int row, int col);
@@ -67,5 +70,8 @@ struct matrix submatrix(const struct matrix m, const int r, const int c);
 
 /* return the cofactor of a given 3x3 matrix at the given element, 0.0f on fail */
 float matrix_cofactor(const struct matrix m, const int r, const int c);
+
+/* return the determinant of a matrix, 0.0f if unable for some reason */
+float matrix_determinant(const struct matrix m);
 
 #endif // __matrix_h__
