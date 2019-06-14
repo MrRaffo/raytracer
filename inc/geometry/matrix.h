@@ -74,4 +74,12 @@ float matrix_cofactor(const struct matrix m, const int r, const int c);
 /* return the determinant of a matrix, 0.0f if unable for some reason */
 float matrix_determinant(const struct matrix m);
 
+/* test if a matrix is invertible, returns 0 if not, 1 if it is *
+ * (a matrix is invertible if its determinant is non-zero
+ */
+const int matrix_invertible(const struct matrix m);
+
+/* return the inverse of a matrix if it exists, returns null matrix on fail */
+struct matrix matrix_inverse(const struct matrix m);
+
 #endif // __matrix_h__

@@ -321,9 +321,37 @@ float matrix_determinant(const struct matrix m)
 
         float determinant = 0.0f;
         for (int i = 0; i < m.row; i++) {
-                // TODO - does reducing submatrix work like i think it does?
                 determinant += m.matrix[i] * matrix_cofactor(m, 0, i);
         }
         
         return determinant;
+}
+
+/* test if a matrix is invertible, returns 0 if not, 1 if it is *
+ * (a matrix is invertible if its determinant is non-zero
+ */
+const int matrix_invertible(const struct matrix m)
+{
+        return (matrix_determinant(m) == 0) ? 0 : 1;
+}
+
+
+/* return the inverse of a matrix if it exists, returns null matrix on fail */
+struct matrix matrix_inverse(const struct matrix m)
+{
+        if (!matrix_invertible(m)) {
+                log_err("Matrix not invertible\n");
+                return NULL_MATRIX;
+        }
+
+        struct matrix inverse = matrix_new(m.row, m.col);
+        float determinant = matrix_determinant(m);
+        for (int r = 0; r < inverse.row; r++) {
+                for (int c = 0; c < inverse.col; c++) {
+                        float cofactor = matrix_cofactor(m, r, c);
+                        matrix_set(inverse, c, r, cofactor / determinant);
+                }
+        }
+
+        return inverse;
 }

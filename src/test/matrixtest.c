@@ -271,6 +271,84 @@ int TST_MatrixDeterminant()
         return 1;
 }
 
+int TST_MatrixInvertible()
+{
+        struct matrix invertible = matrix_new(4, 4);
+        float minv[] = {6.0f, 4.0f, 4.0f, 4.0f,
+                        5.0f, 5.0f, 7.0f, 6.0f,
+                        4.0f, -9.0f, 3.0f, -7.0f,
+                        9.0f, 1.0f, 7.0f, -6.0f};
+        invertible.matrix = minv;
+
+        struct matrix noninvertible = matrix_new(4, 4);
+        float mnon[] = {-4.0f, 2.0f, -2.0f, -3.0f,
+                        9.0f, 6.0f, 2.0f, 6.0f,
+                        0.0f, -5.0f, 1.0f, -5.0f,
+                        0.0f, 0.0f, 0.0f, 0.0f};
+        noninvertible.matrix = mnon;
+
+        assert(matrix_invertible(invertible) == 1);
+        assert(matrix_invertible(noninvertible) == 0);
+
+        fprintf(stdout, "[Matrix Invertible] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixInverse()
+{
+        struct matrix m1 = matrix_new(4, 4);
+        struct matrix m2 = matrix_new(4, 4);
+        struct matrix m3 = matrix_new(4, 4);
+
+        float m1data[] = {-5.0f, 2.0f, 6.0f, -8.0f,
+                          1.0f, -5.0f, 1.0f, 8.0f,
+                          7.0f, 7.0f, -6.0f, -7.0f,
+                          1.0f, -3.0f, 7.0f, 4.0f};
+
+        float m2data[] = {8.0f, -5.0f, 9.0f, 2.0f,
+                          7.0f, 5.0f, 6.0f, 1.0f,
+                          -6.0f, 0.0f, 9.0f, 6.0f,
+                          -3.0f, 0.0f, -9.0f, -4.0f};
+
+        float m3data[] = {9.0f, 3.0f, 0.0f, 9.0f,
+                          -5.0f, -2.0f, -6.0f, -3.0f,
+                          -4.0f, 9.0f, 6.0f, 4.0f,
+                          -7.0f, 6.0f, 6.0f, 2.0f};
+
+        struct matrix im1 = matrix_new(4, 4);
+        struct matrix im2 = matrix_new(4, 4);
+        struct matrix im3 = matrix_new(4, 4);
+
+        float im1data[] = {0.21805f, 0.45113f, 0.24060f, -0.04511f,
+                          -0.80827f, -1.45677f, -0.44361f, 0.52068f,
+                          -0.07895f, -0.22368f, -0.05263f, 0.19737f,
+                          -0.52256f, -0.81391f, -0.30075f, 0.30639f};
+
+        float im2data[] = {-0.15385f, -0.15385f, -0.28205f, -0.53846f,
+                           -0.07692f, 0.12308f, 0.02564f, 0.03077f,
+                           0.35897f, 0.35897f, 0.43590f, 0.92308f,
+                           -0.69231f, -0.69231f, -0.76923f, -1.92308f};
+
+        float im3data[] = {-0.04074f, -0.07778f, 0.14444f, -0.22222f,
+                           -0.07778f, 0.03333f, 0.36667f, -0.33333f,
+                           -0.02901f, -0.14630f, -0.10926f, 0.12963f,
+                           0.17778f, 0.06667f, -0.26667f, 0.33333f};
+
+        m1.matrix = m1data;
+        m2.matrix = m2data;
+        m3.matrix = m3data;
+        im1.matrix = im1data;
+        im2.matrix = im2data;
+        im3.matrix = im3data;
+
+        assert(matrix_equal(matrix_inverse(m1), im1) == 1);
+        assert(matrix_equal(matrix_inverse(m2), im2) == 1);
+        assert(matrix_equal(matrix_inverse(m3), im3) == 1);
+
+        fprintf(stdout, "[Matrix Inverse] Complete, all tests pass!\n");
+        return 1;
+}
+
 int main()
 {
         TST_MatrixNew();
@@ -286,6 +364,8 @@ int main()
         TST_MatrixMinor();
         TST_MatrixCofactor();
         TST_MatrixDeterminant();
+        TST_MatrixInvertible();
+        TST_MatrixInverse();
 
         mem_free_all();
 
