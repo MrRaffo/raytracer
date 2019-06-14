@@ -96,7 +96,7 @@ int TST_MatrixTupleMultiply()
         struct tuple t = tuple_new(1.0f, 2.0f, 3.0f, 1.0f);
         
         struct tuple expect = tuple_new(18.0f, 24.0f, 33.0f, 1.0f);
-        struct tuple result = matrix_tuple_multiply(m, t);
+        struct tuple result = matrix_transform(m, t);
         assert(tuple_equal(result, expect) == 1);
 
         fprintf(stdout, "[Matrix * Tuple] Complete, all tests pass!\n");
@@ -349,6 +349,25 @@ int TST_MatrixInverse()
         return 1;
 }
 
+int TST_MatrixTranslate()
+{
+        struct matrix transform = matrix_identity(4);
+        struct tuple point = tuple_point(-3.0f, 4.0f, 5.0f);
+        matrix_translate(transform, 5.0f, -3.0f, 2.0f);
+        struct tuple tpoint = tuple_new(2.0f, 1.0f, 7.0f, 1.0f);
+        
+        assert(tuple_equal(matrix_transform(transform, point), tpoint) == 1);
+        tpoint = tuple_new(-8.0f, 7.0f, 3.0f, 1.0f);
+        assert(tuple_equal(matrix_transform(matrix_inverse(transform), point), tpoint));
+        
+        struct tuple vec =  tuple_vector(1.0f, 2.0f, 3.0f);
+        assert(tuple_equal(matrix_transform(transform, vec), vec));
+
+        fprintf(stdout, "[Matrix Translate] Complete, all tests pass!\n");
+        return 1;
+}
+
+
 int main()
 {
         TST_MatrixNew();
@@ -366,6 +385,7 @@ int main()
         TST_MatrixDeterminant();
         TST_MatrixInvertible();
         TST_MatrixInverse();
+        TST_MatrixTranslate();
 
         mem_free_all();
 

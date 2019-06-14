@@ -1,3 +1,4 @@
 Consider using atexit to make sure mem_free is always called when program ends
 Add ability to profile using 'gprof'
 
+Make sure all matrix functions return a new matrix rather than modified passed matrix

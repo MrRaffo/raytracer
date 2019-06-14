@@ -50,7 +50,7 @@ struct matrix matrix_multiply(const struct matrix m, const struct matrix n);
 
 /* Return the 4 element tuple resulting in multiplying the given matrix and
  * tuple, rejects any matrix with row != 4 */
-const struct tuple matrix_tuple_multiply(const struct matrix m, const struct tuple t);
+const struct tuple matrix_transform(const struct matrix m, const struct tuple t);
 
 /* Return the transpose of the given matrix */
 struct matrix matrix_transpose(const struct matrix m);
@@ -81,5 +81,8 @@ const int matrix_invertible(const struct matrix m);
 
 /* return the inverse of a matrix if it exists, returns null matrix on fail */
 struct matrix matrix_inverse(const struct matrix m);
+
+/* return the matrix after translating by x, y, z */
+struct matrix matrix_translate(const struct matrix m, const float x, const float y, const float z);
 
 #endif // __matrix_h__

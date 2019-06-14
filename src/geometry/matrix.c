@@ -193,7 +193,7 @@ struct matrix matrix_multiply(const struct matrix m, const struct matrix n)
 
 /* Return the 4 element tuple resulting in multiplying the given matrix and
  * tuple, rejects any matrix with row != 4 */
-const struct tuple matrix_tuple_multiply(const struct matrix m, const struct tuple t)
+const struct tuple matrix_transform(const struct matrix m, const struct tuple t)
 {
         if (m.row != 4) {
                 log_err("Invalid matrix passed! (%d x %d)\n", m.row, m.col);
@@ -354,4 +354,18 @@ struct matrix matrix_inverse(const struct matrix m)
         }
 
         return inverse;
+}
+
+/* return the matrix after translating by x, y, z */
+struct matrix matrix_translate(const struct matrix m, const float x, const float y, const float z)
+{
+        if (m.row != 4 && m.col != 4) {
+                log_err("Invalid matrix: %d x %d\n", m.row, m.col);
+                return NULL_MATRIX;
+        }
+
+        m.matrix[3] = x;
+        m.matrix[7] = y;
+        m.matrix[11] = z;
+        return m;
 }
