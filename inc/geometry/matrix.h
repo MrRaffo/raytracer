@@ -35,6 +35,9 @@ char *matrix_to_string_raw(const struct matrix m);
 /* return a copy of the given matrix */
 struct matrix matrix_copy(const struct matrix m);
 
+/* return a copy of the given matrix */
+struct matrix matrix_copy(const struct matrix m);
+
 /* Set the value of a row, col position, 0 if unable, 1 on success */
 int matrix_set(struct matrix m, int r, int c, float value);
 

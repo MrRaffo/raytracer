@@ -457,4 +457,3 @@ struct matrix matrix_shear(const float xy, const float xz, const float yx, const
         return shear;
 }
 
-
