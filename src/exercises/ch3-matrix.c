@@ -56,7 +56,7 @@ void tuple_multiply()
         //        tuple_to_string(point),
         //        matrix_to_string(m),
         //        tuple_to_string(matrix_tuple_multiply(m, point)));
-        tuple_print(matrix_tuple_multiply(m, point));
+        tuple_print(matrix_transform(m, point));
 }
 
 int main()
