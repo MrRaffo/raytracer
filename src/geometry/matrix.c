@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 #include <geometry/matrix.h>
 #include <geometry/tuple.h>
@@ -124,6 +125,16 @@ static int _check_valid_element(const struct matrix m, int r, int c)
         }
 
         return 1;
+}
+
+struct matrix matrix_copy(const struct matrix m)
+{
+        struct matrix copy = matrix_new(m.row, m.col);
+        for (int i = 0; i < m.row * m.col; i++) {
+                copy.matrix[i] = m.matrix[i];
+        }
+
+        return copy;
 }
 
 /* Set the value of a row, col position, 0 if unable, 1 on success */
@@ -356,16 +367,56 @@ struct matrix matrix_inverse(const struct matrix m)
         return inverse;
 }
 
-/* return the matrix after translating by x, y, z */
-struct matrix matrix_translate(const struct matrix m, const float x, const float y, const float z)
+/* return a matrix that translates a point by x, y, z */
+struct matrix matrix_translate(const float x, const float y, const float z)
 {
-        if (m.row != 4 && m.col != 4) {
-                log_err("Invalid matrix: %d x %d\n", m.row, m.col);
-                return NULL_MATRIX;
-        }
+        struct matrix m = matrix_identity(4); 
 
         m.matrix[3] = x;
         m.matrix[7] = y;
         m.matrix[11] = z;
         return m;
+}
+
+/* return a matrix to scale a tuple */
+struct matrix matrix_scale(const float x, const float y, const float z)
+{
+        struct matrix scale = matrix_identity(4);
+        scale.matrix[0] = x;
+        scale.matrix[5] = y;
+        scale.matrix[10] = z;
+        return scale;
+}
+
+/* return a matrix that will rotate around the x-axis, radians */
+struct matrix matrix_rotate_x(const float radians)
+{
+        struct matrix rot = matrix_identity(4);
+        rot.matrix[5] = cos(radians);
+        rot.matrix[6] = sin(radians) * -1.0f;
+        rot.matrix[9] = sin(radians);
+        rot.matrix[10] = cos(radians);
+        return rot;
+}
+
+/* return a matrix that will rotate around the x-axis, radians */
+struct matrix matrix_rotate_y(const float radians)
+{
+        struct matrix rot = matrix_identity(4);
+        rot.matrix[0] = cos(radians);
+        rot.matrix[2] = sin(radians);
+        rot.matrix[8] = sin(radians) * -1.0f;
+        rot.matrix[10] = cos(radians);
+        return rot;
+}
+
+/* return a matrix that will rotate around the x-axis, radians */
+struct matrix matrix_rotate_z(const float radians)
+{
+        struct matrix rot = matrix_identity(4);
+        rot.matrix[0] = cos(radians);
+        rot.matrix[1] = sin(radians) * -1.0f;
+        rot.matrix[4] = sin(radians);
+        rot.matrix[5] = cos(radians);
+        return rot;
 }

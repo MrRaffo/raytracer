@@ -35,6 +35,9 @@ char *matrix_to_string_raw(const struct matrix m);
  * place, a new one is not necessary created each time
  */
 
+/* return a copy of the given matrix */
+struct matrix matrix_copy(const struct matrix m);
+
 /* Set the value of a row, col position, 0 if unable, 1 on success */
 int matrix_set(struct matrix m, int r, int c, float value);
 
@@ -82,7 +85,22 @@ const int matrix_invertible(const struct matrix m);
 /* return the inverse of a matrix if it exists, returns null matrix on fail */
 struct matrix matrix_inverse(const struct matrix m);
 
-/* return the matrix after translating by x, y, z */
-struct matrix matrix_translate(const struct matrix m, const float x, const float y, const float z);
+/* return a matrix that will translate by x, y, z */
+struct matrix matrix_translate(const float x, const float y, const float z);
+
+/* return a matrix to scale a tuple */
+struct matrix matrix_scale(const float x, const float y, const float z);
+
+/* return a matrix that will rotate around the x-axis, radians */
+struct matrix matrix_rotate_x(const float radians);
+
+/* return a matrix that will rotate around the y-axis, radians */
+struct matrix matrix_rotate_y(const float radians);
+
+/* return a matrix that will rotate around the z-axis, radians */
+struct matrix matrix_rotate_z(const float radians);
+
+
+
 
 #endif // __matrix_h__
