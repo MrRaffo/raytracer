@@ -5,7 +5,7 @@
 #define TUPLE_POINT 1
 #define TUPLE_NON_TYPE -1
 
-struct tuple{
+struct tuple {
         float x;
         float y;
         float z;
