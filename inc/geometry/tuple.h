@@ -26,6 +26,9 @@ const struct tuple tuple_vector(const float x, const float y, const float z);
 // returns a zero tuple ({0, 0, 0, 0})
 const struct tuple tuple_zero(void);
 
+// returns the origin point ({0, 0, 0, 1})
+const struct tuple tuple_origin(void);
+
 // check if two tuples are equal to each other, return 1 if so, 0 if not
 const int tuple_equal(const struct tuple t1, const struct tuple t2);
 

@@ -31,6 +31,12 @@ const struct tuple tuple_zero(void)
         return tuple_new(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
+// returns the origin point ({0, 0, 0, 1})
+const struct tuple tuple_origin(void)
+{
+        return tuple_new(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
 // check if two tuples are equal to each other, return 1 if so, 0 if not
 const int tuple_equal(const struct tuple t1, const struct tuple t2)
 {
