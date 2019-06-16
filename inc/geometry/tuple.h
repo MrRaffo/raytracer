@@ -38,6 +38,9 @@ const int tuple_type(const struct tuple t);
 // print the tuple to the standard output
 void tuple_print(const struct tuple t);
 
+/* return a string version of the tuple */
+/* TODO - doesn't work, seg faults */
+char *tuple_to_string(const struct tuple t);
  
 /* TUPLE OPERATIONS */
 

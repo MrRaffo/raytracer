@@ -65,6 +65,26 @@ void tuple_print(const struct tuple t)
         log_msg("(%.2f, %.2f, %.2f, %.2f)",    
                 t.x, t.y, t.z, t.w);
 }
+
+
+/* return a string version of the tuple */
+char *tuple_to_string(const struct tuple t)
+{
+        // max length of %g is 11, 2 = ", " or ")\n", + 1 = '\0'
+        int len = 1 + 4 * (11 + 2) + 1;
+        char *buf = (char *)mem_alloc(len);
+        char *pos = buf;
+
+        pos += sprintf(pos, "%s%g%s", "(", t.x, ", "); 
+        pos += sprintf(pos, "%g%s", t.y, ", ");
+        pos += sprintf(pos, "%g%s", t.z, ", ");
+        pos += sprintf(pos, "%g%s", t.w, ")\n");
+        *pos = '\0';
+        *(buf + len - 1) = '\0';
+
+        return buf;
+}
+
 // get the magnitude, or length, of a vector
 const float tuple_magnitude(const struct tuple t);
 

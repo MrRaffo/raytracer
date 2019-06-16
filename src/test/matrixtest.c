@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+
 #include <geometry/matrix.h>
 #include <geometry/tuple.h>
 #include <geometry/gmaths.h>
@@ -53,6 +55,23 @@ int TST_MatrixSetGet()
         return 1;
 }
 
+int TST_MatrixCopy()
+{
+        struct matrix m = matrix_new(3, 3);
+        float data[] = {3.0f, 30.0f, 1.0f,
+                        1.0f, 6.0f, 10.f,
+                        0.0f, 0.5f, 4.0f};
+        m.matrix = data;
+
+        struct matrix copy = matrix_copy(m);
+
+        assert(matrix_equal(m, copy) == 1);
+
+        fprintf(stdout, "[Matrix Copy] Complete, all tests pass!\n");
+
+        return 1;
+}
+
 int TST_MatrixMultiply()
 {
         struct matrix m = matrix_new(2, 3);
@@ -96,7 +115,7 @@ int TST_MatrixTupleMultiply()
         struct tuple t = tuple_new(1.0f, 2.0f, 3.0f, 1.0f);
         
         struct tuple expect = tuple_new(18.0f, 24.0f, 33.0f, 1.0f);
-        struct tuple result = matrix_tuple_multiply(m, t);
+        struct tuple result = matrix_transform(m, t);
         assert(tuple_equal(result, expect) == 1);
 
         fprintf(stdout, "[Matrix * Tuple] Complete, all tests pass!\n");
@@ -349,12 +368,168 @@ int TST_MatrixInverse()
         return 1;
 }
 
+int TST_MatrixTranslate()
+{
+        struct tuple point = tuple_point(-3.0f, 4.0f, 5.0f);
+        struct matrix transform = matrix_translate(5.0f, -3.0f, 2.0f);
+        struct tuple tpoint = tuple_new(2.0f, 1.0f, 7.0f, 1.0f);
+        
+        assert(tuple_equal(matrix_transform(transform, point), tpoint) == 1);
+        tpoint = tuple_new(-8.0f, 7.0f, 3.0f, 1.0f);
+        assert(tuple_equal(matrix_transform(matrix_inverse(transform), point), tpoint));
+        
+        struct tuple vec =  tuple_vector(1.0f, 2.0f, 3.0f);
+        assert(tuple_equal(matrix_transform(transform, vec), vec));
+
+        fprintf(stdout, "[Matrix Translate] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixScale()
+{
+        struct matrix transform = matrix_scale(2.0f, 3.0f, 4.0f);
+        struct tuple point = tuple_point(-4.0f, 6.0f, 8.0f);
+        struct tuple vec = tuple_vector(-4.0f, 6.0f, 8.0f);
+
+        struct tuple scaled_point = tuple_point(-8.0f, 18.0f, 32.0f);
+        struct tuple scaled_vec = tuple_vector(-8.0f, 18.0f, 32.0f);
+
+        assert(tuple_equal(matrix_transform(transform, point), scaled_point) == 1);
+        assert(tuple_equal(matrix_transform(transform, vec), scaled_vec) == 1);
+
+        transform = matrix_inverse(transform);
+        scaled_vec = tuple_vector(-2.0f, 2.0f, 2.0f);
+        assert(tuple_equal(matrix_transform(transform, vec), scaled_vec) == 1);
+
+        // reflection on x axis
+        transform = matrix_scale(-1.0f, 1.0f, 1.0f);
+        point = tuple_point(2.0f, 3.0f, 4.0f);
+        scaled_point = tuple_point(-2.0f, 3.0f, 4.0f);
+        assert(tuple_equal(matrix_transform(transform, point), scaled_point) == 1);
+
+        fprintf(stdout, "[Matrix Scale] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixRotateX()
+{
+        struct tuple point = tuple_point(0.0f, 1.0f, 0.0f);
+        struct matrix rot45 = matrix_rotate_x(M_PI / 4.0f);
+        struct matrix rot90 = matrix_rotate_x(M_PI / 2.0f);
+
+        struct tuple point45 = tuple_point(0.0f, (sqrt(2.0f)/2.0f),(sqrt(2.0f)/2.0f));
+        struct tuple point90 = tuple_point(0.0f, 0.0f, 1.0f);
+
+        assert(tuple_equal(matrix_transform(rot45, point), point45) == 1);
+        assert(tuple_equal(matrix_transform(rot90, point), point90) == 1);
+
+        fprintf(stdout, "[Matrix Rotate X] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixRotateY()
+{
+        struct tuple point = tuple_point(0.0f, 0.0f, 1.0f);
+        struct matrix rot45 = matrix_rotate_y(M_PI / 4.0f);
+        struct matrix rot90 = matrix_rotate_y(M_PI / 2.0f);
+
+        struct tuple point45 = tuple_point((sqrt(2.0f)/2.0f), 0.0f, (sqrt(2.0f)/2.0f));
+        struct tuple point90 = tuple_point(1.0f, 0.0f, 0.0f);
+
+        assert(tuple_equal(matrix_transform(rot45, point), point45) == 1);
+        assert(tuple_equal(matrix_transform(rot90, point), point90) == 1);
+
+        fprintf(stdout, "[Matrix Rotate Y] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixRotateZ()
+{
+        struct tuple point = tuple_point(0.0f, 1.0f, 0.0f);
+        struct matrix rot45 = matrix_rotate_z(M_PI / 4.0f);
+        struct matrix rot90 = matrix_rotate_z(M_PI / 2.0f);
+
+        struct tuple point45 = tuple_point(-1.0f * (sqrt(2.0f)/2.0f), (sqrt(2.0f)/2.0f), 0.0f);
+        struct tuple point90 = tuple_point(-1.0f, 0.0f, 0.0f);
+
+        assert(tuple_equal(matrix_transform(rot45, point), point45) == 1);
+        assert(tuple_equal(matrix_transform(rot90, point), point90) == 1);
+
+        fprintf(stdout, "[Matrix Rotate Z] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixShear()
+{
+        struct matrix t;
+        struct tuple sp;
+        struct tuple p = tuple_point(2.0f, 3.0f, 4.0f);
+
+        // shear x in proportion to z
+        t = matrix_shear(0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        sp = tuple_point(6.0f, 3.0f, 4.0f);
+        assert(tuple_equal(matrix_transform(t, p), sp) == 1);
+
+        // shear y in proportion to x
+        t = matrix_shear(0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+        sp = tuple_point(2.0f, 5.0f, 4.0f);
+        assert(tuple_equal(matrix_transform(t, p), sp) == 1);
+
+        // shear y in proportion to z
+        t = matrix_shear(0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+        sp = tuple_point(2.0f, 7.0f, 4.0f);
+        assert(tuple_equal(matrix_transform(t, p), sp) == 1);
+        
+        // shear z in proportion to x
+        t = matrix_shear(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+        sp = tuple_point(2.0f, 3.0f, 6.0f);
+        assert(tuple_equal(matrix_transform(t, p), sp) == 1);
+        
+        // shear z in proportion to y
+        t = matrix_shear(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+        sp = tuple_point(2.0f, 3.0f, 7.0f);
+        assert(tuple_equal(matrix_transform(t, p), sp) == 1);
+
+        fprintf(stdout, "[Matrix Shear] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixChain()
+{
+        struct tuple p = tuple_point(1.0f, 0.0f, 1.0f);
+        struct matrix r_x = matrix_rotate_x(M_PI / 2.0f);
+        struct matrix s = matrix_scale(5.0f, 5.0f, 5.0f);
+        struct matrix t = matrix_translate(10.0f, 5.0f, 7.0f);
+
+        struct tuple result = matrix_transform(r_x, p);
+        assert(tuple_equal(result, tuple_point(1.0f, -1.0f, 0.0f)) == 1);
+
+        result = matrix_transform(s, result);
+        assert(tuple_equal(result, tuple_point(5.0f, -5.0f, 0.0f)) == 1);
+
+        result = matrix_transform(t, result);
+        assert(tuple_equal(result, tuple_point(15.0f, 0.0f, 7.0f)) == 1);
+
+        struct matrix m = matrix_multiply(t,
+                                matrix_multiply(s,
+                                matrix_multiply(r_x, matrix_identity(4))));
+
+        result = matrix_transform(m, p);
+        assert(tuple_equal(result, tuple_point(15.0f, 0.0f, 7.0f)) == 1);
+        // do it in one function
+        transform(p, &r_x, &s, &t, &t, &t, NULL);
+
+        fprintf(stdout, "[Matrix Chain] Complete, all tests pass!\n");
+        return 1;
+}
+
 int main()
 {
         TST_MatrixNew();
         TST_MatrixEqual();
         TST_MatrixToString();
         TST_MatrixSetGet();
+        TST_MatrixCopy();
         TST_MatrixMultiply();
         TST_MatrixTupleMultiply();
         TST_MatrixIdentity();
@@ -366,6 +541,13 @@ int main()
         TST_MatrixDeterminant();
         TST_MatrixInvertible();
         TST_MatrixInverse();
+        TST_MatrixTranslate();
+        TST_MatrixScale();
+        TST_MatrixRotateX();
+        TST_MatrixRotateY();
+        TST_MatrixRotateZ();
+        TST_MatrixShear();
+        TST_MatrixChain();
 
         mem_free_all();
 
