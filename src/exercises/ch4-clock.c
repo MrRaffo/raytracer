@@ -22,10 +22,10 @@ int main()
         struct color color = color_new(1.0f, 1.0f, 1.0f);
         struct canvas canvas = canvas_new(width, height);
 
-        float angle = 0.0f;
+        double angle = 0.0f;
 
         // adjust size of clock face to fit canvas
-        struct matrix scale = matrix_scale((float)width*0.45f, (float)height*0.45f, 1.0f);
+        struct matrix scale = matrix_scale((double)width*0.45f, (double)height*0.45f, 1.0f);
         // move centre of clock face to centre to canvas
         struct matrix translate = matrix_translate(width / 2, height / 2, 0.0f);
 

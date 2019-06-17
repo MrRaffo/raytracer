@@ -13,7 +13,7 @@ const struct sphere sphere_unit()
 }
 
 /* returns a sphere to the given specifications */
-const struct sphere sphere_new(const struct tuple pos, const float radius)
+const struct sphere sphere_new(const struct tuple pos, const double radius)
 {
         struct sphere s = {pos, radius};
         return s;

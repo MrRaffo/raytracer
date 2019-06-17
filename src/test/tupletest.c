@@ -136,12 +136,12 @@ int TST_VectorMagnitude()
         struct tuple v4 = tuple_vector(2.0f, 3.0f, 4.0f);
         struct tuple v5 = tuple_vector(1.0f, 2.0f, 3.0f);
 
-        assert(float_equal(vector_magnitude(v1), 1.0f));
-        assert(float_equal(vector_magnitude(v2), 1.0f));
-        assert(float_equal(vector_magnitude(v3), 1.0f));
+        assert(double_equal(vector_magnitude(v1), 1.0f));
+        assert(double_equal(vector_magnitude(v2), 1.0f));
+        assert(double_equal(vector_magnitude(v3), 1.0f));
         
-        assert(float_equal(vector_magnitude(v4), 5.3851648f));
-        assert(float_equal(vector_magnitude(v5), 3.7416573f));
+        assert(double_equal(vector_magnitude(v4), 5.3851648f));
+        assert(double_equal(vector_magnitude(v5), 3.7416573f));
 
         log_msg("[Vector Magnitude] - All tests complete - pass!");
 
@@ -158,12 +158,12 @@ int TST_VectorNormal()
         struct tuple v6 = tuple_vector(45.3f, -90.123f, 3.3f);
         struct tuple v7 = tuple_vector(0.0f, 0.0f, 0.0f);       // special case
 
-        assert(float_equal(vector_magnitude(vector_normal(v1)), 1.0f) == 1);
-        assert(float_equal(vector_magnitude(vector_normal(v2)), 1.0f) == 1);
-        assert(float_equal(vector_magnitude(vector_normal(v3)), 1.0f) == 1);
-        assert(float_equal(vector_magnitude(vector_normal(v4)), 1.0f) == 1);
-        assert(float_equal(vector_magnitude(vector_normal(v5)), 1.0f) == 1);
-        assert(float_equal(vector_magnitude(vector_normal(v6)), 1.0f) == 1);
+        assert(double_equal(vector_magnitude(vector_normal(v1)), 1.0f) == 1);
+        assert(double_equal(vector_magnitude(vector_normal(v2)), 1.0f) == 1);
+        assert(double_equal(vector_magnitude(vector_normal(v3)), 1.0f) == 1);
+        assert(double_equal(vector_magnitude(vector_normal(v4)), 1.0f) == 1);
+        assert(double_equal(vector_magnitude(vector_normal(v5)), 1.0f) == 1);
+        assert(double_equal(vector_magnitude(vector_normal(v6)), 1.0f) == 1);
         vector_magnitude(vector_normal(v7));    // just don't break...
         
         log_msg("[Vector Normal] All tests complete - pass!");
@@ -177,10 +177,10 @@ int TST_VectorDot()
         struct tuple v2 = tuple_vector(2.0f, 3.0f, 4.0f);
         struct tuple v3 = tuple_vector(3.0f, -3.0f, 3.0f);
 
-        assert(float_equal(vector_dot(v1, v2), 20.0f) == 1);
-        assert(float_equal(vector_dot(v1, v3), 6.0f) == 1);
-        assert(float_equal(vector_dot(v2, v3), 9.0f) == 1);
-        assert(float_equal(vector_dot(v3, v3), 27.0f) == 1);
+        assert(double_equal(vector_dot(v1, v2), 20.0f) == 1);
+        assert(double_equal(vector_dot(v1, v3), 6.0f) == 1);
+        assert(double_equal(vector_dot(v2, v3), 9.0f) == 1);
+        assert(double_equal(vector_dot(v3, v3), 27.0f) == 1);
 
         log_msg("[Vector Dot] All test complete - pass!");
 

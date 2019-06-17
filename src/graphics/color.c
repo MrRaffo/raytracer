@@ -2,17 +2,17 @@
 #include <stdint.h>
 
 #include <graphics/color.h>
-#include <geometry/gmaths.h>    // for float_equal
+#include <geometry/gmaths.h>    // for double_equal
 #include <util/mem.h>
 
 /* Creation functions */
 
 /* 
- * Create a color from given float values, these should be
+ * Create a color from given double values, these should be
  * between 0.0f and 1.0f, but this is not checked or 
  * enforced
  */
-struct color color_new(const float r, const float g, const float b)
+struct color color_new(const double r, const double g, const double b)
 {
         const struct color c = {r, g, b};
         return c;
@@ -20,12 +20,12 @@ struct color color_new(const float r, const float g, const float b)
 
 /* 
  * Create a color giving ints between 0-255 as the components
- * and convert to float to use in struct color
+ * and convert to double to use in struct color
  */
 struct color color_newi(const int r, const int g, const int b)
 {
-        float d = 255.0f;
-        const struct color c = {(float)r / d, (float)g / d, (float)b / d};
+        double d = 255.0f;
+        const struct color c = {(double)r / d, (double)g / d, (double)b / d};
         return c;
 }
 
@@ -34,9 +34,9 @@ struct color color_newi(const int r, const int g, const int b)
  */
 const int color_equal(const struct color c1, const struct color c2)
 {
-        if (!float_equal(c1.r, c2.r)) { return 0; }
-        if (!float_equal(c1.g, c2.g)) { return 0; }
-        if (!float_equal(c1.b, c2.b)) { return 0; }
+        if (!double_equal(c1.r, c2.r)) { return 0; }
+        if (!double_equal(c1.g, c2.g)) { return 0; }
+        if (!double_equal(c1.b, c2.b)) { return 0; }
 
         return 1;
 }
@@ -50,7 +50,7 @@ void color_print(struct color c)
 }
 
 // tranform color to 0-255 int, restricting within that range
-static const int _clamp_component(const float c)
+static const int _clamp_component(const double c)
 {
         if (c < 0.0f) return 0;
         if (c >= 1.0f) return 255;
@@ -82,7 +82,7 @@ uint32_t color_to_RGBA(struct color c)
         val = 0xff << 24 | 
                 (_clamp_component(c.r) & 0xff) << 16 | 
                 (_clamp_component(c.g) & 0xff) << 8  |
-                _clamp_component(c.b) & 0xff;
+                (_clamp_component(c.b) & 0xff);
         return val;
 }
 
@@ -105,9 +105,9 @@ struct color color_subtract(const struct color c1, const struct color c2)
 
 /*
 
- * Multiply each RGB component of a colour by a scalar float
+ * Multiply each RGB component of a colour by a scalar double
  */
-struct color color_scale(const struct color c1, const float f)
+struct color color_scale(const struct color c1, const double f)
 {
         return color_new(c1.r * f, c1.g * f, c1.b * f);
 }

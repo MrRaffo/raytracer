@@ -5,7 +5,7 @@
 
 struct sphere {
         struct tuple pos;
-        float radius;
+        double radius;
 };
 
 /* CREATION */
@@ -14,6 +14,6 @@ struct sphere {
 const struct sphere sphere_unit();
 
 /* returns a sphere to the given specifications */
-const struct sphere sphere_new(const struct tuple pos, const float radius);
+const struct sphere sphere_new(const struct tuple pos, const double radius);
 
 #endif // __sphere_h__

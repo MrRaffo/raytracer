@@ -55,8 +55,8 @@ int TST_RaySphereIntersect()
         
         // intersect at 2 points
         assert(i.found == 2);
-        assert(float_equal(i.ione, 4.0f) == 1);
-        assert(float_equal(i.itwo, 6.0f) == 1);
+        assert(double_equal(i.ione, 4.0f) == 1);
+        assert(double_equal(i.itwo, 6.0f) == 1);
 
         // intersect at one point
         o = tuple_point(0.0f, 1.0f, -5.0f);
@@ -64,8 +64,8 @@ int TST_RaySphereIntersect()
         ray_sphere_intersect(r, s, &i);
 
         assert(i.found == 1);
-        assert(float_equal(i.ione, 5.0f) == 1);
-        assert(float_equal(i.itwo, 5.0f) == 1);
+        assert(double_equal(i.ione, 5.0f) == 1);
+        assert(double_equal(i.itwo, 5.0f) == 1);
 
         // never intersects
         o = tuple_point(0.0f, 2.0f, -5.0f);
@@ -80,8 +80,8 @@ int TST_RaySphereIntersect()
         ray_sphere_intersect(r, s, &i);
 
         assert(i.found == 2);
-        assert(float_equal(i.ione, -1.0f) == 1);
-        assert(float_equal(i.itwo, 1.0f) == 1);
+        assert(double_equal(i.ione, -1.0f) == 1);
+        assert(double_equal(i.itwo, 1.0f) == 1);
 
         // ray origin beyond sphere (negative distance)
         o = tuple_point(0.0f, 0.0f, 5.0f);
@@ -89,8 +89,8 @@ int TST_RaySphereIntersect()
         ray_sphere_intersect(r, s, &i);
 
         assert(i.found == 2);
-        assert(float_equal(i.ione, -6.0f) == 1);
-        assert(float_equal(i.itwo, -4.0f) == 1);
+        assert(double_equal(i.ione, -6.0f) == 1);
+        assert(double_equal(i.itwo, -4.0f) == 1);
 
         fprintf(stdout, "[RAY SPHERE INTERSECT] Complete, all tests pass!\n");
 

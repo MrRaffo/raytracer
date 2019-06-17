@@ -6,22 +6,22 @@
 #define TUPLE_NON_TYPE -1
 
 struct tuple {
-        float x;
-        float y;
-        float z;
-        float w;
+        double x;
+        double y;
+        double z;
+        double w;
 };
 
 /* TUPLE CREATION */
 
 // create a new tuple, initialised with given values
-const struct tuple tuple_new(const float x, const float y, const float z, const float w);
+const struct tuple tuple_new(const double x, const double y, const double z, const double w);
 
 // create a 'point' (a tuple where w == 1.0f)
-const struct tuple tuple_point(const float x, const float y, const float z);
+const struct tuple tuple_point(const double x, const double y, const double z);
 
 // create a 'vector' (a tuple where w == 0.0f)
-const struct tuple tuple_vector(const float x, const float y, const float z);
+const struct tuple tuple_vector(const double x, const double y, const double z);
 
 // returns a zero tuple ({0, 0, 0, 0})
 const struct tuple tuple_zero(void);
@@ -54,20 +54,20 @@ const struct tuple tuple_subtract(const struct tuple t1, const struct tuple t2);
 const struct tuple tuple_negate(const struct tuple t);
 
 // multiply a vector by a scalar:
-const struct tuple tuple_scale(const struct tuple t, const float f);
+const struct tuple tuple_scale(const struct tuple t, const double f);
 
 // divide a vector by a scalar:
 // not commutative
-const struct tuple tuple_divide(const struct tuple t, const float f);
+const struct tuple tuple_divide(const struct tuple t, const double f);
 
 // get the magnitude, or length, of a vector
-const float vector_magnitude(const struct tuple t);
+const double vector_magnitude(const struct tuple t);
 
 // return the normal (magnitude == 1.0f) of a given vector
 const struct tuple vector_normal(const struct tuple v);
 
 // return the dot product of two vectors (represents the angle between them)
-const float vector_dot(const struct tuple v1, const struct tuple v2);
+const double vector_dot(const struct tuple v1, const struct tuple v2);
 
 // return a new vector, the cross product of the two vectors passed
 // Not commutative - returns a vector perpendicular to the 2 passed

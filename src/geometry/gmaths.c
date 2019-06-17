@@ -4,10 +4,10 @@
 #include <geometry/gmaths.h>
 
 /* 
- * Compare two floats, return 1 if they are equal (with EPSILON of each other),
+ * Compare two doubles, return 1 if they are equal (with EPSILON of each other),
  * 0 otherwise
  */
-const int float_equal(const float val1, const float val2)
+const int double_equal(const double val1, const double val2)
 {
         return (fabs(val1 - val2)) < EPSILON ? 1 : 0;
 }

@@ -10,23 +10,23 @@
  */
 
 struct color {
-        float r;
-        float g;
-        float b;
+        double r;
+        double g;
+        double b;
 };
 
 /* Creation functions */
 
 /* 
- * Create a color from given float values, these should be
+ * Create a color from given double values, these should be
  * between 0.0f and 1.0f, but this is not checked or 
  * enforced
  */
-struct color color_new(const float r, const float g, const float b);
+struct color color_new(const double r, const double g, const double b);
 
 /* 
  * Create a color giving ints between 0-255 as the components
- * and convert to float to use in struct color
+ * and convert to double to use in struct color
  */
 struct color color_newi(const int r, const int g, const int b);
 
@@ -63,9 +63,9 @@ struct color color_add(const struct color c1, const struct color c2);
 struct color color_subtract(const struct color c1, const struct color c2);
 
 /*
- * Multiply each RGB component of a colour by a scalar float
+ * Multiply each RGB component of a colour by a scalar double
  */
-struct color color_scale(const struct color c1, const float f);
+struct color color_scale(const struct color c1, const double f);
 
 /*
  * Multiply the RGB components of each colour together and return the new

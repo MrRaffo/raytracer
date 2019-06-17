@@ -15,7 +15,7 @@ void invert_identity()
 void inverse_multiply()
 {
         struct matrix m = matrix_new(4, 4);
-        float data[] = {-5.0f, 2.0f, 6.0f, -8.0f,
+        double data[] = {-5.0f, 2.0f, 6.0f, -8.0f,
                           1.0f, -5.0f, 1.0f, 8.0f,
                           7.0f, 7.0f, -6.0f, -7.0f,
                           1.0f, -3.0f, 7.0f, 4.0f};
@@ -30,7 +30,7 @@ void inverse_multiply()
 void inverse_transpose()
 {
         struct matrix m = matrix_new(4, 4);
-        float data[] = {-5.0f, 2.0f, 6.0f, -8.0f,
+        double data[] = {-5.0f, 2.0f, 6.0f, -8.0f,
                           1.0f, -5.0f, 1.0f, 8.0f,
                           7.0f, 7.0f, -6.0f, -7.0f,
                           1.0f, -3.0f, 7.0f, 4.0f};

@@ -14,7 +14,7 @@ int TST_SphereUnit()
         struct sphere s = sphere_unit();
 
         assert(tuple_equal(s.pos, t) == 1);
-        assert(float_equal(s.radius, 1.0f) == 1);
+        assert(double_equal(s.radius, 1.0f) == 1);
 
         fprintf(stdout, "[SPHERE UNIT] Complete, all tests pass!\n");
         return 1;
@@ -26,7 +26,7 @@ int TST_SphereNew()
         struct sphere s = sphere_new(pos, 5.0f);
 
         assert(tuple_equal(s.pos, pos) == 1);
-        assert(float_equal(s.radius, 5.0f) == 1);
+        assert(double_equal(s.radius, 5.0f) == 1);
 
         fprintf(stdout, "[SPHERE NEW] Complete, all tests pass!\n");
         return 1;

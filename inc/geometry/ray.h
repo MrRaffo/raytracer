@@ -21,8 +21,8 @@ struct ray {
  */
 struct intersection {
         int found;
-        float ione;
-        float itwo;
+        double ione;
+        double itwo;
 };
 
 /* CREATION */
@@ -34,7 +34,7 @@ struct ray ray_new(const struct tuple origin, const struct tuple direction);
 char *ray_to_string(const struct ray r);
 
 /* return the position after travelling distance t */
-struct tuple ray_position(const struct ray r, const float t);
+struct tuple ray_position(const struct ray r, const double t);
 
 /* populates passed intersection struct with intersection
  * points if possible and returns number of intersections

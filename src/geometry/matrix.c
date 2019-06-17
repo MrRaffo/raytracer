@@ -29,7 +29,7 @@ static int _valid_element(const struct matrix m, const int r, const int c)
 /* Return a matrix, all elements initiated to 0.0f */
 struct matrix matrix_new(const int r, const int c)
 {
-        float *ptr = (float *)mem_alloc(r * c * sizeof(float));
+        double *ptr = (double *)mem_alloc(r * c * sizeof(double));
         
         // all elements should be 0.0f on creation
         for (int i = 0; i < r * c; i++) {
@@ -136,7 +136,7 @@ struct matrix matrix_copy(const struct matrix m)
 }
 
 /* Set the value of a row, col position, 0 if unable, 1 on success */
-int matrix_set(struct matrix m, int r, int c, float value)
+int matrix_set(struct matrix m, int r, int c, double value)
 {
         if (!_check_valid_element(m, r, c)) {
                 log_err("Bad matrix index! (%d, %d) requested in (%d, %d) matrix.",
@@ -149,7 +149,7 @@ int matrix_set(struct matrix m, int r, int c, float value)
 }
 
 /* Retrieve a value from the matrix, returns 0.0f on bad index */
-float matrix_get(const struct matrix m, int r, int c)
+double matrix_get(const struct matrix m, int r, int c)
 {
         if (!_check_valid_element(m, r, c)) {
                 log_err("Bad matrix index! (%d, %d) requested in (%d, %d) matrix.",
@@ -168,7 +168,7 @@ int matrix_equal(const struct matrix m, const struct matrix n)
         }
         
         for (int i = 0; i < m.row * m.col; i++) {
-                if (!float_equal(*(m.matrix+i), *(n.matrix+i))) {
+                if (!double_equal(*(m.matrix+i), *(n.matrix+i))) {
                         return 0;
                 }
         }
@@ -189,7 +189,7 @@ struct matrix matrix_multiply(const struct matrix m, const struct matrix n)
 
         for (int r = 0; r < m.row; r++) {
                 for (int c = 0; c < n.col; c++) {
-                        float value = 0.0f;
+                        double value = 0.0f;
                         for (int i = 0; i < m.col; i++) {
                                 value += matrix_get(m, r, i) * matrix_get(n, i, c);
                         }
@@ -209,7 +209,7 @@ const struct tuple matrix_transform(const struct matrix m, const struct tuple t)
                 return tuple_new(0.0f, 0.0f, 0.0f, 0.0f);
         }
 
-        float values[4];
+        double values[4];
         for (int i = 0; i < 4; i++) {
                 values[i] = matrix_get(m, i, 0) * t.x + 
                             matrix_get(m, i, 1) * t.y +
@@ -266,7 +266,7 @@ struct matrix matrix_transpose(const struct matrix m)
 }
 
 /* returns the determinant, matrix must be 2x2 */
-float matrix_2determinant(const struct matrix m)
+double matrix_2determinant(const struct matrix m)
 {
         if (m.row != 2 || m.col != 2) {
                 log_err("Unable to calculate determinant, matrix is (%d, %d)\n", m.row, m.col);
@@ -277,21 +277,21 @@ float matrix_2determinant(const struct matrix m)
 }
 
 /* returns the determinant, matrix must be 3x3, returns 0 on fail */
-float matrix_3determinant(const struct matrix m)
+double matrix_3determinant(const struct matrix m)
 {
         if (m.row != 3 || m.col != 3) {
                 log_err("Unable to calculate determinant, matrix is (%d, %d)\n", m.row, m.col);
                 return 0.0f;
         }
 
-        float *p = m.matrix;  // for brevity below
+        double *p = m.matrix;  // for brevity below
 
         return p[0]*p[4]*p[8] + p[1]*p[5]*p[6] + p[2]*p[3]*p[7] -
                p[2]*p[4]*p[6] - p[1]*p[3]*p[8] - p[0]*p[5]*p[7];
 }
 
 /* returns the minor of a 3x3 matrix at a given point */
-float matrix_minor(struct matrix m, int row, int col)
+double matrix_minor(struct matrix m, int row, int col)
 {
         if (!_is_square(m) || !_valid_element(m, row, col)) {
                 log_err("Unable to calculate minor, matrix (%d, %d)\n", m.row, m.col);
@@ -317,7 +317,7 @@ struct matrix submatrix(const struct matrix m, const int r, const int c)
         int new_size = m.row - 1;
 
         // buffer for new matrix data
-        float *data = (float *)mem_alloc(new_size*new_size*sizeof(float));
+        double *data = (double *)mem_alloc(new_size*new_size*sizeof(double));
         int i, j;
         for (i = 0, j = 0; i < new_size * new_size; i++, j++) {
                 while (j / m.row == r || j % m.row == c) {
@@ -332,19 +332,19 @@ struct matrix submatrix(const struct matrix m, const int r, const int c)
 }
 
 /* return the cofactor of a given 3x3 matrix at the given element, 0.0f on fail */
-float matrix_cofactor(const struct matrix m, const int r, const int c)
+double matrix_cofactor(const struct matrix m, const int r, const int c)
 {
         if(!_is_square(m) || !_valid_element(m, r, c)) {
                 log_err("Invalid request: m = %dx%d, (%d, %d)\n", m.row, m.col, r, c);
                 return 0.0f;
         }
 
-        float factor = ((r + c) & 1) ? -1.0f : 1.0f;
+        double factor = ((r + c) & 1) ? -1.0f : 1.0f;
         return factor * matrix_minor(m, r, c);
 }
 
 /* return the determinant of a matrix, 0.0f if unable for some reason */
-float matrix_determinant(const struct matrix m)
+double matrix_determinant(const struct matrix m)
 {
         if (!_is_square(m)) {
                 log_err("Invalid request: m = %d x %d\n", m.row, m.col);
@@ -353,7 +353,7 @@ float matrix_determinant(const struct matrix m)
 
         if (m.row == 2) return matrix_2determinant(m);
 
-        float determinant = 0.0f;
+        double determinant = 0.0f;
         for (int i = 0; i < m.row; i++) {
                 determinant += m.matrix[i] * matrix_cofactor(m, 0, i);
         }
@@ -379,10 +379,10 @@ struct matrix matrix_inverse(const struct matrix m)
         }
 
         struct matrix inverse = matrix_new(m.row, m.col);
-        float determinant = matrix_determinant(m);
+        double determinant = matrix_determinant(m);
         for (int r = 0; r < inverse.row; r++) {
                 for (int c = 0; c < inverse.col; c++) {
-                        float cofactor = matrix_cofactor(m, r, c);
+                        double cofactor = matrix_cofactor(m, r, c);
                         matrix_set(inverse, c, r, cofactor / determinant);
                 }
         }
@@ -391,7 +391,7 @@ struct matrix matrix_inverse(const struct matrix m)
 }
 
 /* return a matrix that translates a point by x, y, z */
-struct matrix matrix_translate(const float x, const float y, const float z)
+struct matrix matrix_translate(const double x, const double y, const double z)
 {
         struct matrix m = matrix_identity(4); 
 
@@ -402,7 +402,7 @@ struct matrix matrix_translate(const float x, const float y, const float z)
 }
 
 /* return a matrix to scale a tuple */
-struct matrix matrix_scale(const float x, const float y, const float z)
+struct matrix matrix_scale(const double x, const double y, const double z)
 {
         struct matrix scale = matrix_identity(4);
         scale.matrix[0] = x;
@@ -412,7 +412,7 @@ struct matrix matrix_scale(const float x, const float y, const float z)
 }
 
 /* return a matrix that will rotate around the x-axis, radians */
-struct matrix matrix_rotate_x(const float radians)
+struct matrix matrix_rotate_x(const double radians)
 {
         struct matrix rot = matrix_identity(4);
         rot.matrix[5] = cos(radians);
@@ -423,7 +423,7 @@ struct matrix matrix_rotate_x(const float radians)
 }
 
 /* return a matrix that will rotate around the x-axis, radians */
-struct matrix matrix_rotate_y(const float radians)
+struct matrix matrix_rotate_y(const double radians)
 {
         struct matrix rot = matrix_identity(4);
         rot.matrix[0] = cos(radians);
@@ -434,7 +434,7 @@ struct matrix matrix_rotate_y(const float radians)
 }
 
 /* return a matrix that will rotate around the x-axis, radians */
-struct matrix matrix_rotate_z(const float radians)
+struct matrix matrix_rotate_z(const double radians)
 {
         struct matrix rot = matrix_identity(4);
         rot.matrix[0] = cos(radians);
@@ -445,7 +445,7 @@ struct matrix matrix_rotate_z(const float radians)
 }
 
 /* return a matrix that shears */
-struct matrix matrix_shear(const float xy, const float xz, const float yx, const float yz, const float zx, const float zy)
+struct matrix matrix_shear(const double xy, const double xz, const double yx, const double yz, const double zx, const double zy)
 {
         struct matrix shear = matrix_identity(4);
         shear.matrix[1] = xy;
