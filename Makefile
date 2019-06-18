@@ -40,14 +40,12 @@ PROGRAMS := $(addprefix bin/, $(notdir $(PROG_SOURCES:.c=)))
 # for user specified inputs
 OUTPUT = $(addprefix bin/, $(notdir $(INPUT:.c=)))
 
-# rules
-$(shell mkdir -p bin)
+# make bin, lib and obj folders if needed
+$(shell [ -d bin ] || mkdir -p bin)
+$(shell [ -d lib ] || mkdir -p lib)
+$(shell [ -d obj ] || mkdir -p obj)
+$(shell [ -d img ] || mkdir -p img)
 
-# create the obj folder if needed
-$(OBJECTS): | obj
-
-obj:
-	@mkdir -p $@
 	
 obj/%.o: %.c
 	@echo $<

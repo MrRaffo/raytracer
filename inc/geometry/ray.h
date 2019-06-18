@@ -19,10 +19,17 @@ struct ray {
  * values will be equal to the distance of the only
  * intersection
  */
-struct intersection {
+struct intersect {
         int found;
         double ione;
         double itwo;
+};
+
+/* records the distance along a ray an intersection is found along with the
+ * object being intersected */
+struct intersection {
+        double t;
+        union object;
 };
 
 /* CREATION */
@@ -39,6 +46,6 @@ struct tuple ray_position(const struct ray r, const double t);
 /* populates passed intersection struct with intersection
  * points if possible and returns number of intersections
  */
-int ray_sphere_intersect(const struct ray r, const struct sphere s, struct intersection *i);
+int ray_sphere_intersect(const struct ray r, const struct sphere s, struct intersect *i);
 
 #endif // __ray_h__

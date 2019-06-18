@@ -35,7 +35,7 @@ struct tuple ray_position(const struct ray r, const double t)
  * points if possible and returns number of intersections
  * ray must be normalised
  */
-int ray_sphere_intersect(const struct ray r, const struct sphere s, struct intersection *i)
+int ray_sphere_intersect(const struct ray r, const struct sphere s, struct intersect *i)
 {
         // (o-c): center of sphere is always at (0,0,0)
         struct tuple v = {r.org.x, r.org.y, r.org.z, 0.0f};

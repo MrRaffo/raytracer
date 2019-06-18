@@ -32,7 +32,7 @@ int TST_RayPosition()
         struct tuple p3 = tuple_point(1.0f, 3.0f, 4.0f);
         struct tuple p4 = tuple_point(4.5f, 3.0f, 4.0f);
 
-        struct ray r = ray_new(start, dir);
+       struct ray r = ray_new(start, dir);
 
         assert(tuple_equal(ray_position(r, 0.0f), p1) == 1);
         assert(tuple_equal(ray_position(r, 1.0f), p2) == 1);
@@ -50,7 +50,7 @@ int TST_RaySphereIntersect()
         struct ray r = ray_new(o, d);
         struct sphere s = sphere_unit();
 
-        struct intersection i;
+        struct intersect i;
         ray_sphere_intersect(r, s, &i);
         
         // intersect at 2 points
