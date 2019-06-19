@@ -4,6 +4,8 @@
 #include <geometry/tuple.h>
 #include <geometry/matrix.h>
 #include <geometry/gmaths.h>
+#include <geometry/g_object.h>
+#include <geometry/intersection.h>
 
 #include <util/log.h>
 #include <util/mem.h>
@@ -48,49 +50,46 @@ int TST_RaySphereIntersect()
         struct tuple o = tuple_point(0.0f, 0.0f, -5.0f);
         struct tuple d = tuple_vector(0.0f, 0.0f, 1.0f);
         struct ray r = ray_new(o, d);
-        struct sphere s = sphere_unit();
+        struct g_object obj = {SHAPE_SPHERE};
+        struct i_list list = i_list_new();      // tracks intersections
 
-        struct intersect i;
-        ray_sphere_intersect(r, s, &i);
-        
-        // intersect at 2 points
-        assert(i.found == 2);
-        assert(double_equal(i.ione, 4.0f) == 1);
-        assert(double_equal(i.itwo, 6.0f) == 1);
+        assert(ray_intersect(r, &obj, &list) == 2);
+        assert(list.count == 2);
+        assert(list.start->next->xs->t == 4.0f);
+        assert(list.start->next->next->xs->t == 6.0f);
 
-        // intersect at one point
-        o = tuple_point(0.0f, 1.0f, -5.0f);
-        r = ray_new(o, d);
-        ray_sphere_intersect(r, s, &i);
+        list = i_list_new();
+        o = tuple_point(0.0, 1.0, -5.0);
+        r.org = o;
 
-        assert(i.found == 1);
-        assert(double_equal(i.ione, 5.0f) == 1);
-        assert(double_equal(i.itwo, 5.0f) == 1);
+        assert(ray_intersect(r, &obj, &list) == 1);
+        assert(list.count == 1);
+        assert(double_equal(list.start->next->xs->t, 5.0));
 
-        // never intersects
-        o = tuple_point(0.0f, 2.0f, -5.0f);
-        r = ray_new(o, d);
-        ray_sphere_intersect(r, s, &i);
+        list = i_list_new();
+        o = tuple_point(0.0, 2.0, -5.0);
+        r.org = o;
 
-        assert(i.found == 0);
+        assert(ray_intersect(r, &obj, &list) == 0);
+        assert(list.count == 0);
 
-        // ray origin inside sphere
-        o = tuple_point(0.0f, 0.0f, 0.0f);
-        r = ray_new(o, d);
-        ray_sphere_intersect(r, s, &i);
+        list = i_list_new();
+        o = tuple_point(0.0, 0.0, 0.0);
+        r.org = o;
 
-        assert(i.found == 2);
-        assert(double_equal(i.ione, -1.0f) == 1);
-        assert(double_equal(i.itwo, 1.0f) == 1);
+        assert(ray_intersect(r, &obj, &list) == 2);
+        assert(list.count == 2);
+        assert(list.start->prev->xs->t == -1.0);
+        assert(list.start->next->xs->t == 1.0);
 
-        // ray origin beyond sphere (negative distance)
-        o = tuple_point(0.0f, 0.0f, 5.0f);
-        r = ray_new(o, d);
-        ray_sphere_intersect(r, s, &i);
+        list = i_list_new();
+        o = tuple_point(0.0, 0.0, 5.0);
+        r.org = o;
 
-        assert(i.found == 2);
-        assert(double_equal(i.ione, -6.0f) == 1);
-        assert(double_equal(i.itwo, -4.0f) == 1);
+        assert(ray_intersect(r, &obj, &list) == 2);
+        assert(list.count == 2);
+        assert(list.start->prev->prev->xs->t == -6.0);
+        assert(list.start->prev->xs->t == -4.0);
 
         fprintf(stdout, "[RAY SPHERE INTERSECT] Complete, all tests pass!\n");
 

@@ -5,6 +5,8 @@
 #include <geometry/tuple.h>
 #include <geometry/matrix.h>
 #include <geometry/gmaths.h>
+#include <geometry/g_object.h>
+#include <geometry/intersection.h>
 
 #include <util/log.h>
 #include <util/mem.h>
@@ -31,11 +33,11 @@ struct tuple ray_position(const struct ray r, const double t)
         return pos;
 }
 
-/* populates passed intersection struct with intersection
- * points if possible and returns number of intersections
- * ray must be normalised
+/* counts up to two intersections for a sphere and returns an intersect struct
+ * which contains info about how many intersections were found and info about
+ * them
  */
-int ray_sphere_intersect(const struct ray r, const struct sphere s, struct intersect *i)
+int _sphere_intersect(const struct ray r, struct g_object *s, struct i_list *list)
 {
         // (o-c): center of sphere is always at (0,0,0)
         struct tuple v = {r.org.x, r.org.y, r.org.z, 0.0f};
@@ -45,18 +47,38 @@ int ray_sphere_intersect(const struct ray r, const struct sphere s, struct inter
         double magsq = mag * mag;
 
         if ((sq - (magsq - 1.0f)) < 0.0f) {
-                i->found = 0;
                 return 0;
         } else if (double_equal(sq - (magsq - 1.0f), 0.0f) == 1) {
-                i->found = 1;
-                i->ione = i->itwo = -1.0f * ldotv;
+                double t = -1.0f * ldotv;
+                struct intersection *i = intersection_new(t, s);
+                add_intersection(list, i);
                 return 1;
         }
 
-        i->found = 2;
         double root = sqrt(sq - (magsq - 1.0f));
-        i->ione = -1.0f * ldotv - root;
-        i->itwo = -1.0f * ldotv + root;
+        double t1 = -1.0f * ldotv - root;
+        double t2 = -1.0f * ldotv + root;
+
+        struct intersection *i1 = intersection_new(t1, s);
+        add_intersection(list, i1);
+        
+        struct intersection *i2 = intersection_new(t2, s);
+        add_intersection(list, i2);        
+
         return 2;
+}
+
+/* checks for intersections between the ray and object, returns number found */
+int ray_intersect(const struct ray r, struct g_object *obj, struct i_list *list)
+{
+        switch (obj->type) {
+        case SHAPE_SPHERE:
+                return _sphere_intersect(r, obj, list);
+                break;
+        default:
+                break;
+        }
+
+        return 0;
 }
 
