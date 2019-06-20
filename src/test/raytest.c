@@ -51,45 +51,45 @@ int TST_RaySphereIntersect()
         struct tuple d = tuple_vector(0.0f, 0.0f, 1.0f);
         struct ray r = ray_new(o, d);
         struct g_object obj = {SHAPE_SPHERE};
-        struct i_list list = i_list_new();      // tracks intersections
+        struct i_list *list = i_list_new();      // tracks intersections
 
-        assert(ray_intersect(r, &obj, &list) == 2);
-        assert(list.count == 2);
-        assert(list.start->next->xs->t == 4.0f);
-        assert(list.start->next->next->xs->t == 6.0f);
+        assert(ray_intersect(r, &obj, list) == 2);
+        assert(list->count == 2);
+        assert(list->start->next->xs->t == 4.0f);
+        assert(list->start->next->next->xs->t == 6.0f);
 
         list = i_list_new();
         o = tuple_point(0.0, 1.0, -5.0);
         r.org = o;
 
-        assert(ray_intersect(r, &obj, &list) == 1);
-        assert(list.count == 1);
-        assert(double_equal(list.start->next->xs->t, 5.0));
+        assert(ray_intersect(r, &obj, list) == 1);
+        assert(list->count == 1);
+        assert(double_equal(list->start->next->xs->t, 5.0));
 
         list = i_list_new();
         o = tuple_point(0.0, 2.0, -5.0);
         r.org = o;
 
-        assert(ray_intersect(r, &obj, &list) == 0);
-        assert(list.count == 0);
+        assert(ray_intersect(r, &obj, list) == 0);
+        assert(list->count == 0);
 
         list = i_list_new();
         o = tuple_point(0.0, 0.0, 0.0);
         r.org = o;
 
-        assert(ray_intersect(r, &obj, &list) == 2);
-        assert(list.count == 2);
-        assert(list.start->prev->xs->t == -1.0);
-        assert(list.start->next->xs->t == 1.0);
+        assert(ray_intersect(r, &obj, list) == 2);
+        assert(list->count == 2);
+        assert(list->start->prev->xs->t == -1.0);
+        assert(list->start->next->xs->t == 1.0);
 
         list = i_list_new();
         o = tuple_point(0.0, 0.0, 5.0);
         r.org = o;
 
-        assert(ray_intersect(r, &obj, &list) == 2);
-        assert(list.count == 2);
-        assert(list.start->prev->prev->xs->t == -6.0);
-        assert(list.start->prev->xs->t == -4.0);
+        assert(ray_intersect(r, &obj, list) == 2);
+        assert(list->count == 2);
+        assert(list->start->prev->prev->xs->t == -6.0);
+        assert(list->start->prev->xs->t == -4.0);
 
         fprintf(stdout, "[RAY SPHERE INTERSECT] Complete, all tests pass!\n");
 

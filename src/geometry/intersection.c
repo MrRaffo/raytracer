@@ -16,15 +16,39 @@ struct intersection *intersection_new(double t, struct g_object *s)
 }
 
 /* create a new intersection list */
-struct i_list i_list_new()
+struct i_list *i_list_new()
 {
         struct intersection *i = intersection_new(0.0, NULL);
         struct i_node *node = (struct i_node *)mem_alloc(sizeof(struct i_node));
         node->xs = i;
         node->next = NULL;
         node->prev = NULL;
-        struct i_list list = {0, node, node};
+        struct i_list *list = (struct i_list *)mem_alloc(sizeof(struct i_list));
+        list->count = 0;
+        list->bottom = node;
+        list->start = node;
         return list;
+}
+
+/* print the intersection list, mostly for debugging */
+void i_list_print(struct i_list *list)
+{
+        struct i_node *ptr = list->bottom;
+        while(ptr->next != NULL) {
+                // skip over 'start' node
+                if (ptr->xs->obj == NULL) { 
+                        ptr = ptr->next;
+                        continue; 
+                } 
+                
+                printf("Intersection at %g\n", ptr->xs->t);
+                printf("ptrs: %p, %p, %p\n\n", ptr, ptr->prev, ptr->next);
+                ptr = ptr->next;
+        }
+
+        printf("Intersection at %g\n", ptr->xs->t);
+        printf("ptrs: %p, %p, %p\n\n", ptr, ptr->prev, ptr->next);
+
 }
 
 /* add a new intersection to the list, returns new length of list */
@@ -52,6 +76,7 @@ int add_intersection(struct i_list *list, struct intersection *i)
                 new->prev = ptr->prev;
                 new->prev->next = new;
                 ptr->prev = new;
+                new->next = ptr;
                 new->xs = i;
                 list->count += 1;
                 return list->count;
@@ -70,5 +95,35 @@ int add_intersection(struct i_list *list, struct intersection *i)
         return list->count;
 }
 
+/* return intersection by index, negative numbers traverse the ray backwards
+* ie, any negative index will be behind the origin of the ray */
+struct intersection *get_intersection(struct i_list *list, int index)
+{
+        struct i_node *ptr = list->start;
+        if (index > list->count || index < list->count *-1) {
+                log_err("Invalid index: %d of %d\n", index, list->count);
+                return NULL;
+        }
+        
+        if (index < 0) {
+                while (index < 0 && ptr->prev != NULL) {
+                        ptr = ptr->prev;
+                        index++;
+                }
+        } else {
+                index++;        // starting on -1 essentially as first node doesn't count
+                while (index > 0 && ptr->next != NULL) {
+                        ptr = ptr->next;
+                        index--;
+                }
+        }
 
+        if (index != 0) {
+                printf("Index = %d\n", index);
+                log_err("Error finding index\n");
+                return NULL;
+        }
+
+        return ptr->xs;
+}
 

@@ -1,5 +1,5 @@
-#ifndef __GOBJECT_H__
-#define __GOBJECT_H__
+#ifndef __g_object_h__
+#define __g_object_h__
 
 /*
  * GEOMETRY or GRAPHICAL OBJECT
@@ -10,8 +10,9 @@
 #include <geometry/sphere.h>
 
 enum shape_type {
-        SHAPE_ORIGIN,           // Special type for the start of a ray
-        SHAPE_SPHERE            
+        SHAPE_ORIGIN = 0,           // Special type for the start of a ray
+        SHAPE_SPHERE,
+        NUM_SHAPES
 };
 
 // a graphical or geometric object
@@ -19,4 +20,7 @@ struct g_object {
         enum shape_type type;
 };
 
-#endif // __GOBJECT_H__
+/* create a sphere object, used for testing functions */
+struct g_object *test_sphere();
+
+#endif // __g_object_h__

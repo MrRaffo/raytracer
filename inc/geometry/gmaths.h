@@ -1,7 +1,7 @@
 #ifndef __gmaths_h__
 #define __gmaths_h__
 
-#define EPSILON 0.00001f     // used as a threshold for comparing double
+#define EPSILON 0.00001     // used as a threshold for comparing double
 
 /* 
  * Compare two doubles, return 1 if they are equal (with EPSILON of each other),

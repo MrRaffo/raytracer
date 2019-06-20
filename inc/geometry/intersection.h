@@ -37,9 +37,16 @@ struct i_list {
 struct intersection *intersection_new(double t, struct g_object *s);
 
 /* create a new intersection list */
-struct i_list i_list_new();
+struct i_list *i_list_new();
+
+/* print the intersection list, mostly for debugging */
+void i_list_print(struct i_list *i);
 
 /* add a new intersection to the list, returns 1 on success, 0 on fail */
 int add_intersection(struct i_list *list, struct intersection *i);
+
+/* return intersection by index, negative numbers traverse the ray backwards
+ * ie, any negative index will be behind the origin of the ray */
+struct intersection *get_intersection(struct i_list *list, int index);
 
 #endif // __intersection_h__
