@@ -3,4 +3,5 @@ Add ability to profile using 'gprof'
 
 Add statistics to mem.o, allow it to report total memory used etc
 
-Add function to return index of intersections from i_list
+Let shapes store the inverse of their transformations so this isn't
+calculated for every ray

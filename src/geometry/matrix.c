@@ -229,16 +229,11 @@ struct matrix transform(struct matrix *mat, ...)
 #define MAX_MAT 16
         va_list argp;
         va_start(argp, mat);
-        struct matrix *m[MAX_MAT];
-        m[0] = mat;
-        int count = 1;
-        while ((m[count] = (struct matrix *)va_arg(argp, void*)) != NULL && count < MAX_MAT) {
-                count++;
-        }
 
-        struct matrix transform = matrix_identity(4);
-        while (count-- > 0) {
-                transform = matrix_multiply(*m[count], transform);
+        struct matrix transform = matrix_multiply(*mat, matrix_identity(4));
+        struct matrix *ptr;
+        while((ptr = (struct matrix *)va_arg(argp, void*)) != NULL) {
+                transform = matrix_multiply(*ptr, transform);
         }
 
         va_end(argp);
