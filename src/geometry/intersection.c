@@ -99,6 +99,8 @@ int add_intersection(struct i_list *list, struct intersection *i)
 * ie, any negative index will be behind the origin of the ray */
 struct intersection *get_intersection(struct i_list *list, int index)
 {
+        if (list->count == 0) { return NULL; }
+
         struct i_node *ptr = list->start;
         if (index > list->count || index < list->count *-1) {
                 log_err("Invalid index: %d of %d\n", index, list->count);

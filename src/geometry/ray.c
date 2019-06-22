@@ -39,25 +39,38 @@ struct tuple ray_position(const struct ray r, const double t)
  */
 int _sphere_intersect(const struct ray r, struct g_object *s, struct i_list *list)
 {
-        // (o-c): center of sphere is always at (0,0,0)
-        struct tuple v = {r.org.x, r.org.y, r.org.z, 0.0f};
-        double ldotv = vector_dot(r.dir, v);
-        double sq = ldotv * ldotv;
-        double mag = vector_magnitude(v);
-        double magsq = mag * mag;
+        struct tuple sphere_to_ray = tuple_subtract(r.org, 
+                                                    tuple_point(0.0,0.0,0.0));
 
-        if ((sq - (magsq - 1.0f)) < 0.0f) {
+        // this is a quadratic equation, the 'a', 'b' and 'c' components
+        // are given thus:
+        double a = vector_dot(r.dir, r.dir);
+        double b = 2.0 * vector_dot(r.dir, sphere_to_ray);
+        double c = vector_dot(sphere_to_ray, sphere_to_ray) - 1.0;
+
+        // this is the squared part, if it is below zero there are no solutions
+        // ie, no intersections, if it is zero there is one solution, the ray
+        // just grazes the sphere at a tangent, and if it is positive there are
+        // two solutions, the entry and exit points of the ray on the sphere
+        double discriminant = (b * b) - (4.0 * a) * c;
+
+        if (discriminant < 0.0) {
+                list->count = 0;
                 return 0;
-        } else if (double_equal(sq - (magsq - 1.0f), 0.0f) == 1) {
-                double t = -1.0f * ldotv;
-                struct intersection *i = intersection_new(t, s);
-                add_intersection(list, i);
+        }
+
+        if (discriminant == 0.0) {
+                double t = (-1.0 * b) / (2.0 * a);
+                struct intersection *i1 = intersection_new(t, s);
+                add_intersection(list, i1);
                 return 1;
         }
 
-        double root = sqrt(sq - (magsq - 1.0f));
-        double t1 = -1.0f * ldotv - root;
-        double t2 = -1.0f * ldotv + root;
+        double t1, t2;
+        double d_root = sqrt(discriminant);
+
+        t1 = (-1.0 * b - d_root) / (2.0 * a);
+        t2 = (-1.0 * b + d_root) / (2.0 * a);
 
         struct intersection *i1 = intersection_new(t1, s);
         add_intersection(list, i1);

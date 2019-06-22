@@ -33,7 +33,8 @@ int main()
                 struct matrix rotz = matrix_rotate_z(angle);
                 struct matrix rotx = matrix_rotate_x(0.0f);
                 struct matrix roty = matrix_rotate_y(0.0f);
-                struct tuple hour = transform(point, &rotx, &roty, &rotz, &scale, &translate, NULL);
+                struct matrix t = transform(&rotx, &roty, &rotz, &scale, &translate, NULL);
+                struct tuple hour = matrix_transform(t, point);
                 canvas_write_pixel(canvas, hour.x, hour.y, color);
         }
 
