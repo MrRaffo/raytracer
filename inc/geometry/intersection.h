@@ -49,4 +49,8 @@ int add_intersection(struct i_list *list, struct intersection *i);
  * ie, any negative index will be behind the origin of the ray */
 struct intersection *get_intersection(struct i_list *list, int index);
 
+/* return the first intersection from the origin of a ray in the
+ * direction of the ray */
+struct intersection *i_list_hit(struct i_list *list);
+
 #endif // __intersection_h__

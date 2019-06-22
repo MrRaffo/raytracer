@@ -127,3 +127,11 @@ struct intersection *get_intersection(struct i_list *list, int index)
         return ptr->xs;
 }
 
+/* return the first intersection from the origin of a ray in the
+ * direction of the ray */
+struct intersection *i_list_hit(struct i_list *list)
+{
+        return get_intersection(list, 0);
+}
+
+

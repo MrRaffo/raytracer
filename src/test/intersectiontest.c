@@ -66,10 +66,61 @@ int TST_IntersectionIndex()
         return 1;
 }
 
+int TST_IntersectionHit()
+{
+        struct g_object *s = test_sphere();
+        struct i_list *list = i_list_new();
+        struct intersection *res;
+        struct intersection *i1 = intersection_new(1.0, s);
+        struct intersection *i2 = intersection_new(2.0, s);
+        struct intersection *i3 = intersection_new(-3.0, s);
+        struct intersection *i4 = intersection_new(2.0, s);
+
+        add_intersection(list, i1);
+        add_intersection(list, i2);
+
+        res = i_list_hit(list);
+        assert(res == i1);
+
+        list = i_list_new();
+        i1 = intersection_new(-1.0, s);
+        i2 = intersection_new(1.0, s);
+        add_intersection(list, i1);
+        add_intersection(list, i2);
+
+        res = i_list_hit(list);
+        assert(res == i2);
+
+        list = i_list_new();
+        i1 = intersection_new(-2.0, s);
+        i2 = intersection_new(-1.0, s);
+        add_intersection(list, i1);
+        add_intersection(list, i2);
+
+        res = i_list_hit(list);
+        assert(res == NULL);
+
+        list = i_list_new();
+        i1 = intersection_new(5.0, s);
+        i2 = intersection_new(7.0, s);
+        add_intersection(list, i1);
+        add_intersection(list, i2);
+        add_intersection(list, i3);
+        add_intersection(list, i4);
+
+        res = i_list_hit(list);
+        assert(res == i4);
+
+        fprintf(stdout, "[I_LIST HIT] Complete, all tests pass!\n");
+        return 1;
+}
+
+
 int main() {
         
         TST_IntersectionLength();
         TST_IntersectionIndex();
+        TST_IntersectionHit();
 
         mem_free_all();
 

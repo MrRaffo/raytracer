@@ -6,7 +6,7 @@
  */
 
 #include <geometry/tuple.h>
-#include <geometry/sphere.h>
+#include <geometry/matrix.h>
 #include <geometry/g_object.h>
 #include <geometry/intersection.h>
 
@@ -34,5 +34,8 @@ int _sphere_intersect(const struct ray r, struct g_object *s, struct i_list *lis
 
 /* checks for intersections between the ray and object, returns number found */
 int ray_intersect(const struct ray r, struct g_object *obj, struct i_list *list);
+
+/* returns the ray that results in the current ray being transformed by the matrix */
+struct ray ray_transform(const struct ray r, struct matrix m);
 
 #endif // __ray_h__

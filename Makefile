@@ -81,7 +81,11 @@ cleanlib:
 cleanbin:
 	rm -rf bin/*
 	
-cleanall: cleanbin cleanlib cleanobj
+# valgrind cores
+cleanvg:
+	rm -rf vgcore*
+	
+cleanall: cleanbin cleanlib cleanobj cleanvg
 	
 testsuite:
 	@echo Objects: $(OBJECTS)

@@ -8,6 +8,7 @@
  */
 
 #include <geometry/sphere.h>
+#include <geometry/matrix.h>
 
 enum shape_type {
         SHAPE_ORIGIN = 0,           // Special type for the start of a ray
@@ -18,9 +19,13 @@ enum shape_type {
 // a graphical or geometric object
 struct g_object {
         enum shape_type type;
+        struct matrix transform;
 };
 
 /* create a sphere object, used for testing functions */
 struct g_object *test_sphere();
+
+/* set the objects transform matrix */
+void object_transform(struct g_object *shape, struct matrix m);
 
 #endif // __g_object_h__

@@ -55,11 +55,11 @@ struct matrix matrix_multiply(const struct matrix m, const struct matrix n);
  * tuple, rejects any matrix with row != 4 */
 const struct tuple matrix_transform(const struct matrix m, const struct tuple t);
 
-/* takes a list of matrices and applies them all to a point 
- * applies matrices in reverse order, ie, intuitively, always applies
- * to the identity matrix so this need not be provided, last argument
- * must always be NULL */
-const struct tuple transform(const struct tuple t, ...);
+/* takes a list of matrices and returns their product, list must be null 
+ * terminated and at least one matrix must be provided. all transformations
+ * will be applied to an identity matrix, so this need not be part of the
+ * list. operations performed in reverse, ie, intuitive, order */
+struct matrix transform(struct matrix *m, ...);
 
 /* Return the transpose of the given matrix */
 struct matrix matrix_transpose(const struct matrix m);

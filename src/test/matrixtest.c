@@ -514,12 +514,34 @@ int TST_MatrixChain()
                                 matrix_multiply(s,
                                 matrix_multiply(r_x, matrix_identity(4))));
 
+        printf("\n%s\n\n", matrix_to_string(m));
+
         result = matrix_transform(m, p);
         assert(tuple_equal(result, tuple_point(15.0f, 0.0f, 7.0f)) == 1);
         // do it in one function
-        transform(p, &r_x, &s, &t, &t, &t, NULL);
+        result = matrix_transform(transform(&r_x, &s, &t, NULL), p);
+        assert(tuple_equal(result, tuple_point(15.0, 0.0, 7.0)) == 1);
 
         fprintf(stdout, "[Matrix Chain] Complete, all tests pass!\n");
+        return 1;
+}
+
+int TST_MatrixChain2()
+{
+        struct matrix r_x = matrix_rotate_x(M_PI / 2.0f);
+        struct matrix s = matrix_scale(5.0f, 5.0f, 5.0f);
+        struct matrix t = matrix_translate(10.0f, 5.0f, 7.0f);
+
+        struct matrix m;
+        m = matrix_multiply(r_x, matrix_identity(4));
+        m = matrix_multiply(s, m);
+        m = matrix_multiply(t, m);
+
+        struct matrix n = transform(&t, &s, &r_x, NULL);
+        assert(matrix_equal(m, n));
+
+        fprintf(stdout, "[Matrix Chain 2] Complete, all tests pass!\n");
+
         return 1;
 }
 
@@ -547,7 +569,8 @@ int main()
         TST_MatrixRotateY();
         TST_MatrixRotateZ();
         TST_MatrixShear();
-        TST_MatrixChain();
+        //TST_MatrixChain();
+        TST_MatrixChain2();
 
         mem_free_all();
 

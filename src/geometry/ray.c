@@ -71,9 +71,13 @@ int _sphere_intersect(const struct ray r, struct g_object *s, struct i_list *lis
 /* checks for intersections between the ray and object, returns number found */
 int ray_intersect(const struct ray r, struct g_object *obj, struct i_list *list)
 {
+        // need to transform the ray by the inverse of the objects transform
+        // matrix, as this is easier than translating the object itself
+        struct ray t_ray = ray_transform(r, matrix_inverse(obj->transform));
+
         switch (obj->type) {
         case SHAPE_SPHERE:
-                return _sphere_intersect(r, obj, list);
+                return _sphere_intersect(t_ray, obj, list);
                 break;
         default:
                 break;
@@ -81,4 +85,14 @@ int ray_intersect(const struct ray r, struct g_object *obj, struct i_list *list)
 
         return 0;
 }
+
+/* returns the ray that results in the current ray being transformed by the matrix */
+struct ray ray_transform(const struct ray r, struct matrix m)
+{
+        struct tuple org = matrix_transform(m, r.org);
+        struct tuple dir = matrix_transform(m, r.dir);
+        struct ray res = {org, dir};
+        return res;
+}
+
 

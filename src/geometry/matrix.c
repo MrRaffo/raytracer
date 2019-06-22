@@ -220,30 +220,30 @@ const struct tuple matrix_transform(const struct matrix m, const struct tuple t)
         return tuple_new(values[0], values[1], values[2], values[3]);
 }
 
-/* takes a list of matrices and applies them all to a point 
- * applies matrices in reverse order, ie, intuitively, always applies
- * to the identity matrix so this need not be provided, last argument
- * must always be NULL 
- * must pass pointers to matrices, max 16 */
-const struct tuple transform(const struct tuple t, ...)
+/* takes a list of matrices and returns their product, list must be null 
+ * terminated and at least one matrix must be provided. all transformations
+ * will be applied to an identity matrix, so this need not be part of the
+ * list. operations performed in reverse, ie, intuitive, order */
+struct matrix transform(struct matrix *mat, ...)
 {
 #define MAX_MAT 16
         va_list argp;
-        va_start(argp, t);
+        va_start(argp, mat);
         struct matrix *m[MAX_MAT];
-        int count = 0;
+        m[0] = mat;
+        int count = 1;
         while ((m[count] = (struct matrix *)va_arg(argp, void*)) != NULL && count < MAX_MAT) {
                 count++;
         }
 
         struct matrix transform = matrix_identity(4);
         while (count-- > 0) {
-                transform = matrix_multiply(transform, *m[count]);
+                transform = matrix_multiply(*m[count], transform);
         }
 
         va_end(argp);
 
-        return matrix_transform(transform, t);
+        return transform;
 }
 
 /* Return the transpose of the given matrix */
