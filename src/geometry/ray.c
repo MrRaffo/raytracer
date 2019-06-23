@@ -86,7 +86,7 @@ int ray_intersect(const struct ray r, struct g_object *obj, struct i_list *list)
 {
         // need to transform the ray by the inverse of the objects transform
         // matrix, as this is easier than translating the object itself
-        struct ray t_ray = ray_transform(r, matrix_inverse(obj->transform));
+        struct ray t_ray = ray_transform(r, obj->inverse_transform);
 
         switch (obj->type) {
         case SHAPE_SPHERE:

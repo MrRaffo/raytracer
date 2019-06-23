@@ -12,12 +12,17 @@ struct g_object *test_sphere()
         struct g_object *s = (struct g_object *)mem_alloc(sizeof(struct g_object));
         s->type = SHAPE_SPHERE;
         s->transform = matrix_identity(4);
+        s->inverse_transform = matrix_identity(4);
         return s;
 }
 
-/* set the objects transform matrix */
+/* set the objects transform and inverse matrix */
 void object_transform(struct g_object *shape, struct matrix m)
 {
-        // TODO - might be nice to free memory from previous matrix here
+        mem_free(shape->transform.matrix);
+        mem_free(shape->inverse_transform.matrix);
+
         shape->transform = m;
+        // saving the inverse here prevents needing every ray to calculate it
+        shape->inverse_transform = matrix_inverse(m);
 }

@@ -20,12 +20,13 @@ enum shape_type {
 struct g_object {
         enum shape_type type;
         struct matrix transform;
+        struct matrix inverse_transform;
 };
 
 /* create a sphere object, used for testing functions */
 struct g_object *test_sphere();
 
-/* set the objects transform matrix */
+/* set the objects transform and inverse matrix */
 void object_transform(struct g_object *shape, struct matrix m);
 
 #endif // __g_object_h__

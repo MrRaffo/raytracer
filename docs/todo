@@ -3,5 +3,6 @@ Add ability to profile using 'gprof'
 
 Add statistics to mem.o, allow it to report total memory used etc
 
-Let shapes store the inverse of their transformations so this isn't
-calculated for every ray
+multithreading?
+
+use alarm lib call to indicate progress while image is being processed
