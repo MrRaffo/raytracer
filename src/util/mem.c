@@ -5,6 +5,10 @@
 #include <util/log.h>
 
 struct mem_block *mem_list = NULL;
+static size_t mem_requested = 0;
+static size_t mem_total = 0;
+static int mem_requests = 0;
+
 
 /*
  * Allocates memory, aborts program if unsuccessful
@@ -76,6 +80,9 @@ void *mem_alloc(size_t size)
                 mem_ptr = ptr->next->memory;
         }
 
+        mem_requested += size;
+        mem_total += size + sizeof(struct mem_block);
+        mem_requests++;
         return mem_ptr;
 }
 
@@ -106,7 +113,9 @@ void mem_free(void *ptr)
                 log_err("Free failed, memory not found\n");
                 return;
         }
-
+        
+        mem_requested -= mblock->size;
+        mem_total -= (mblock->size + sizeof(struct mem_block));
         free(mblock->memory);
 
         if (mblock == mem_list && mblock->next != NULL) { mem_list = mblock->next; }
@@ -148,3 +157,14 @@ void mem_print_list(void)
                 ptr = ptr->next;
         }
 }
+
+/*
+ * Show the amount of memory currently in use
+ */
+void mem_print(void)
+{
+        log_msg("[MEM USE] %ld (%ld KB)", mem_requested, mem_requested / 1024);
+        log_msg("[MEM TOT] %ld (%ld KB)", mem_total, mem_total / 1024);
+        log_msg("[MEM REQ] %d successful alloc requests", mem_requests);
+}
+

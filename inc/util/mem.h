@@ -41,4 +41,9 @@ void mem_free_all(void);
  */
 void mem_print_list(void);
 
+/*
+ * Show the amount of memory currently in use
+ */
+void mem_print(void);
+
 #endif // __mem_h__

@@ -57,6 +57,7 @@ int main()
 
         export_to_bmp(canvas, "img/shadow.bmp");
 
+        mem_print();
         mem_free_all();
 
         return 0;
