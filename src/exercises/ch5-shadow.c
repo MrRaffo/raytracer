@@ -13,8 +13,8 @@
 #include <util/log.h>
 #include <util/file.h>
 
-#define WIDTH 200
-#define HEIGHT 200
+#define WIDTH 800
+#define HEIGHT 800
 
 #define WALL_SIZE 7.0
 

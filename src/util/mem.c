@@ -5,6 +5,7 @@
 #include <util/log.h>
 
 struct mem_block *mem_list = NULL;
+struct mem_block *mem_top = NULL;
 static size_t mem_requested = 0;
 static size_t mem_total = 0;
 static int mem_requests = 0;
@@ -67,22 +68,21 @@ void *mem_alloc(size_t size)
         // create the linked list if it doesn't exist
         if (mem_list == NULL) {
                 mem_list = _create_mem_block(size);
+                mem_top = mem_list;
                 mem_ptr = mem_list->memory;
         } else {
                 // traverse mem_list to get to last entry
-                struct mem_block *ptr = mem_list;
-                while (ptr->next != NULL) {
-                        ptr = ptr->next;
-                }
-                
-                ptr->next = _create_mem_block(size);
-                ptr->next->prev = ptr;
-                mem_ptr = ptr->next->memory;
+                mem_top->next = _create_mem_block(size);
+                mem_top->next->prev = mem_top;
+                mem_top->next->next = NULL;
+                mem_ptr = mem_top->next->memory;
+                mem_top = mem_top->next;
         }
 
         mem_requested += size;
         mem_total += size + sizeof(struct mem_block);
         mem_requests++;
+
         return mem_ptr;
 }
 
