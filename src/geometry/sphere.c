@@ -18,3 +18,6 @@ const struct sphere sphere_new(const struct tuple pos, const double radius)
         struct sphere s = {pos, radius};
         return s;
 }
+
+
+

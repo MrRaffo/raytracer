@@ -16,4 +16,5 @@ const struct sphere sphere_unit();
 /* returns a sphere to the given specifications */
 const struct sphere sphere_new(const struct tuple pos, const double radius);
 
+
 #endif // __sphere_h__

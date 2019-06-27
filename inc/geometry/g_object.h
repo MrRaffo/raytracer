@@ -20,7 +20,8 @@ enum shape_type {
 struct g_object {
         enum shape_type type;
         struct matrix transform;
-        struct matrix inverse_transform;
+        struct matrix inverse_transform;        // for ray intersections
+        struct matrix transpose_inverse;        // for surface normals
 };
 
 /* create a sphere object, used for testing functions */
@@ -28,5 +29,10 @@ struct g_object *test_sphere();
 
 /* set the objects transform and inverse matrix */
 void object_transform(struct g_object *shape, struct matrix m);
+
+/* calculate the surface normal on an object at the given point */
+const struct tuple object_normal_at(struct g_object *obj, struct tuple point);
+
+const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple point);
 
 #endif // __g_object_h__
