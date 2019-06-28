@@ -72,5 +72,9 @@ const double vector_dot(const struct tuple v1, const struct tuple v2);
 // return a new vector, the cross product of the two vectors passed
 // Not commutative - returns a vector perpendicular to the 2 passed
 const struct tuple vector_cross(const struct tuple v1, const struct tuple v2);
-      
+ 
+/* return the resulting vector after reflecting the given vector against the
+ * given surface normal */
+const struct tuple vector_reflect(struct tuple in, struct tuple normal);
+
 #endif // __tuple_h__

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+
 #include <geometry/tuple.h>
 #include <geometry/gmaths.h>
 #include <util/log.h>
@@ -203,6 +205,28 @@ int TST_VectorCross()
         return 1;
 }
 
+// test reflection of vector against given surface normal
+int TST_VectorReflect()
+{
+        struct tuple vec = tuple_vector(1.0, -1.0, 0.0);
+        struct tuple nor = tuple_vector(0.0, 1.0, 0.0);
+        struct tuple ref = vector_reflect(vec, nor);
+
+        assert(tuple_equal(ref, tuple_vector(1.0, 1.0, 0.0)) == 1);
+
+        // reflect vertical drop against 45 degree incline should produce
+        // horizontal vector
+        vec = tuple_vector(0.0, -1.0, 0.0);
+        nor = tuple_vector(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0.0);
+        ref = vector_reflect(vec, nor);
+
+        assert(tuple_equal(ref, tuple_vector(1.0, 0.0, 0.0)) == 1);
+
+        log_msg("[Vector Reflect] Complete, all tests pass!");
+        
+        return 1;
+}
+
 int main() 
 {
         TST_TupleType();
@@ -217,6 +241,7 @@ int main()
         TST_VectorNormal();
         TST_VectorDot();
         TST_VectorCross();
+        TST_VectorReflect();
         
         return 0;
 }

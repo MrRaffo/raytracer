@@ -149,3 +149,10 @@ const struct tuple vector_cross(const struct tuple v1, const struct tuple v2)
                             v1.z * v2.x - v1.x * v2.z,
                             v1.x * v2.y - v1.y * v2.x);
 }
+
+/* return the resulting vector after reflecting the given vector against the
+ * given surface normal */
+const struct tuple vector_reflect(struct tuple in, struct tuple normal)
+{
+        return tuple_subtract(in, tuple_scale(normal, 2.0*vector_dot(in, normal)));
+}
