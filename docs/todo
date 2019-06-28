@@ -6,3 +6,8 @@ Add statistics to mem.o, allow it to report total memory used etc
 multithreading?
 
 use alarm lib call to indicate progress while image is being processed
+
+consider moving g_object from 'geometry' to 'scene'
+
+consider renaming functions like 'test_sphere' and 'test_material' to 
+'default_sphere' and 'default_material'

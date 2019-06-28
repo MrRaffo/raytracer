@@ -9,6 +9,7 @@
 
 #include <geometry/sphere.h>
 #include <geometry/matrix.h>
+#include <scene/material.h>
 
 enum shape_type {
         SHAPE_ORIGIN = 0,           // Special type for the start of a ray
@@ -19,6 +20,7 @@ enum shape_type {
 // a graphical or geometric object
 struct g_object {
         enum shape_type type;
+        struct material material;
         struct matrix transform;
         struct matrix inverse_transform;        // for ray intersections
         struct matrix transpose_inverse;        // for surface normals

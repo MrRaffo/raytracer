@@ -3,6 +3,7 @@
 #include <geometry/tuple.h>
 #include <geometry/matrix.h>
 #include <geometry/gmaths.h>
+#include <scene/material.h>
 
 #include <util/log.h>
 #include <util/mem.h>

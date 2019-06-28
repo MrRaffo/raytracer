@@ -3,6 +3,7 @@
 #include <geometry/g_object.h>
 #include <geometry/sphere.h>
 #include <geometry/matrix.h>
+#include <scene/material.h>
 
 #include <util/mem.h>
 #include <util/log.h>
@@ -12,6 +13,7 @@ struct g_object *test_sphere()
 {
         struct g_object *s = (struct g_object *)mem_alloc(sizeof(struct g_object));
         s->type = SHAPE_SPHERE;
+        s->material = test_material();
         s->transform = matrix_identity(4);
         s->inverse_transform = matrix_identity(4);
         s->transpose_inverse = matrix_identity(4);
