@@ -12,6 +12,14 @@ const struct material test_material()
         return m;
 }
 
+/* create a new material with given properties */
+const struct material material_new(struct color color, double ambient, 
+                        double diffuse, double specular, double shininess)
+{
+        struct material m = {color, ambient, diffuse, specular, shininess};
+        return m;
+}
+
 /* return 1 if 2 passed materials are the same, 0 otherwise */
 const int material_equal(struct material m1, struct material m2)
 {

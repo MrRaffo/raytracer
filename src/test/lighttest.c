@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <assert.h>
+#include <math.h>
 
 #include <scene/light.h>
 #include <geometry/tuple.h>
@@ -9,7 +10,7 @@
 #include <util/mem.h>
 #include <util/log.h>
 
-TST_PLightNew()
+int TST_PLightNew()
 {
         struct tuple p = tuple_point(0.0, 0.0, 0.0);
         struct color c = color_new(1.0, 1.0, 1.0);
@@ -28,9 +29,55 @@ TST_PLightNew()
         return 1;
 }
 
+int TST_Phong()
+{
+        struct material m = test_material();
+        struct tuple p = tuple_point(0.0, 0.0, 0.0);
+
+        // eye between light source and object, full intensity
+        struct tuple eye_v = tuple_vector(0.0, 0.0, -1.0);
+        struct tuple obj_n = tuple_vector(0.0, 0.0, -1.0);
+        struct p_light light = p_light_new(tuple_point(0.0, 0.0, -10.0), color_new(1.0, 1.0, 1.0));
+        struct color result = light_phong(m, light, p, eye_v, obj_n);
+        
+        assert(color_equal(result, color_new(1.9, 1.9, 1.9)) == 1);
+
+        // eye at 45 degree to surface normal
+        eye_v = tuple_vector(0.0, sqrt(2.0)/2.0, -sqrt(2.0)/2.0);
+        result = light_phong(m, light, p, eye_v, obj_n);
+
+        assert(color_equal(result, color_new(1.0, 1.0, 1.0)) == 1);
+
+        // light 45 degrees from normal, eye at 0
+        eye_v = tuple_vector(0.0, 0.0, -1.0);
+        light = p_light_new(tuple_point(0.0, 10.0, -10.0), color_new(1.0, 1.0, 1.0));
+        result = light_phong(m, light, p, eye_v, obj_n);
+
+        assert(color_equal(result, color_new(0.7364, 0.7364, 0.7364)) == 1);
+
+        // light 45 degrees above, eye 45 degrees below
+        eye_v = tuple_vector(0.0, -sqrt(2.0)/2.0, -sqrt(2.0)/2.0);
+        result = light_phong(m, light, p, eye_v, obj_n);
+
+        assert(color_equal(result, color_new(1.6364, 1.6364, 1.6364)) == 1);
+
+        // light on other side of object to eye
+        light = p_light_new(tuple_point(0.0, 0.0, 10.0), color_new(1.0, 1.0, 1.0));
+        eye_v = tuple_vector(0.0, 0.0, -1.0);
+        result = light_phong(m, light, p, eye_v, obj_n);
+
+        // only ambient shows
+        assert(color_equal(result, color_new(0.1, 0.1, 0.1)) == 1);
+
+        log_msg("[Phong Lighting] Complete, all tests pass!");
+
+        return 1;
+}
+
 int main()
 {
         TST_PLightNew();
+        TST_Phong();
 
         mem_free_all();
 

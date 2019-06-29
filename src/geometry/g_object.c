@@ -61,3 +61,11 @@ const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple poi
 
         return vector_normal(world_normal);
 }
+
+/* assign material properties to an object */
+void object_set_material(struct g_object *obj, const struct material m)
+{
+        obj->material = m;
+}
+
+
