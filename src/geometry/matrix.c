@@ -226,7 +226,6 @@ const struct tuple matrix_transform(const struct matrix m, const struct tuple t)
  * list. operations performed in reverse, ie, intuitive, order */
 struct matrix transform(struct matrix *mat, ...)
 {
-#define MAX_MAT 16
         va_list argp;
         va_start(argp, mat);
 

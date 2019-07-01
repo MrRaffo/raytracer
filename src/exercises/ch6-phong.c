@@ -34,6 +34,12 @@ int main()
         struct g_object *sphere = test_sphere();
         struct material m = material_new(red, 0.1, 0.9, 0.9, 200.0);
         sphere->material = m;
+        //struct matrix move = matrix_translate(0.0, 0.0, 0.0);
+        //struct matrix move = matrix_scale(1.0, 1.0, 0.2);
+        //struct matrix roty = matrix_rotate_y(0.9);
+        //struct matrix rotx = matrix_rotate_x(0.5);
+        //struct matrix t = transform(&move, &rotx, &roty, NULL);
+        //object_transform(sphere, t);
 
         // light source
         struct tuple light_pos = tuple_point(-10.0, 10.0, -10.0);
@@ -42,6 +48,7 @@ int main()
 
         // camera
         struct tuple cam_pos = tuple_point(0.0, 0.0, CAM_POS_Z);
+
 
         // size of pixels in world space
         double pixel_size = WALL_SIZE / WIDTH;
@@ -53,7 +60,7 @@ int main()
                 double world_y = half - pixel_size * y;
 
                 for(x = 0; x < WIDTH; x++) {
-                        double world_x = half - pixel_size * x;
+                        double world_x = -half + pixel_size * x;
 
                         struct tuple pos = tuple_point(world_x, world_y, WALL_POS_Z);
                         struct ray ray = ray_new(cam_pos, 
