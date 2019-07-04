@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 
+#include <geometry/gmaths.h>
 #include <scene/material.h>
 #include <graphics/color.h>
 

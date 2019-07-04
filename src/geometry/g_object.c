@@ -68,4 +68,11 @@ void object_set_material(struct g_object *obj, const struct material m)
         obj->material = m;
 }
 
+/* return 1 if objects are identical */
+int object_equal(struct g_object *obj1, struct g_object *obj2)
+{
+        return (obj1->type == obj2->type &&
+                material_equal(obj1->material, obj2->material) &&
+                matrix_equal(obj1->transform, obj2->transform));
+}
 

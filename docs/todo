@@ -11,3 +11,6 @@ consider moving g_object from 'geometry' to 'scene'
 
 consider renaming functions like 'test_sphere' and 'test_material' to 
 'default_sphere' and 'default_material'
+
+need to work out how world object will be passed - create on heap and use
+pointers?

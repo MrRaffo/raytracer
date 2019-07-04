@@ -40,4 +40,7 @@ const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple poi
 /* assign material properties to an object */
 void object_set_material(struct g_object *obj, const struct material m);
 
+/* return 1 if objects are identical */
+int object_equal(struct g_object *obj1, struct g_object *obj2);
+
 #endif // __g_object_h__

@@ -159,7 +159,6 @@ int TST_RaySphereTransformIntersect()
         return 1;
 }
 
-
 int main()
 {
         TST_RayNew();
