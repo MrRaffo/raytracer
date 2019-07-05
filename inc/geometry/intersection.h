@@ -3,6 +3,8 @@
 
 #include <geometry/gmaths.h>
 #include <geometry/g_object.h>
+#include <geometry/tuple.h>
+#include <geometry/ray.h>
 
 /* handles all ray collisions */
 
@@ -33,6 +35,14 @@ struct i_list {
         struct i_node *bottom;
 };
 
+struct i_comp {
+        double t;
+        struct g_object *obj;
+        struct tuple point;
+        struct tuple eye_v;
+        struct tuple normal;
+};
+
 /* create a new intersection */
 struct intersection *intersection_new(double t, struct g_object *s);
 
@@ -52,5 +62,8 @@ struct intersection *get_intersection(struct i_list *list, int index);
 /* return the first intersection from the origin of a ray in the
  * direction of the ray */
 struct intersection *i_list_hit(struct i_list *list);
+
+/* precompute the state of an intersection */
+struct i_comp i_pre_compute(struct intersection *i, struct ray r);
 
 #endif // __intersection_h__

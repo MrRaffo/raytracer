@@ -2,6 +2,8 @@
 
 #include <geometry/intersection.h>
 #include <geometry/g_object.h>
+#include <geometry/tuple.h>
+#include <geometry/ray.h>
 
 #include <util/log.h>
 #include <util/mem.h>
@@ -136,4 +138,16 @@ struct intersection *i_list_hit(struct i_list *list)
         return get_intersection(list, 0);
 }
 
+/* precompute the state of an intersection */
+struct i_comp i_pre_compute(struct intersection *i, struct ray r)
+{
+        double t = i->t;
+        struct g_object *obj = i->obj;
+        struct tuple point = ray_position(r, t);
+        struct tuple eye_v = tuple_negate(r.dir);
+        struct tuple normal = object_normal_at(obj, point);
+
+        struct i_comp comp = {t, obj, point, eye_v, normal};
+        return comp;
+}
 

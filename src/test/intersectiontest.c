@@ -3,6 +3,8 @@
 
 #include <geometry/g_object.h>
 #include <geometry/intersection.h>
+#include <geometry/tuple.h>
+#include <geometry/ray.h>
 
 #include <util/mem.h>
 #include <util/log.h>
@@ -115,12 +117,32 @@ int TST_IntersectionHit()
         return 1;
 }
 
+TST_PreComputations()
+{
+        struct ray r = ray_new(tuple_point(0.0, 0.0, -5.0),
+                               tuple_vector(0.0, 0.0, 1.0));
+        struct g_object *s = test_sphere();
+        struct intersection *i = intersection_new(4.0, s);
+
+        struct i_comp comps = i_pre_compute(i, r);
+
+        assert(double_equal(comps.t, 4.0) == 1);
+        assert(tuple_equal(comps.point, tuple_point(0.0, 0.0, -1.0)) == 1);
+        assert(tuple_equal(comps.eye_v, tuple_vector(0.0, 0.0, -1.0)) == 1 );
+        assert(tuple_equal(comps.normal, tuple_vector(0.0, 0.0, -1.0)) == 1);
+
+        log_msg("[Pre Computations] Complete, all tests pass!");
+
+        return 1;
+}
+
 
 int main() {
         
         TST_IntersectionLength();
         TST_IntersectionIndex();
         TST_IntersectionHit();
+        TST_PreComputations();
 
         mem_free_all();
 
