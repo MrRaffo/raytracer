@@ -136,6 +136,29 @@ TST_PreComputations()
         return 1;
 }
 
+TST_InsideObject()
+{
+        struct ray r = ray_new(tuple_point(0.0, 0.0, -5.0),
+                               tuple_vector(0.0, 0.0, 1.0));
+        struct g_object *s = test_sphere();
+        struct intersection *i = intersection_new(4.0, s);
+
+        struct i_comp comps = i_pre_compute(i, r);
+        assert(comps.inside == 0);
+
+        r = ray_new(tuple_point(0.0, 0.0, 0.0), tuple_vector(0.0, 0.0, 1.0));
+        i->t = 1.0;
+
+        comps = i_pre_compute(i, r);
+        assert(tuple_equal(comps.point, tuple_point(0.0, 0.0, 1.0)) == 1);
+        assert(tuple_equal(comps.eye_v, tuple_vector(0.0, 0.0, -1.0)) == 1);
+        assert(comps.inside == 1);
+        // normal is negated as ray is coming from inside the object
+        assert(tuple_equal(comps.normal, tuple_vector(0.0, 0.0, -1.0)) == 1);
+
+        log_msg("[Intersection Inside] Complete, all tests pass!");
+        return 1;
+}
 
 int main() {
         
@@ -143,6 +166,7 @@ int main() {
         TST_IntersectionIndex();
         TST_IntersectionHit();
         TST_PreComputations();
+        TST_InsideObject();
 
         mem_free_all();
 

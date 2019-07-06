@@ -146,8 +146,17 @@ struct i_comp i_pre_compute(struct intersection *i, struct ray r)
         struct tuple point = ray_position(r, t);
         struct tuple eye_v = tuple_negate(r.dir);
         struct tuple normal = object_normal_at(obj, point);
+        
+        // check if ray is crossing bounday from inside or outside
+        int inside;
+        if (vector_dot(normal, eye_v) < 0.0) {
+                inside  = 1;
+                normal = tuple_negate(normal);
+        } else {
+                inside = 0;
+        }
 
-        struct i_comp comp = {t, obj, point, eye_v, normal};
+        struct i_comp comp = {t, obj, point, eye_v, normal, inside};
         return comp;
 }
 

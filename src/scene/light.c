@@ -29,6 +29,7 @@ const int p_light_equal(struct p_light l1, struct p_light l2)
 const struct color light_phong(struct material m, struct p_light l,
                 struct tuple p,  struct tuple eye_v, struct tuple obj_n)
 {
+        printf("in phong: %g\n", m.diffuse);
         struct color effective_color = color_multiply(m.color, l.intensity);
         struct tuple light_v = vector_normal(tuple_subtract(l.position, p));
         struct color ambient = color_scale(effective_color, m.ambient);
