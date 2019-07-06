@@ -2,9 +2,12 @@
 #define __world_h__
 
 #include <scene/light.h>
-#include <geometry/g_object.h>
-#include <geometry/ray.h>
-#include <geometry/intersection.h>
+
+/* forward declarations */
+struct g_object;
+struct ray;
+struct i_list;
+struct i_comp;
 
 struct w_obj_node {
         struct g_object *object;
@@ -22,6 +25,7 @@ struct world {
         struct w_obj_node *objects;
         struct w_light_node *lights;
 };
+
 
 /* create a new world with no objects or lights */
 struct world *world_new();
@@ -44,5 +48,8 @@ int world_has_light(struct world *w, struct p_light light);
 /* count total intersections with given ray against all objects in world
  * returns number of intersections found */
 int world_ray_intersections(struct world *w, struct ray r, struct i_list *list);
+
+/* calculate the color of an intersection */
+struct color world_shade_hit(struct world *w, struct i_comp comps);
 
 #endif // __world_h__

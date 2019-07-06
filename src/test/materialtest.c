@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include <geometry/gmaths.h>
 #include <scene/material.h>
 #include <graphics/color.h>
 
 #include <util/mem.h>
 #include <util/log.h>
 
-TST_TestMaterial()
+int TST_TestMaterial()
 {
         struct material m = test_material();
         assert(color_equal(m.color, color_new(1.0, 1.0, 1.0)) == 1);

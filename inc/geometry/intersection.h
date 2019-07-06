@@ -4,7 +4,6 @@
 #include <geometry/gmaths.h>
 #include <geometry/g_object.h>
 #include <geometry/tuple.h>
-#include <geometry/ray.h>
 
 /* handles all ray collisions */
 
@@ -41,7 +40,10 @@ struct i_comp {
         struct tuple point;
         struct tuple eye_v;
         struct tuple normal;
+        int inside;     // true or false value
 };
+
+struct ray;   // need to know this exists
 
 /* create a new intersection */
 struct intersection *intersection_new(double t, struct g_object *s);

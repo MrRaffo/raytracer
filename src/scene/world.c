@@ -26,7 +26,7 @@ struct world *test_world()
 {
         struct g_object *s1 = test_sphere();
         struct g_object *s2 = test_sphere();
-        struct material m1 = material_new(color_new(0.8, 1.0, 0.6), 0.0, 0.7, 0.2, 0.0);
+        struct material m1 = material_new(color_new(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200.0);
         struct matrix mat = matrix_scale(0.5, 0.5, 0.5);
 
         object_set_material(s1, m1);
@@ -127,7 +127,7 @@ int world_has_light(struct world *w, struct p_light light)
 
 /* count total intersections with given ray against all objects in world
  * returns number of intersections found */
-int world_ray_intersect(struct world *w, struct ray ray, struct i_list *list)
+int world_ray_intersections(struct world *w, struct ray ray, struct i_list *list)
 {
         struct w_obj_node *ptr = w->objects;
         int count = 0;
@@ -138,4 +138,13 @@ int world_ray_intersect(struct world *w, struct ray ray, struct i_list *list)
         } while((ptr = ptr->next) != NULL);
 
         return count;
+}
+
+/* calculate the color of an intersection */
+/* TODO - this currently only uses the first light in the world */
+struct color world_shade_hit(struct world *w, struct i_comp comps)
+{
+        return light_phong(comps.obj->material,
+                           w->lights->light,
+                           comps.point, comps.eye_v, comps.normal);
 }
