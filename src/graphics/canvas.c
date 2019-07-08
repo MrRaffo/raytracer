@@ -86,3 +86,19 @@ const int canvas_write_pixel(struct canvas canvas, int x, int y, struct color co
         return 1;
 }
 
+/*
+ * blit an area of one canvas onto another, adding the colours together
+ */
+void canvas_blit_add(struct canvas dest, struct canvas source, 
+                     int dx, int dy, int sx, int sy, int sw, int sh)
+{
+        int x, y;
+        struct color newcol;
+        for (x = 0; x < sw; x++) {
+                for (y = 0; y < sh; y++) {
+                        newcol = color_add(canvas_read_pixel(dest, dx+x, dy+y),
+                                           canvas_read_pixel(source, sx+x, sy+y));
+                        canvas_write_pixel(dest, dx+x, dy+y, newcol);
+                }
+        }
+}

@@ -141,10 +141,33 @@ int world_ray_intersections(struct world *w, struct ray ray, struct i_list *list
 }
 
 /* calculate the color of an intersection */
-/* TODO - this currently only uses the first light in the world */
 struct color world_shade_hit(struct world *w, struct i_comp comps)
 {
-        return light_phong(comps.obj->material,
-                           w->lights->light,
-                           comps.point, comps.eye_v, comps.normal);
+        struct color c = color_new(0.0, 0.0, 0.0);
+        struct w_light_node *l = w->lights;
+        
+        while (l != NULL) {
+                c = color_add(c, light_phong(comps.obj->material, l->light,
+                                             comps.point, comps.eye_v,
+                                             comps.normal));
+        
+                l = l->next;
+        }
+                
+        return c;        
+}
+
+/* wrapper for intersect, pre_compute and shade_hit */
+struct color world_color_at(struct world *w, struct ray r)
+{
+        struct i_list *list = i_list_new();
+        world_ray_intersections(w, r, list);
+
+        struct intersection *i = i_list_hit(list);
+        if (i == NULL) {
+                return color_new(0.0, 0.0, 0.0);
+        }
+
+        struct i_comp comp = i_pre_compute(i, r);
+        return world_shade_hit(w, comp);
 }

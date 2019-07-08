@@ -35,4 +35,10 @@ struct color canvas_read_pixel(struct canvas canvas, int x, int y);
  */
 const int canvas_write_pixel(struct canvas canvas, int x, int y, struct color col);
 
+/*
+ * blit an area of one canvas onto another, adding the colours together
+ */
+void canvas_blit_add(struct canvas dest, struct canvas source, 
+                     int dx, int dy, int sx, int sy, int sw, int sh);
+
 #endif // __canvas_h__

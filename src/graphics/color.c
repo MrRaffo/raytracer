@@ -14,7 +14,7 @@
  */
 struct color color_new(const double r, const double g, const double b)
 {
-        const struct color c = {r, g, b};
+        struct color c = {r, g, b};
         return c;
 }
 

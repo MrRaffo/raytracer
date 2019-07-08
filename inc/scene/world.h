@@ -52,4 +52,7 @@ int world_ray_intersections(struct world *w, struct ray r, struct i_list *list);
 /* calculate the color of an intersection */
 struct color world_shade_hit(struct world *w, struct i_comp comps);
 
+/* wrapper for intersect, pre_compute and shade_hit */
+struct color world_color_at(struct world *w, struct ray r);
+
 #endif // __world_h__

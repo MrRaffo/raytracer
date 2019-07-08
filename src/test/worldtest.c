@@ -100,6 +100,35 @@ int TST_WorldShade()
         log_msg("[Shade Hit] Complete, all tests pass!");
         return 1;
 }
+
+int TST_WorldColorAt()
+{
+        struct world *w = test_world();
+        struct ray r = ray_new(tuple_point(0.0, 0.0, -5.0), 
+                               tuple_vector(0.0, 1.0, 0.0));
+
+        // ray misses objects
+        struct color c = world_color_at(w, r);
+        assert(color_equal(c, color_new(0.0, 0.0, 0.0)) == 1);
+
+        r.dir = tuple_vector(0.0, 0.0, 1.0);
+        struct color c2 = world_color_at(w, r);
+        assert(color_equal(c2, color_new(0.38066, 0.47583, 0.2855)) == 1);
+
+        // ray starts inside outer sphere and hits inner sphere
+        w->objects->object->material.ambient = 1.0;
+        w->objects->next->object->material.ambient = 1.0;
+
+        r.org = tuple_point(0.0, 0.0, 0.75);
+        r.dir = tuple_vector(0.0, 0.0, -1.0);
+
+        struct color c3 = world_color_at(w, r);
+        assert(color_equal(c3, w->objects->next->object->material.color) == 1);
+        
+        log_msg("[Color At] Complete, all tests pass!");
+
+        return 1;
+}
         
 int main()
 {
@@ -107,6 +136,7 @@ int main()
         TST_TestWorld();
         TST_WorldRayIntersect();
         TST_WorldShade();
+        TST_WorldColorAt();
 
         mem_free_all();
         return 0;
