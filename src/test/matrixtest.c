@@ -548,6 +548,42 @@ int TST_MatrixChain2()
         return 1;
 }
 
+int TST_ViewTransform()
+{
+        struct tuple from = tuple_point(0.0, 0.0, 0.0);
+        struct tuple to = tuple_point(0.0, 0.0, -1.0);
+        struct tuple up = tuple_vector(0.0, 1.0, 0.0);
+
+        struct matrix t = matrix_view_transform(from, to, up);
+        assert(matrix_equal(t, matrix_identity(4)) == 1);
+
+        from = tuple_point(0.0, 0.0, 8.0);
+        to = tuple_point(0.0, 0.0, 0.0);
+        // up remains the same
+
+        t = matrix_view_transform(from, to, up);
+        assert(matrix_equal(t, matrix_translate(0.0, 0.0, -8.0)) == 1);
+
+        from = tuple_point(1.0, 3.0, 2.0);
+        to = tuple_point(4.0, -2.0, 8.0);
+        up = tuple_vector(1.0, 1.0, 0.0);
+
+        t = matrix_view_transform(from, to, up);
+        double res_data[] = {-0.50709, 0.50709, 0.67612, -2.36643,
+                              0.76772, 0.60609, 0.12122, -2.82843,
+                              -0.35857, 0.59761, -0.71714, 0.0000,
+                              0.00000, 0.00000, 0.00000, 1.0000};
+                              
+        struct matrix result = matrix_new(4, 4);
+        result.matrix = res_data;
+
+        assert(matrix_equal(t, result) == 1);
+
+        fprintf(stdout, "[View Transform] Complete, all tests pass!");
+
+        return 1;
+}
+
 int main()
 {
         TST_MatrixNew();
@@ -574,6 +610,8 @@ int main()
         TST_MatrixShear();
         TST_MatrixChain();
         TST_MatrixChain2();
+
+        TST_ViewTransform();
 
         mem_free_all();
 

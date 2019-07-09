@@ -451,3 +451,30 @@ struct matrix matrix_shear(const double xy, const double xz, const double yx, co
         return shear;
 }
 
+/* view transform *
+ * create a matrix that transforms the world relative the 'eye' position */
+struct matrix matrix_view_transform(struct tuple from, struct tuple to, struct tuple up)
+{
+        struct tuple forward = vector_normal(tuple_subtract(to, from));
+        struct tuple upn = vector_normal(up);
+        struct tuple left = vector_cross(forward, upn);
+        struct tuple true_up = vector_cross(left, forward);
+
+        struct matrix orientation = matrix_new(4, 4);
+        
+        orientation.matrix[0] = left.x;
+        orientation.matrix[1] = left.y;
+        orientation.matrix[2] = left.z;
+        
+        orientation.matrix[4] = true_up.x;
+        orientation.matrix[5] = true_up.y;
+        orientation.matrix[6] = true_up.z;
+
+        orientation.matrix[8] = -forward.x;
+        orientation.matrix[9] = -forward.y;
+        orientation.matrix[10] = -forward.z;
+
+        orientation.matrix[15] = 1.0;
+
+        return matrix_multiply(orientation, matrix_translate(-from.x, -from.y, -from.z));
+}

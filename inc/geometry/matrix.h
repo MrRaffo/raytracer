@@ -109,4 +109,8 @@ struct matrix matrix_rotate_z(const double radians);
 /* return a matrix that shears */
 struct matrix matrix_shear(const double xy, const double xz, const double yx, const double yz, const double zx, const double zy);
 
+/* view transform *
+ * create a matrix that transforms the world relative the 'eye' position */
+struct matrix matrix_view_transform(struct tuple from, struct tuple to, struct tuple up);
+
 #endif // __matrix_h__

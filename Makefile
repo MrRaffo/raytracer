@@ -20,7 +20,7 @@ CCFLAGS = -g -Wall
 
 # Folders
 # library files
-SOURCES = tuple.c gmaths.c color.c mem.c log.c canvas.c file.c matrix.c ray.c sphere.c intersection.c g_object.c light.c material.c world.c
+SOURCES = tuple.c gmaths.c color.c mem.c log.c canvas.c file.c matrix.c ray.c sphere.c intersection.c g_object.c light.c material.c world.c camera.c
 
 OBJECTS = $(patsubst %.c, obj/%.o, $(SOURCES))
 LIBRARY = lib/libraytracer.a
