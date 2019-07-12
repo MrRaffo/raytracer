@@ -29,6 +29,9 @@ struct g_object {
 /* create a sphere object, used for testing functions */
 struct g_object *test_sphere();
 
+/* create a sphere with given properties */
+struct g_object *sphere(struct material material, struct matrix matrix);
+
 /* set the objects transform and inverse matrix */
 void object_transform(struct g_object *shape, struct matrix m);
 

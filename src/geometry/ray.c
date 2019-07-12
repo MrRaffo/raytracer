@@ -55,7 +55,6 @@ int _sphere_intersect(const struct ray r, struct g_object *s, struct i_list *lis
         double discriminant = (b * b) - (4.0 * a) * c;
 
         if (discriminant < 0.0) {
-                list->count = 0;
                 return 0;
         }
 
