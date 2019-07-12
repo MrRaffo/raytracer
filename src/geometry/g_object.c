@@ -20,11 +20,25 @@ struct g_object *test_sphere()
         return s;
 }
 
+/* create a sphere with given properties */
+struct g_object *sphere(struct material material, struct matrix matrix)
+{
+        struct g_object *s = (struct g_object *)mem_alloc(sizeof(struct g_object));
+        s->type = SHAPE_SPHERE;
+        s->material = material;
+        object_transform(s, matrix);
+
+        return s;
+}
+
+
 /* set the objects transform and inverse matrix */
 void object_transform(struct g_object *shape, struct matrix m)
 {
-        mem_free(shape->transform.matrix);
-        mem_free(shape->inverse_transform.matrix);
+        if (shape->transform.matrix != NULL) {
+                mem_free(shape->transform.matrix);
+                mem_free(shape->inverse_transform.matrix);
+        }
 
         shape->transform = m;
         // saving the inverse here prevents needing every ray to calculate it

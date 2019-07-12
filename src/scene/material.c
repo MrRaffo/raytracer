@@ -13,6 +13,12 @@ const struct material test_material()
         return m;
 }
 
+/* create a default white material */
+const struct material material()
+{
+        return test_material();
+}
+
 /* create a new material with given properties */
 const struct material material_new(struct color color, double ambient, 
                         double diffuse, double specular, double shininess)
