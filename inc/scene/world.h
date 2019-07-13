@@ -55,4 +55,9 @@ struct color world_shade_hit(struct world *w, struct i_comp comps);
 /* wrapper for intersect, pre_compute and shade_hit */
 struct color world_color_at(struct world *w, struct ray r);
 
+/* check if a point in the world is in shadow by casting a ray from the light
+ * source to the point and checking for objects lying in the path, return 1 
+ * if so */
+int world_point_is_shadowed(struct world *w, struct p_light l, struct tuple point);
+
 #endif // __world_h__

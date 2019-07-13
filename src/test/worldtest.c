@@ -129,6 +129,62 @@ int TST_WorldColorAt()
 
         return 1;
 }
+
+int TST_PointInShadow()
+{
+        struct world *w = test_world();
+        struct tuple p = tuple_point(0.0, 10.0, 0.0);
+        struct p_light l = w->lights->light;
+
+        // nothing between point and light source
+        assert(world_point_is_shadowed(w, l, p) == 0);
+
+        // sphere between point and light
+        p = tuple_point(10.0, -10.0, 10.0);
+        assert(world_point_is_shadowed(w, l, p) == 1);
+
+        // light between point and object
+        p = tuple_point(-20.0, 20.0, -20.0);
+        assert(world_point_is_shadowed(w, l, p) == 0);
+
+        // point between light and object
+        p = tuple_point(-2.0, 2.0, -2.0);
+        assert(world_point_is_shadowed(w, l, p) == 0);
+
+        log_msg("[Point in Shadow] Complete, all tests pass!");
+        return 1;
+}
+
+int TST_ShadeHitInShadow()
+{
+        struct world *w = world_new();
+        struct p_light l = p_light_new(tuple_point(0.0, 0.0, -10.0), 
+                                     color_new(1.0, 1.0, 1.0));
+
+        struct g_object *s1 = test_sphere();
+        struct g_object *s2 = test_sphere();
+
+        struct matrix s2transform = matrix_translate(0.0, 0.0, 10.0);
+        object_transform(s2, s2transform);
+
+        world_add_object(w, s1);
+        world_add_object(w, s2);
+        world_add_light(w, l);
+
+        struct ray r = ray_new(tuple_point(0.0, 0.0, 5.0), 
+                               tuple_vector(0.0, 0.0, 1.0));
+
+        struct intersection *i = intersection_new(4.0, s2);
+        struct i_comp comp = i_pre_compute(i, r);
+
+        struct color c = world_shade_hit(w, comp);
+
+        assert(color_equal(c, color_new(0.1, 0.1, 0.1)) == 1);
+
+        log_msg("[Shade Hit Shadow] Complete, all tests pass!");
+
+        return 1;
+}
         
 int main()
 {
@@ -137,6 +193,8 @@ int main()
         TST_WorldRayIntersect();
         TST_WorldShade();
         TST_WorldColorAt();
+        TST_PointInShadow();
+        TST_ShadeHitInShadow();
 
         mem_free_all();
         return 0;

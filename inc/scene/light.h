@@ -18,6 +18,6 @@ const struct p_light p_light_new(struct tuple position, struct color intensity);
 const int p_light_equal(struct p_light l1, struct p_light l2);
 
 const struct color light_phong(struct material m, struct p_light l,
-                        struct tuple p,  struct tuple eye_v, struct tuple obj_n);
+        struct tuple p,  struct tuple eye_v, struct tuple obj_n, int in_shadow);
 
 #endif // __light_h__

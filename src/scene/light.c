@@ -26,8 +26,8 @@ const int p_light_equal(struct p_light l1, struct p_light l2)
 }
 
 /* the phong lighting model */
-const struct color light_phong(struct material m, struct p_light l,
-                struct tuple p,  struct tuple eye_v, struct tuple obj_n)
+const struct color light_phong(struct material m, struct p_light l, 
+        struct tuple p,  struct tuple eye_v, struct tuple obj_n, int in_shadow)
 {
         struct color effective_color = color_multiply(m.color, l.intensity);
         struct tuple light_v = vector_normal(tuple_subtract(l.position, p));
@@ -42,6 +42,11 @@ const struct color light_phong(struct material m, struct p_light l,
                 diffuse = color_new(0.0, 0.0, 0.0);
                 specular = color_new(0.0, 0.0, 0.0);
         } else {
+                
+                if (in_shadow == 1) {
+                        return ambient;
+                }
+
                 diffuse = color_scale(effective_color, m.diffuse * light_dot_normal);
 
                 // cosine between reflection vector and eye vector, a negative

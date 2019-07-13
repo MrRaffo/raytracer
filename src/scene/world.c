@@ -147,12 +147,17 @@ struct color world_shade_hit(struct world *w, struct i_comp comps)
         struct w_light_node *l = w->lights;
         
         while (l != NULL) {
+                int shadow = world_point_is_shadowed(w, l->light, 
+                                                     comps.over_point);
+                //if (!shadow) {in_light = 1;}
                 c = color_add(c, light_phong(comps.obj->material, l->light,
-                                             comps.point, comps.eye_v,
-                                             comps.normal));
+                                             comps.over_point, comps.eye_v,
+                                             comps.normal, shadow));
         
                 l = l->next;
         }
+
+        //if (!in_light) {return comps.obj->material.ambient;}
                 
         return c;        
 }
@@ -170,4 +175,25 @@ struct color world_color_at(struct world *w, struct ray r)
 
         struct i_comp comp = i_pre_compute(i, r);
         return world_shade_hit(w, comp);
+}
+
+/* check if a point in the world is in shadow by casting a ray from the light
+ * source to the point and checking for objects lying in the path, return 1 
+ * if so */
+int world_point_is_shadowed(struct world *w, struct p_light l,  struct tuple point)
+{
+        struct tuple v = tuple_subtract(l.position, point);
+        double dist = vector_magnitude(v);
+        struct tuple dir = vector_normal(v);
+
+        struct ray r = ray_new(point, dir);
+        struct i_list *list = i_list_new();
+        world_ray_intersections(w, r, list);
+
+        struct intersection *hit = i_list_hit(list);
+        if (hit != NULL && hit->t < dist) {
+                return 1;
+        }
+
+        return 0;
 }

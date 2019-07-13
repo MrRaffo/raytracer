@@ -85,11 +85,11 @@ int main()
         struct p_light light = p_light_new(tuple_point(-10.0, 10.0, -10.0),
                                            color_new(1.0, 1.0, 1.0));
 
-        struct p_light red_light = p_light_new(tuple_point(10.0, 10.0, -10.0),
+        struct p_light new_light = p_light_new(tuple_point(10.0, 10.0, -10.0),
                                                color_new(0.0, 0.5, 0.99));
 
         world_add_light(w, light);
-        world_add_light(w, red_light);
+        world_add_light(w, new_light);
 
         c.transform = matrix_view_transform(tuple_point(0.0, 1.5, -5.0),
                                             tuple_point(0.0, 1.0, 0.0),
@@ -97,7 +97,7 @@ int main()
 
         struct canvas image = camera_render(c, w);
 
-        export_to_bmp(image, "img/multi-light.bmp");
+        export_to_bmp(image, "img/shadow-cast.bmp");
 
         mem_free_all();
 

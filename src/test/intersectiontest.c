@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include <geometry/gmaths.h>
 #include <geometry/g_object.h>
 #include <geometry/intersection.h>
 #include <geometry/tuple.h>
@@ -117,7 +118,7 @@ int TST_IntersectionHit()
         return 1;
 }
 
-TST_PreComputations()
+int TST_PreComputations()
 {
         struct ray r = ray_new(tuple_point(0.0, 0.0, -5.0),
                                tuple_vector(0.0, 0.0, 1.0));
@@ -160,6 +161,28 @@ int TST_InsideObject()
         return 1;
 }
 
+/* acne prevention, make sure intersection is not slightly inside an object
+ * due to floating point inaccuracy */
+int TST_IntersectionAdjust()
+{
+        struct ray r = ray_new(tuple_point(0.0, 0.0, 0.5), 
+                               tuple_vector(0.0, 0.0, 1.0));
+
+        struct g_object *s = test_sphere();
+        struct matrix t = matrix_translate(0.0, 0.0, 1.0);
+        object_transform(s, t);
+
+        struct intersection *i = intersection_new(5.0, s);
+
+        struct i_comp comp = i_pre_compute(i, r);
+
+        assert(comp.over_point.z < (-EPSILON / 2.0));
+        assert(comp.point.z > comp.over_point.z);
+
+        log_msg("[Adjust Intersection] Complete, all tests pass!");
+        return 1;
+}
+
 int main() {
         
         TST_IntersectionLength();
@@ -167,6 +190,7 @@ int main() {
         TST_IntersectionHit();
         TST_PreComputations();
         TST_InsideObject();
+        TST_IntersectionAdjust();
 
         mem_free_all();
 

@@ -79,7 +79,7 @@ int main()
                                 struct tuple eye_v = tuple_negate(ray.dir);
                                 
                                 struct color col = light_phong(sphere->material, 
-                                                light, i_point, eye_v, obj_n);
+                                        light, i_point, eye_v, obj_n, 0);
                                 
                                 canvas_write_pixel(canvas, x, y, col);
                         }

@@ -38,6 +38,7 @@ struct i_comp {
         double t;
         struct g_object *obj;
         struct tuple point;
+        struct tuple over_point; // for acne (shadows)
         struct tuple eye_v;
         struct tuple normal;
         int inside;     // true or false value
@@ -62,7 +63,7 @@ int add_intersection(struct i_list *list, struct intersection *i);
 struct intersection *get_intersection(struct i_list *list, int index);
 
 /* return the first intersection from the origin of a ray in the
- * direction of the ray */
+ * direction of the ray, return NULL on fail */
 struct intersection *i_list_hit(struct i_list *list);
 
 /* precompute the state of an intersection */

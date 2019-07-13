@@ -123,8 +123,6 @@ struct intersection *get_intersection(struct i_list *list, int index)
         }
 
         if (index != 0) {
-                printf("Index = %d\n", index);
-                log_err("Error finding index\n");
                 return NULL;
         }
 
@@ -132,7 +130,7 @@ struct intersection *get_intersection(struct i_list *list, int index)
 }
 
 /* return the first intersection from the origin of a ray in the
- * direction of the ray */
+ * direction of the ray, return NULL on fail */
 struct intersection *i_list_hit(struct i_list *list)
 {
         return get_intersection(list, 0);
@@ -146,6 +144,8 @@ struct i_comp i_pre_compute(struct intersection *i, struct ray r)
         struct tuple point = ray_position(r, t);
         struct tuple eye_v = tuple_negate(r.dir);
         struct tuple normal = object_normal_at(obj, point);
+
+        struct tuple over_point = tuple_add(point, tuple_scale(normal, EPSILON));
         
         // check if ray is crossing bounday from inside or outside
         int inside;
@@ -156,7 +156,7 @@ struct i_comp i_pre_compute(struct intersection *i, struct ray r)
                 inside = 0;
         }
 
-        struct i_comp comp = {t, obj, point, eye_v, normal, inside};
+        struct i_comp comp = {t, obj, point, over_point, eye_v, normal, inside};
         return comp;
 }
 
