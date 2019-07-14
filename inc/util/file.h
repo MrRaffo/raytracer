@@ -19,4 +19,9 @@ const int export_to_ppm(const struct canvas c, const char *filename);
  */
 const int export_to_bmp(const struct canvas c, const char *filename);
 
+/*
+ * create a canvas from a bitmap file
+ */
+struct canvas canvas_from_bmp(const char *filename);
+
 #endif // __file_h__

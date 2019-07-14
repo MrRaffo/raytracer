@@ -8,8 +8,8 @@
 #include <graphics/color.h>
 
 struct canvas {
-        const int w;
-        const int h;
+        int w;
+        int h;
         struct color *pixels;
 };
 

@@ -185,4 +185,64 @@ const int export_to_bmp(const struct canvas c, const char *filename)
         return 1;
 }
 
+/*
+ * create a canvas from a bitmap file
+ */
+struct canvas canvas_from_bmp(const char *filename)
+{
+        FILE *file = fopen(filename, "r");
+        if (file == NULL) {
+                log_err("Unable to open file (%s)", filename);
+                fprintf(stderr, "%s\n", strerror(errno));
+                exit(0);
+        }
 
+        // get image properties
+        fseek(file, 18, SEEK_SET);
+        uint32_t width, height;
+        fread(&width, 4, 1, file);
+        fread(&height, 4, 1, file);
+        height *= -1;   // windows stores bmps upside down
+
+        // get color depth
+        fseek(file, 28, SEEK_SET); 
+        uint32_t color_depth;
+        fread(&color_depth, 4, 1, file);
+        color_depth /= 8;
+        if (color_depth != 3 && color_depth != 4) {
+                log_err("Only 24- or 32-bit bitmaps please");
+                exit(0);
+        }
+
+        // get the pixels
+        uint32_t file_pixel_offset;
+        fseek(file, 10, SEEK_SET);
+        fread(&file_pixel_offset, 4, 1, file);
+
+        double r, g, b, a;
+        uint32_t *data = (uint32_t *)mem_alloc(width * height * color_depth);
+        fseek(file, file_pixel_offset, SEEK_SET);
+        fread(data, sizeof(uint32_t), width * height, file);
+
+        struct canvas image = canvas_new(width, height);
+
+        for (int i = 0; i < width * height; i++) {
+
+                uint32_t pixel;
+                
+                pixel = data[i];
+                
+                a = (double)((pixel >> 24) & 0xff) / 255.0;
+                r = (double)((pixel >> 16) & 0xff) / 255.0;
+                g = (double)((pixel >> 8) & 0xff) / 255.0;
+                b = (double)((pixel) & 0xff) / 255.0;
+        
+                struct color color = color_new(r, g, b);
+                image.pixels[i] = color;
+        }
+
+        mem_free(data);
+        fclose(file);
+
+        return image;
+}

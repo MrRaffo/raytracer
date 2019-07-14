@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #include <util/mem.h>
 #include <util/log.h>
@@ -19,6 +20,7 @@ void *_checked_malloc(size_t size)
         void *ptr = malloc(size);
         if (ptr == NULL) {
                 log_err("Unable to allocate memory!\n");
+                fprintf(stderr, "%s\n", strerror(errno));
                 mem_free_all();
                 exit(1);
         }

@@ -76,11 +76,19 @@ void TST_CanvasExportToBMP()
                 }
         }
 
-        export_to_ppm(c, "img/exporttest.bmp");
+        export_to_bmp(c, "img/exporttest.bmp");
 
         fprintf(stdout, "img/exporttest.bmp created\n");
         
-        return;       
+        return 1;    
+}
+
+void TST_CanvasFromBMP()
+{
+        struct canvas c = canvas_from_bmp("img/exporttest.bmp");
+        export_to_bmp(c, "img/exporttestcpy.bmp");
+        
+        return 1;
 }
 
 int main()
@@ -90,6 +98,7 @@ int main()
         TST_CanvasRead();
         TST_CanvasExportToPPM();
         TST_CanvasExportToBMP();
+        TST_CanvasFromBMP();
 
         mem_free_all();
 
