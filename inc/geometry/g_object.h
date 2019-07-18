@@ -12,8 +12,10 @@
 #include <scene/material.h>
 
 enum shape_type {
-        SHAPE_ORIGIN = 0,           // Special type for the start of a ray
+        SHAPE_ORIGIN = 0,       // Special type for the start of a ray
+        SHAPE_PLANE,
         SHAPE_SPHERE,
+        SHAPE_UNASSIGNED,       // a default for testing purposes
         NUM_SHAPES
 };
 
@@ -25,6 +27,9 @@ struct g_object {
         struct matrix inverse_transform;        // for ray intersections
         struct matrix transpose_inverse;        // for surface normals
 };
+
+/* create a generic object for testing with no defined shape */
+struct g_object *test_object();
 
 /* create a sphere object, used for testing functions */
 struct g_object *test_sphere();
@@ -38,6 +43,8 @@ void object_transform(struct g_object *shape, struct matrix m);
 /* calculate the surface normal on an object at the given point */
 const struct tuple object_normal_at(struct g_object *obj, struct tuple point);
 
+/* normal calculations for each shape */
+const struct tuple plane_normal_at(struct g_object *obj, const struct tuple point);
 const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple point);
 
 /* assign material properties to an object */

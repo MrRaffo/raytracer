@@ -8,6 +8,19 @@
 #include <util/mem.h>
 #include <util/log.h>
 
+/* create a generic object for testing with no defined shape */
+struct g_object *test_object()
+{
+        struct g_object *obj = (struct g_object *)mem_alloc(sizeof(struct g_object));
+        obj->type = SHAPE_UNASSIGNED;
+        obj->material = test_material();
+        obj->transform = matrix_identity(4);
+        obj->inverse_transform = matrix_identity(4);
+        obj->transpose_inverse = matrix_identity(4);
+        
+        return obj;
+}
+
 /* create a sphere object, used for testing functions */
 struct g_object *test_sphere()
 {
@@ -55,14 +68,27 @@ const struct tuple object_normal_at(struct g_object *obj, struct tuple point)
                         log_err("Invalid object type: ORIGIN");
                         return tuple_zero();
                         break;
+                case SHAPE_PLANE:
+                        return plane_normal_at(obj, point);
+                        break;
                 case SHAPE_SPHERE:
                         return sphere_normal_at(obj, point);
+                        break;
+                case SHAPE_GENERIC:
+                        log_warn("Invalid object type: UNASSIGNED");
+                        return tuple_zero();
                         break;
                 default:
                         return tuple_zero();
                         log_wrn("Unrecognised object type");
         }
 
+        return tuple_zero();
+}
+
+const struct tuple plane_normal_at(struct g_object *obj, const struct tuple point)
+{
+        // TODO
         return tuple_zero();
 }
 
