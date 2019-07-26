@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <graphics/color.h>
-#include <geometry/gmaths.h>    // for double_equal
+#include <geometry/g_maths.h>    // for double_equal
 #include <util/log.h>
 
 #include <assert.h>

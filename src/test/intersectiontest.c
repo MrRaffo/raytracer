@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include <geometry/gmaths.h>
+#include <geometry/g_maths.h>
 #include <geometry/g_object.h>
 #include <geometry/intersection.h>
 #include <geometry/tuple.h>

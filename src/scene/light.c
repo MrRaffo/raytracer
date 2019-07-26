@@ -6,7 +6,7 @@
 #include <scene/material.h>
 #include <geometry/tuple.h>
 #include <graphics/color.h>
-#include <geometry/gmaths.h>
+#include <geometry/g_maths.h>
 
 #include <util/mem.h>
 #include <util/log.h>

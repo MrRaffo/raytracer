@@ -3,18 +3,11 @@
 
 #include <geometry/tuple.h>
 
-struct sphere {
-        struct tuple pos;
-        double radius;
-};
+struct g_object;
 
-/* CREATION */
+/* OPERATIONS */
 
-/* returns a unit sphere, centered on the origin */
-const struct sphere sphere_unit();
-
-/* returns a sphere to the given specifications */
-const struct sphere sphere_new(const struct tuple pos, const double radius);
-
+/* returns the normal at the point the sphere was hit */
+const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple point);
 
 #endif // __sphere_h__

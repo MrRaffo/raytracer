@@ -2,7 +2,7 @@
 #include <math.h>
 
 #include <geometry/tuple.h>
-#include <geometry/gmaths.h>
+#include <geometry/g_maths.h>
 #include <util/log.h>
 
 #include <assert.h>

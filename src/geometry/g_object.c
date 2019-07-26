@@ -8,6 +8,8 @@
 #include <util/mem.h>
 #include <util/log.h>
 
+/* OPERATIONS */
+
 /* create a generic object for testing with no defined shape */
 struct g_object *test_object()
 {
@@ -20,30 +22,6 @@ struct g_object *test_object()
         
         return obj;
 }
-
-/* create a sphere object, used for testing functions */
-struct g_object *test_sphere()
-{
-        struct g_object *s = (struct g_object *)mem_alloc(sizeof(struct g_object));
-        s->type = SHAPE_SPHERE;
-        s->material = test_material();
-        s->transform = matrix_identity(4);
-        s->inverse_transform = matrix_identity(4);
-        s->transpose_inverse = matrix_identity(4);
-        return s;
-}
-
-/* create a sphere with given properties */
-struct g_object *sphere(struct material material, struct matrix matrix)
-{
-        struct g_object *s = (struct g_object *)mem_alloc(sizeof(struct g_object));
-        s->type = SHAPE_SPHERE;
-        s->material = material;
-        object_transform(s, matrix);
-
-        return s;
-}
-
 
 /* set the objects transform and inverse matrix */
 void object_transform(struct g_object *shape, struct matrix m)
@@ -74,8 +52,8 @@ const struct tuple object_normal_at(struct g_object *obj, struct tuple point)
                 case SHAPE_SPHERE:
                         return sphere_normal_at(obj, point);
                         break;
-                case SHAPE_GENERIC:
-                        log_warn("Invalid object type: UNASSIGNED");
+                case SHAPE_UNASSIGNED:
+                        log_wrn("Invalid object type: UNASSIGNED");
                         return tuple_zero();
                         break;
                 default:
@@ -84,22 +62,6 @@ const struct tuple object_normal_at(struct g_object *obj, struct tuple point)
         }
 
         return tuple_zero();
-}
-
-const struct tuple plane_normal_at(struct g_object *obj, const struct tuple point)
-{
-        // TODO
-        return tuple_zero();
-}
-
-const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple point)
-{
-        struct tuple obj_point = matrix_transform(obj->inverse_transform, point);
-        struct tuple obj_normal = tuple_subtract(obj_point, tuple_point(0.0, 0.0, 0.0));
-        struct tuple world_normal = matrix_transform(obj->transpose_inverse, obj_normal);
-        world_normal.w = 0.0;   // ensure it's treated as a vector
-
-        return vector_normal(world_normal);
 }
 
 /* assign material properties to an object */
@@ -114,5 +76,36 @@ int object_equal(struct g_object *obj1, struct g_object *obj2)
         return (obj1->type == obj2->type &&
                 material_equal(obj1->material, obj2->material) &&
                 matrix_equal(obj1->transform, obj2->transform));
+}
+
+/* PRIMITIVES */
+
+/* SPHERE */
+
+/* create a sphere object, used for testing functions */
+struct g_object *test_sphere()
+{
+        struct material material = test_material();
+        struct matrix transform = matrix_identity(4);
+        struct matrix inverse_transform = matrix_identity(4);
+        struct matrix transpose_inverse = matrix_identity(4);
+        struct g_object *sphere = 
+
+/* get the normal at the point the ray hits the sphere */
+const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple point)
+{
+        struct tuple obj_point = matrix_transform(obj->inverse_transform, point);
+        struct tuple obj_normal = tuple_subtract(obj_point, tuple_point(0.0, 0.0, 0.0));
+        struct tuple world_normal = matrix_transform(obj->transpose_inverse, obj_normal);
+        world_normal.w = 0.0;   // ensure it's treated as a vector
+
+        return vector_normal(world_normal);
+}
+
+
+const struct tuple plane_normal_at(struct g_object *obj, const struct tuple point)
+{
+        // TODO
+        return tuple_zero();
 }
 

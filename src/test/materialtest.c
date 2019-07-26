@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include <geometry/gmaths.h>
+#include <geometry/g_maths.h>
 #include <scene/material.h>
 #include <graphics/color.h>
 

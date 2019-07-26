@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include <geometry/gmaths.h>
+#include <geometry/g_maths.h>
 
 /* 
  * Compare two doubles, return 1 if they are equal (with EPSILON of each other),

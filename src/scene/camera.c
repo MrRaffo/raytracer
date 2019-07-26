@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include <geometry/gmaths.h>
+#include <geometry/g_maths.h>
 #include <graphics/canvas.h>
 #include <scene/camera.h>
 #include <scene/world.h>

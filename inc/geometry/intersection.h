@@ -1,7 +1,7 @@
 #ifndef __intersection_h__
 #define __intersection_h__
 
-#include <geometry/gmaths.h>
+#include <geometry/g_maths.h>
 #include <geometry/g_object.h>
 #include <geometry/tuple.h>
 

@@ -1,5 +1,5 @@
-#ifndef __gmaths_h__
-#define __gmaths_h__
+#ifndef __g_maths_h__
+#define __g_maths_h__
 
 #define EPSILON 0.00001     // used as a threshold for comparing double
 
@@ -9,4 +9,4 @@
  */
 const int double_equal(const double val1, const double val2);
 
-#endif // __gmaths_h__
+#endif // __g_maths_h__

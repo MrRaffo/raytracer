@@ -3,7 +3,7 @@
 #include <geometry/sphere.h>
 #include <geometry/tuple.h>
 #include <geometry/matrix.h>
-#include <geometry/gmaths.h>
+#include <geometry/g_maths.h>
 #include <geometry/g_object.h>
 #include <geometry/intersection.h>
 
