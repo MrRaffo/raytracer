@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <geometry/ray.h>
-#include <geometry/sphere.h>
 #include <geometry/tuple.h>
 #include <geometry/matrix.h>
 #include <geometry/g_maths.h>

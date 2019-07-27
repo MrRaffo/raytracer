@@ -165,7 +165,7 @@ int TST_InsideObject()
  * due to floating point inaccuracy */
 int TST_IntersectionAdjust()
 {
-        struct ray r = ray_new(tuple_point(0.0, 0.0, 0.5), 
+        struct ray r = ray_new(tuple_point(0.0, 0.0, -5.0), 
                                tuple_vector(0.0, 0.0, 1.0));
 
         struct g_object *s = test_sphere();

@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include <geometry/g_object.h>
-#include <geometry/sphere.h>
 #include <geometry/matrix.h>
 #include <scene/material.h>
 
@@ -89,7 +88,26 @@ struct g_object *test_sphere()
         struct matrix transform = matrix_identity(4);
         struct matrix inverse_transform = matrix_identity(4);
         struct matrix transpose_inverse = matrix_identity(4);
-        struct g_object *sphere = 
+        struct g_object *sphere = (struct g_object *)mem_alloc(sizeof(struct g_object));
+       
+        sphere->type = SHAPE_SPHERE;
+        sphere->material = material;
+        object_transform(sphere, transform);
+        //sphere->inverse_transform = inverse_transform;
+        //sphere->transpose_inverse = transpose_inverse;
+
+        return sphere;
+}
+
+/* create a sphere with given properties */
+struct g_object *sphere(struct material material, struct matrix matrix)
+{
+        struct g_object *sphere = (struct g_object *)mem_alloc(sizeof(struct g_object));
+        sphere->material = material;
+        object_transform(sphere, matrix);
+
+        return sphere;
+}
 
 /* get the normal at the point the ray hits the sphere */
 const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple point)
@@ -102,6 +120,7 @@ const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple poi
         return vector_normal(world_normal);
 }
 
+/* PLANE */
 
 const struct tuple plane_normal_at(struct g_object *obj, const struct tuple point)
 {

@@ -9,7 +9,6 @@
 
 #include <geometry/matrix.h>
 #include <scene/material.h>
-#include <geometry/sphere.h>
 
 enum shape_type {
         SHAPE_ORIGIN = 0,       // Special type for the start of a ray

@@ -95,6 +95,9 @@ int TST_WorldShade()
         comps = i_pre_compute(i, r);
         col = world_shade_hit(test_w, comps);
 
+        printf("%g, %g, %g\n", col.r, col.g, col.b);
+        color_print(col);
+        
         assert(color_equal(col, color_new(0.90498, 0.90498, 0.90498)) == 1);
 
         log_msg("[Shade Hit] Complete, all tests pass!");

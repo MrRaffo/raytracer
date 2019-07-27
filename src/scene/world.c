@@ -5,7 +5,6 @@
 #include <geometry/tuple.h>
 #include <graphics/color.h>
 #include <geometry/g_object.h>
-#include <geometry/sphere.h>
 #include <geometry/ray.h>
 #include <geometry/intersection.h>
 
