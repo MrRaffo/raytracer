@@ -144,8 +144,6 @@ struct i_comp i_pre_compute(struct intersection *i, struct ray r)
         struct tuple point = ray_position(r, t);
         struct tuple eye_v = tuple_negate(r.dir);
         struct tuple normal = object_normal_at(obj, point);
-
-        struct tuple over_point = tuple_add(point, tuple_scale(normal, EPSILON));
         
         // check if ray is crossing bounday from inside or outside
         int inside;
@@ -156,6 +154,8 @@ struct i_comp i_pre_compute(struct intersection *i, struct ray r)
                 inside = 0;
         }
 
+        struct tuple over_point = tuple_add(point, tuple_scale(normal, EPSILON));
+        
         struct i_comp comp = {t, obj, point, over_point, eye_v, normal, inside};
         return comp;
 }

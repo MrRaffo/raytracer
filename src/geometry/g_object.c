@@ -105,6 +105,7 @@ struct g_object *sphere(struct material material, struct matrix matrix)
         struct g_object *sphere = (struct g_object *)mem_alloc(sizeof(struct g_object));
         sphere->material = material;
         object_transform(sphere, matrix);
+        sphere->type = SHAPE_SPHERE;
 
         return sphere;
 }

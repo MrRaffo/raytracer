@@ -95,9 +95,6 @@ int TST_WorldShade()
         comps = i_pre_compute(i, r);
         col = world_shade_hit(test_w, comps);
 
-        printf("%g, %g, %g\n", col.r, col.g, col.b);
-        color_print(col);
-        
         assert(color_equal(col, color_new(0.90498, 0.90498, 0.90498)) == 1);
 
         log_msg("[Shade Hit] Complete, all tests pass!");
@@ -181,7 +178,6 @@ int TST_ShadeHitInShadow()
         struct i_comp comp = i_pre_compute(i, r);
 
         struct color c = world_shade_hit(w, comp);
-
         assert(color_equal(c, color_new(0.1, 0.1, 0.1)) == 1);
 
         log_msg("[Shade Hit Shadow] Complete, all tests pass!");

@@ -148,16 +148,14 @@ struct color world_shade_hit(struct world *w, struct i_comp comps)
         while (l != NULL) {
                 int shadow = world_point_is_shadowed(w, l->light, 
                                                      comps.over_point);
-                //if (!shadow) {in_light = 1;}
+                
                 c = color_add(c, light_phong(comps.obj->material, l->light,
                                              comps.over_point, comps.eye_v,
                                              comps.normal, shadow));
-        
+                
                 l = l->next;
         }
 
-        //if (!in_light) {return comps.obj->material.ambient;}
-                
         return c;        
 }
 
@@ -179,7 +177,7 @@ struct color world_color_at(struct world *w, struct ray r)
 /* check if a point in the world is in shadow by casting a ray from the light
  * source to the point and checking for objects lying in the path, return 1 
  * if so */
-int world_point_is_shadowed(struct world *w, struct p_light l,  struct tuple point)
+int world_point_is_shadowed(struct world *w, struct p_light l, struct tuple point)
 {
         struct tuple v = tuple_subtract(l.position, point);
         double dist = vector_magnitude(v);
