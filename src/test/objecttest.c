@@ -17,7 +17,7 @@ int TST_SetTransform()
         object_transform(s, m);
         assert(matrix_equal(m, s->transform) == 1);
 
-        fprintf(stdout, "[Object Set Transform] Complete, all tests pass!\n");
+        log_msg("[Set Transform] Complete, all tests pass!");
 
         return 1;
 }
@@ -52,7 +52,29 @@ int TST_ObjectEqual()
 
         assert(object_equal(s1, s2) == 1);
 
-        log_msg("[Object Equal] Complete, all tests pass!");
+        log_msg("[Object Equal] Complete, all testsShape pass!");
+        return 1;
+}
+
+/* test a generic, or base, shape functionality */
+int TST_TestObject()
+{
+        struct g_object *s = test_object();
+        assert(matrix_equal(s->transform, matrix_identity(4)) == 1);
+
+        object_transform(s, matrix_translate(2.0, 3.0, 4.0));
+        assert(matrix_equal(s->transform, matrix_translate(2.0, 3.0, 4.0)) == 1);
+
+        struct material material = test_material();
+        object_set_material(s, material);
+        assert(material_equal(s->material, test_material()) == 1);
+
+        material.ambient = 1.0;
+        object_set_material(s, material);
+        assert(material_equal(s->material, material) == 1);
+        assert(double_equal(s->material.ambient, 1.0) == 1);
+
+        log_msg("[Test Object] Complete, all tests pass!");
         return 1;
 }
 
@@ -61,6 +83,7 @@ int main()
         TST_SetTransform();
         TST_SetMaterial();
         TST_ObjectEqual();
+        TST_TestObject();
 
         mem_free_all();
 

@@ -59,7 +59,10 @@ const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple poi
 
 /* PLANE */
 
-/* normal calculations for each shape */
+/* create a plane object for testing functions */
+struct g_object *test_plane();
+
+/* returns a normal vector pointing along positive y axis: (0.0, 1.0, 0.0, 0.0) */
 const struct tuple plane_normal_at(struct g_object *obj, const struct tuple point);
 
 #endif // __g_object_h__

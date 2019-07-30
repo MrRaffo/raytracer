@@ -123,9 +123,20 @@ const struct tuple sphere_normal_at(struct g_object *obj, const struct tuple poi
 
 /* PLANE */
 
+/* create a plane object for testing functions */
+struct g_object *test_plane()
+{
+        struct g_object *plane = (struct g_object *)mem_alloc(sizeof(struct g_object));
+        plane->type = SHAPE_PLANE;
+
+        object_transform(plane, matrix_identity(4));
+
+        return plane;
+}
+
+/* returns a normal vector pointing along positive y axis: (0.0, 1.0, 0.0, 0.0) */
 const struct tuple plane_normal_at(struct g_object *obj, const struct tuple point)
 {
-        // TODO
-        return tuple_zero();
+        return tuple_vector(0.0, 1.0, 0.0);
 }
 
