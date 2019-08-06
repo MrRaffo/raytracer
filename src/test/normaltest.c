@@ -82,7 +82,7 @@ int TST_SphereTransformedNormal()
         return 1;
 }
 
-TST_PlaneNormal()
+int TST_PlaneNormal()
 {
         /* plane local normal is always 'up' */
         struct g_object *plane = test_plane();

@@ -90,7 +90,42 @@ int TST_RaySphereIntersect()
         assert(list->start->prev->prev->xs->t == -6.0);
         assert(list->start->prev->xs->t == -4.0);
 
-        fprintf(stdout, "[Ray Sphere Intersect] Complete, all tests pass!\n");
+        log_msg("[Ray Sphere Intersect] Complete, all tests pass!\n");
+
+        return 1;
+}
+
+int TST_RayPlaneIntersect()
+{
+        struct g_object *plane = test_plane();
+        
+        /* a ray parallel to the plane should never intersect it */
+        struct ray r = ray_new(tuple_point(0.0, 10.0, 0.0), tuple_vector(0.0, 0.0, 1.0));
+        struct i_list *list = i_list_new();
+        assert(ray_intersect(r, plane, list) == 0);
+
+        /* a ray which is coplanar with the plane should not intersect it */
+        r = ray_new(tuple_point(0.0, 0.0, 0.0), tuple_vector(0.0, 0.0, 1.0));
+        list = i_list_new();
+        assert(ray_intersect(r, plane, list) == 0);
+
+        /* ray intersects, originating from above the plane */
+        list = i_list_new();
+        r = ray_new(tuple_point(0.0, 1.0, 0.0), tuple_vector(0.0, -1.0, 0.0));
+        assert(ray_intersect(r, plane, list) == 1);
+        assert(list->count == 1);
+        assert(double_equal(list->start->next->xs->t, 1.0) == 1);
+        assert(list->start->next->xs->obj == plane);
+        
+        /* ray intersects, originating from below the plane */
+        list = i_list_new();
+        r = ray_new(tuple_point(0.0, -1.0, 0.0), tuple_vector(0.0, 1.0, 0.0));
+        assert(ray_intersect(r, plane, list) == 1);
+        assert(list->count == 1);
+        assert(double_equal(list->start->next->xs->t, 1.0) == 1);
+        assert(list->start->next->xs->obj == plane);
+
+        log_msg("[Ray Plane Intersect] Complete, all tests pass!\n");
 
         return 1;
 }
@@ -151,7 +186,6 @@ int TST_RaySphereTransformIntersect()
         struct i_list *list2 = i_list_new();
         ray_intersect(r, s, list2);
 
-        printf("XS: %d\n", list2->count);
         assert(list2->count == 0);
         
         fprintf(stdout, "[Ray Sphere Transformed Intersect] Complete, all tests pass!\n");
@@ -163,6 +197,7 @@ int main()
         TST_RayNew();
         TST_RayPosition();
         TST_RaySphereIntersect();
+        TST_RayPlaneIntersect();
         TST_RayTransform();
         TST_RaySphereTransformIntersect();
 

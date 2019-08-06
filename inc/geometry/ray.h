@@ -32,6 +32,9 @@ struct tuple ray_position(const struct ray r, const double t);
  */
 int _sphere_intersect(const struct ray r, struct g_object *s, struct i_list *list);
 
+/* find the point at which a ray intersects a plane */
+int _plane_intersect(const struct ray r, struct g_object *plane, struct i_list *list);
+
 /* checks for intersections between the ray and object, returns number found */
 int ray_intersect(const struct ray r, struct g_object *obj, struct i_list *list);
 

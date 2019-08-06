@@ -80,6 +80,21 @@ int _sphere_intersect(const struct ray r, struct g_object *s, struct i_list *lis
         return 2;
 }
 
+/* find the point at which a ray intersects a plane */
+int _plane_intersect(const struct ray r, struct g_object *plane, struct i_list *list)
+{
+        /* any ray which doesn't move in y-axis is parallel or coplanar */
+        if (fabs(r.dir.y) < EPSILON) {
+                return 0;
+        }
+
+        double t = -r.org.y / r.dir.y;
+        struct intersection *i = intersection_new(t, plane);
+        add_intersection(list, i);
+
+        return 1;
+}
+
 /* checks for intersections between the ray and object, returns number found */
 int ray_intersect(const struct ray r, struct g_object *obj, struct i_list *list)
 {
@@ -91,6 +106,8 @@ int ray_intersect(const struct ray r, struct g_object *obj, struct i_list *list)
         case SHAPE_SPHERE:
                 return _sphere_intersect(t_ray, obj, list);
                 break;
+        case SHAPE_PLANE:
+                return _plane_intersect(t_ray, obj, list);
         default:
                 break;
         }
