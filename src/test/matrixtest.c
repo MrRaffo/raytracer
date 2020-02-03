@@ -579,7 +579,7 @@ int TST_ViewTransform()
 
         assert(matrix_equal(t, result) == 1);
 
-        fprintf(stdout, "[View Transform] Complete, all tests pass!");
+        fprintf(stdout, "[View Transform] Complete, all tests pass!\n");
 
         return 1;
 }
